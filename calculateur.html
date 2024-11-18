@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="chart.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="d-flex justify-content-between mt-3">
+            <h2 id="page-title">Calculateur</h2>
+            <div class="language-selector">
+                <button class="dropdown-toggle" onclick="toggleDropdown()">
+                    <img src="icons/flags/uk.png" alt="English flag" class="flag-icon">
+                    <span id="selected-language">English</span>
+                    <span class="dropdown-arrow"> </span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li onclick="selectLanguage('English', 'uk')"><img src="icons/flags/uk.png" alt="English flag" class="flag-icon"> English</li>
+                    <li onclick="selectLanguage('Spanish', 'es')"><img src="icons/flags/es.png" alt="Spanish flag" class="flag-icon"> Spanish</li>
+                    <li onclick="selectLanguage('Italian', 'it')"><img src="icons/flags/it.png" alt="Italian flag" class="flag-icon"> Italian</li>
+                    <li onclick="selectLanguage('Francais', 'fr')"><img src="icons/flags/fr.png" alt="French flag" class="flag-icon"> Francais</li>
+                    <li onclick="selectLanguage('German', 'de')"><img src="icons/flags/de.png" alt="German flag" class="flag-icon"> German</li>
+                </ul>
+            </div>
+        </div>
+
+        <form id="calculator-form" class="my-4">
+            <div id="input-fields" class="row">
+                <!-- Les champs de saisie par défaut seront générés ici par JavaScript -->
+            </div>
+
+            <!-- Texte cliquable pour révéler plus d'options -->
+            <p id="show-more-options" class="text-primary" style="cursor: pointer;" onclick="toggleExtraOptions()">
+                + Afficher plus d'options
+            </p>
+
+            <!-- Section cachée pour les options supplémentaires -->
+            <div id="extra-options" style="display: none;">
+                <div id="extra-options" class="mb-3">
+                    <!-- Les champs de saisie par défaut seront générés ici par JavaScript -->
+                </div>
+            </div>
+
+            <div id="error-message" class="text-danger mb-3"></div>
+            <button type="button" id="calculate-button" class="btn btn-primary" onclick="launchCalculation()">Lancer le
+                calcul</button>
+        </form>
+
+        <div id="results-section" style="display:none;">
+            <h4 id="results-title">Résultats</h4>
+            <p id="results-summary"></p>
+            <canvas id="cost-chart" width="400" height="200"></canvas>
+            <div class="mt-3">
+                <button class="btn btn-secondary" onclick="printResults()">Imprimer</button>
+                <button class="btn btn-secondary" onclick="resetForm()">Relancer un calcul</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
