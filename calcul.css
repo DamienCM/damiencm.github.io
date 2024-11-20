@@ -81,8 +81,9 @@
     margin-left: 5px;
 }
 
-.help-icon::after {
-    content: attr(data-tooltip);
+/* Tooltip masqué par défaut */
+.tooltip-content {
+    display: none;
     position: absolute;
     left: 50%;
     bottom: 125%;
@@ -93,14 +94,60 @@
     border-radius: 4px;
     font-size: 0.875em;
     white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
     z-index: 10;
 }
 
-.help-icon:hover::after {
-    visibility: visible;
-    opacity: 1;
+/* Affichage sur PC au survol */
+.help-icon:hover .tooltip-content {
+    display: block;
 }
+
+/* Affichage sur mobile au clic */
+.help-icon.tooltip-active .tooltip-content {
+    display: block;
+}
+
+/* Transition fluide */
+.tooltip-content {
+    transition: opacity 0.2s ease-in-out;
+}
+
+
+/* tooltip extra options */
+/* Tooltip masqué par défaut */
+.tooltip-content-extra-options {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 125%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 0.875em;
+    white-space: normal; /* Permet les retours à la ligne */
+    word-wrap: break-word; /* Gère les longs mots pour éviter le dépassement */
+    max-width: 600px; /* Limite la largeur maximale */
+    min-width: 300px;
+    z-index: 10;
+}
+
+
+/* Affichage sur PC au survol */
+.help-icon:hover .tooltip-content-extra-options {
+    display: block;
+}
+
+/* Affichage sur mobile au clic */
+.help-icon.tooltip-active .tooltip-content-extra-options {
+    display: block;
+}
+
+/* Transition fluide */
+.tooltip-content-extra-options {
+    transition: opacity 0.2s ease-in-out;
+}
+
+
 /*# sourceMappingURL=bootstrap.min.css.map */
