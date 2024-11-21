@@ -58,8 +58,14 @@ const dictionary = {
         launchCalculation: "Lancer le calcul",
         resultsTitle: "Résultats",
         inputFields: ["Superficie ha :", "Pieds de vigne à l'hectare :", "Nombre d'attaches par pied :", "Cout horaire d'un salarié en € :", "Nombre d'outils :", "Type de bobine :"],
-        inputFieldsIllustration: ["illustrations/superficie.jpg", "illustrations/pieds-per-ha.jpg", "illustrations/attache-par-pied.jpg", "illustrations/contrat.webp", "illustrations/lea-transparent.jpg", "illustrations/bobines-de-lien.jpg",],
-        defaultValues: [10, 4000, 2, 18, 2, null],
+        inputFieldsIllustration: ["illustrations/superficie.jpg", "illustrations/vines-per-ha.webp", "illustrations/attache-par-pied.jpg", "illustrations/contrat.webp", "illustrations/lea-transparent.png", "illustrations/bobines-de-lien.png",],
+        defaultValues: [
+            10, //superficie
+             4000,//vigne par ha
+             3,//attache par pied
+             18,//cout h du salarie
+             2,//nbre outil
+             null],
         errorInputs: "Veuillez remplir tous les champs correctement.",
         tooltips: ["\\(\\text{Superficie (ha)} = \\frac{\\text{Largeur(m)} \\times \\text{Longueur(m)}}{10\\ 000}\\)",
             "\\(\\text{Pieds par ha} = \\frac{10\\ 000}{\\text{Ecart entre pieds(m)} \\times \\text{Ecart entre rangs(m)}}\\)",
@@ -67,7 +73,18 @@ const dictionary = {
         moreOptions: ["+ Voir plus"],
         lessOptions: ["- Voir moins"],
         extraOptions: ["Temps deplacement entre les ceps (s)", "Temps de cycle outil (s)", "Temps changement bobine (s) ","Temps de pose de la baguette (s)","Temps entre les liens (s)", "Temps de travail (heures/jours)","Temps de pause par jour en minutes (hors pause midi)", "Temps de mise en route et rangement (min)","Prix d'achat de l'outil (€)", "Frais de révision annuelle (€)" ],
-        defaultValuesExtra: [4, 0.6, 120, 1.5, 1,  8, 30, 15,1280, 100],
+        defaultValuesExtra: [
+            2, //deplacement
+            .6, // cycle outil 
+            120, //t chgt bbobin
+            1.5, //t pose baguete
+            1, // t entre lien
+            8, //h travial
+            30,//pause
+            15,//mise en route
+            1280,//acaht
+            100//rev
+            ],
         tooltipsExtra: ["Temps de déplacement en seconde pour que l'opérateur marche d'un ceps à un autre à une allure de travail","Temps en secondes pour que le LEA30 fasse une attache (0.6s pour 11 tours, 0.4s pour 5 tours)","Temps total en secondes qu'il faut à l'opérateur pour changer de bobine (enlever le gilet, ouvrir le capot et changer la bobine, remettre le harnais...) : 30s pour un operateur experimenté, 120s pour un débutant","Temps en seconde qu'il faut pour plier la baguette de la vigne et la positionner dans la position souhaitée avant de l'attacher. Si plusieurs baguette indiqué (Guyot double arcure) indiquer le temps total passé à plier","Temps qu'il faut à l'opérateur pour déplacer son outil jusqu'au prochain emplacement d'attache","Temps total travaillé en une journée","Temps de pause cumulé sur la journée ","Temps de mise en route de l'opérateur en minutes pour : sortir l'outil, mettre le harnais, se rendre au premier cep","Prix public neuf HT : 1280€","La révision annuelle est obligatoire pour assurer le bon fonctionnement de l'outil, la garantie s'annulle si elle n'est pas faite (prix : 125e)",1,9],
         bobineOptions: ["Papier", "PVC", "Photo"] // Options spécifiques à "Bobine"
 
@@ -267,16 +284,20 @@ function calculateResults(inputs, extra_inputs) {
     temps_total_cycle_outil = (temps_cycle_outil*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_entre_liens = (temps_entre_liens*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_deplacement_entre_ceps = (temps_deplacement_entre_ceps*total_pieds/3600).toFixed(1);
+    temps_total_changement_bobine = (nombre_total_bobines*temps_changement_bobine/3600).toFixed(1);
 
     temps_total_pose_baguette_embarquee = (temps_pose_baguette_embarquee*total_pieds/3600).toFixed(1);
     temps_total_cycle_outil_embarquee = (temps_cycle_outil_embarquee*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_entre_liens_embarquee = (temps_entre_liens_embarquee*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_deplacement_entre_ceps_embarquee = (temps_deplacement_entre_ceps_embarquee*total_pieds/3600).toFixed(1);
+    temps_total_changement_bobine_embarque = (nombre_total_bobines_embarque*temps_changement_bobine_embarque/3600).toFixed(1);
+
 
     temps_total_pose_baguette_main = (temps_pose_baguette_main*total_pieds/3600).toFixed(1);
     temps_total_cycle_outil_main = (temps_cycle_outil_main*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_entre_liens_main = (temps_entre_liens_main*total_pieds*attaches_par_pieds/3600).toFixed(1);
     temps_total_deplacement_entre_ceps_main = (temps_deplacement_entre_ceps_main*total_pieds/3600).toFixed(1);
+    temps_total_changement_bobine_main = (nombre_total_bobines_main*temps_changement_bobine_main/3600).toFixed(1);
 
     //calcul a la journee
     temps_attache_journalier = (temps_travail_journalier-2*temps_mise_en_route)*nombre_outils; // temps jounralier consacré a attacher (facteur 2 = un rangement a midi)
@@ -370,11 +391,12 @@ function calculateResults(inputs, extra_inputs) {
     chart_data ={
         LEA30S:{
             cout_consommable :prix_consommable.toFixed(0),
+            cout_main_d_oeuvre :prix_main_d_oeuvre.toFixed(0),
             cout_total: cout_total.toFixed(0),
-            detail_consommable:[prix_total_bobines,frais_revision*nombre_outils],
+            detail_consommable:[prix_total_bobines.toFixed(0),frais_revision*nombre_outils],
             detail_consommable_label:["Prix total bobines","Frais de révisions"],
-            detail_main_d_oeuvre:[temps_total_pose_baguette,temps_total_cycle_outil,temps_total_entre_liens,temps_total_deplacement_entre_ceps,temps_total_pause,temps_total_mise_en_route],
-            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
+            detail_main_d_oeuvre:[temps_total_pose_baguette,temps_total_cycle_outil,temps_total_entre_liens,temps_total_deplacement_entre_ceps,temps_total_pause,temps_total_mise_en_route,temps_total_changement_bobine],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route","temps_total_changement_bobine"], 
             cout_cummulatif : [
             (prix_achat_outils+1*cout_total).toFixed(0),
             (prix_achat_outils+2*cout_total).toFixed(0),
@@ -389,11 +411,13 @@ function calculateResults(inputs, extra_inputs) {
         },
         EMBARQUE:{
             cout_consommable :prix_consommable_embarque.toFixed(0),
+            cout_main_d_oeuvre :prix_main_d_oeuvre_embarque.toFixed(0),
+
             cout_total: cout_total_embarque.toFixed(0),
-            detail_consommable:[prix_total_bobines_embarque,frais_revision_embarque*nombre_outils],
+            detail_consommable:[prix_total_bobines_embarque.toFixed(0),frais_revision_embarque*nombre_outils],
             detail_consommable_label:["Prix total bobines","Frais de révisions"],
-            detail_main_d_oeuvre:[temps_total_pose_baguette_embarquee, temps_total_cycle_outil_embarquee, temps_total_entre_liens_embarquee, temps_total_deplacement_entre_ceps_embarquee, temps_total_pause_embarquee, temps_total_mise_en_route_embarquee],
-            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
+            detail_main_d_oeuvre:[temps_total_pose_baguette_embarquee, temps_total_cycle_outil_embarquee, temps_total_entre_liens_embarquee, temps_total_deplacement_entre_ceps_embarquee, temps_total_pause_embarquee, temps_total_mise_en_route_embarquee,temps_total_changement_bobine_embarque],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route","temps_total_changement_bobine"], 
             cout_cummulatif : [
             (prix_achat_outils_embarque+1*cout_total_embarque).toFixed(0),
             (prix_achat_outils_embarque+2*cout_total_embarque).toFixed(0),
@@ -408,11 +432,12 @@ function calculateResults(inputs, extra_inputs) {
         },
         MAIN:{
             cout_consommable :prix_consommable_main.toFixed(0),
+            cout_main_d_oeuvre :prix_main_d_oeuvre_main.toFixed(0),
             cout_total: cout_total_main.toFixed(0),
-            detail_consommable:[prix_total_bobines_main,frais_revision_main*nombre_outils],
+            detail_consommable:[prix_total_bobines_main.toFixed(0),frais_revision_main*nombre_outils],
             detail_consommable_label:["Prix total bobines","Frais de révisions"],
-            detail_main_d_oeuvre:[temps_total_pose_baguette_main, temps_total_cycle_outil_main, temps_total_entre_liens_main, temps_total_deplacement_entre_ceps_main ,temps_total_pause_main, temps_total_mise_en_route_main],
-            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
+            detail_main_d_oeuvre:[temps_total_pose_baguette_main, temps_total_cycle_outil_main, temps_total_entre_liens_main, temps_total_deplacement_entre_ceps_main ,temps_total_pause_main, temps_total_mise_en_route_main,temps_total_changement_bobine_main],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route","temps_total_changement_bobine_main"], 
 
             cout_cummulatif : [
             (prix_achat_outils_main+1*cout_total_main).toFixed(0),
@@ -532,9 +557,10 @@ const solutionColors = [
 // Fonction pour afficher un graphique en barres empilées
 function displayResultsBarGraph(chart_data) {
     const ctx = document.getElementById('bar-chart').getContext('2d');
-
-    // Données fictives pour 3 solutions
-    const data = {
+    console.log(chart_data["LEA30S"].cout_consommable);
+    console.log(chart_data["LEA30S"].cout_main_d_oeuvre);
+    console.log(chart_data["LEA30S"].cout_total);
+    data = {
         labels: ['LEA30s', 'Outil à bobine embarquée', 'Attache manuelle'],
         datasets: [
             {
@@ -553,9 +579,9 @@ function displayResultsBarGraph(chart_data) {
             {
                 label: "Main d'oeuvre",
                 data: [
-                    chart_data["LEA30S"].cout_total,
-                    chart_data["EMBARQUE"].cout_total,
-                    chart_data["MAIN"].cout_total
+                    chart_data["LEA30S"].cout_main_d_oeuvre,
+                    chart_data["EMBARQUE"].cout_main_d_oeuvre,
+                    chart_data["MAIN"].cout_main_d_oeuvre
                 ],
                 backgroundColor: [
                     solutionColors[0].backgroundColorLight,
@@ -566,7 +592,7 @@ function displayResultsBarGraph(chart_data) {
         ]
     };
 
-    const options = {
+    options = {
         plugins: {
             title: {
                 display: true,
@@ -578,13 +604,13 @@ function displayResultsBarGraph(chart_data) {
             tooltip: {
                 mode: 'index',
                 intersect: false,
-                callbacks: {
-                    label: function (tooltipItem) {
-                        const label = tooltipItem.label || '';
-                        const value = tooltipItem.raw; // Accède à la valeur brute
-                        return `${label}: ${value} €`; // Ajoute l'unité ici
-                    }
-                }
+                // callbacks: {
+                //     label: function (tooltipItem) {
+                //         const label = tooltipItem.label || '';
+                //         const value = tooltipItem.raw; // Accède à la valeur brute
+                //         return `${label}: ${value} €`; // Ajoute l'unité ici
+                //     }
+                // }
             }
         },
         responsive: true,
@@ -609,15 +635,19 @@ function displayResultsBarGraph(chart_data) {
         options
     });
 
-    // Fonction pour gérer la visibilité des solutions
-    function toggleSolution(index, visible) {
-        bar_graph.data.datasets.forEach(dataset => {
-            dataset.data[index] = visible
-                ? chart_data[Object.keys(chart_data)[index]].cout_total
-                : 0; // Masque ou réaffiche la solution
-        });
-        bar_graph.update(); // Met à jour le graphique
-    }
+// Fonction pour gérer la visibilité des solutions
+function toggleSolution(index, visible) {
+    // Met à jour le dataset correspondant uniquement
+    bar_graph.data.datasets[0].data[index] = visible
+        ? chart_data[Object.keys(chart_data)[index]].cout_consommable
+        : 0; // Met à jour uniquement la valeur "Consommable"
+
+    bar_graph.data.datasets[1].data[index] = visible
+        ? chart_data[Object.keys(chart_data)[index]].cout_main_d_oeuvre
+        : 0; // Met à jour uniquement la valeur "Main d'œuvre"
+
+    bar_graph.update(); // Met à jour le graphique
+}
 
     // Initialisation des solutions avec l'état des checkboxes
     const solutions = [
