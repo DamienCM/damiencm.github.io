@@ -59,18 +59,24 @@
             </div>
 
             <div id="error-message" class="text-danger mb-3"></div>
+            <div id="chart-options" class="mb-3">
+                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30    </label>
+                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée    </label>
+                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle    </label>
+            </div>
             <button type="button" id="calculate-button" class="btn btn-primary" onclick="launchCalculation()">Lancer le
-                calcul</button>
+                calcul
+            </button>
         </form>
 
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>
             <div id="results-summary"></div>
             <div>
-                <canvas id="bar-chart" width="400" height="200"></canvas>
+                <canvas id="bar-chart" width="100%" height="50"></canvas>
             </div>
             <div>
-                <canvas id="curve-chart" width="400" height="200"></canvas>
+                <canvas id="curve-chart" width="100%" height="50"></canvas>
             </div>
 
             <div class="mt-3">

@@ -6,10 +6,16 @@ const bobines= {
         Taille : "1x40",
         Prix : 11.80,
         Prix_embarque: 64./60.,
+        Prix_main:3.15,
         Nombre_lien_bobine : 3200.,
         Nombre_lien_bobine_embarque : 450.,
-        Longueur : "x",
+        Nombre_lien_bobine_main : 1500.,
+        Longueur : 500.,
+        Longueur_embarque : 60.,
+        Longueur_main : 230.,
         Biodegradable : "Oui",
+        ref_embarque : "https://store.pellenc.com/attacheur-vigne-electrique-batterie/607-petites-bobines-liens-inox-fixion-2-carton-60-bobines.html",
+        ref_main : "https://www.e-viti.com/comfr/ficelle-a-lier-la-vigne-ligapal.html"
     },
     B : {
         Type : "Photo",
@@ -208,7 +214,8 @@ function calculateResults(inputs, extra_inputs) {
     prix_outil =                        parseFloat(extra_inputs[8]); 
     frais_revision =                    parseFloat(extra_inputs[9]); 
     
-    frais_revision_embarque = 100;
+    frais_revision_embarque = 100.;
+    frais_revision_main = 0.;
     
     
     // Calculs exhaustifs du consommable
@@ -217,91 +224,110 @@ function calculateResults(inputs, extra_inputs) {
     total_longueur_fil = 157e-3 * total_attaches;
     nombre_total_bobines = total_attaches/bobines[type_de_bobine].Nombre_lien_bobine;
     nombre_total_bobines_embarque = total_attaches/bobines[type_de_bobine].Nombre_lien_bobine_embarque;
+    nombre_total_bobines_main = total_attaches/bobines[type_de_bobine].Nombre_lien_bobine_main
     prix_par_bobine = bobines[type_de_bobine].Prix;
     prix_par_bobine_embarque = bobines[type_de_bobine].Prix_embarque;
+    prix_par_bobine_main = bobines[type_de_bobine].Prix_main;
+
     prix_total_bobines = prix_par_bobine * nombre_total_bobines;
     prix_total_bobines_embarque = prix_par_bobine_embarque * nombre_total_bobines_embarque;
+    prix_total_bobines_main = prix_par_bobine_main * nombre_total_bobines_main;
     prix_consommable = prix_total_bobines + frais_revision*nombre_outils;
     prix_consommable_embarque = prix_total_bobines_embarque + frais_revision_embarque*nombre_outils;
-    
-    //embarque const
-    temps_changement_bobine_embarque = 120;//s
-    temps_cycle_outil_embarque=1;//s
-    prix_outil_embarque = 900;//e
+    prix_consommable_main = prix_total_bobines_main + frais_revision_main*nombre_outils;
+
+    //embarque main const
+    temps_changement_bobine_embarque = 120.;//s
+    temps_changement_bobine_main = 30.;//s
+    temps_cycle_outil_embarque=1.;//s
+    temps_cycle_outil_main=5.;//s
+    prix_outil_embarque = 900.;//e
+    prix_outil_main = 0;//e
     temps_entre_liens_embarque=temps_entre_liens*1.0;
+    temps_entre_liens_main=2.;
     // Calculs du exhaustifs du temps de travail
     // on calcule le nombre d'attache possible a la journee
     temps_par_cep = temps_pose_baguette + (temps_entre_liens+temps_cycle_outil)*attaches_par_pieds+temps_deplacement_entre_ceps;
     temps_par_cep_corrige = temps_par_cep + temps_changement_bobine * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine; 
     temps_par_cep_embarque = temps_pose_baguette + (temps_entre_liens_embarque+temps_cycle_outil_embarque)*attaches_par_pieds+temps_deplacement_entre_ceps;
     temps_par_cep_corrige_embarque = temps_par_cep_embarque + temps_changement_bobine_embarque * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine_embarque; 
-    
+    temps_par_cep_main = temps_pose_baguette + (temps_entre_liens_main+temps_cycle_outil_main)*attaches_par_pieds+temps_deplacement_entre_ceps;
+    temps_par_cep_corrige_main = temps_par_cep_main + temps_changement_bobine_main * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine_main; 
+
     temps_attache_journalier = (temps_travail_journalier-2*temps_mise_en_route)*nombre_outils; // temps jounralier consacré a attacher (facteur 2 = un rangement a midi)
     ceps_par_jour = temps_attache_journalier/temps_par_cep_corrige;
     ceps_par_jour_embarque = temps_attache_journalier/temps_par_cep_corrige_embarque;
+    ceps_par_jour_main = temps_attache_journalier/temps_par_cep_corrige_main;
 
     attaches_par_jour = ceps_par_jour * attaches_par_pieds;
     attaches_par_jour_embarque = ceps_par_jour_embarque * attaches_par_pieds;
+    attaches_par_jour_main = ceps_par_jour_main * attaches_par_pieds;
     bobines_par_jour = attaches_par_jour /bobines[type_de_bobine].Nombre_lien_bobine;
     bobines_par_jour_embarque = attaches_par_jour /bobines[type_de_bobine].Nombre_lien_bobine_embarque;
+    bobines_par_jour_main = attaches_par_jour /bobines[type_de_bobine].Nombre_lien_bobine_main;
     nombre_de_jours_parcelle = total_pieds/ceps_par_jour;
     nombre_de_jours_parcelle_embarque = total_pieds/ceps_par_jour_embarque;
+    nombre_de_jours_parcelle_main = total_pieds/ceps_par_jour_main;
     prix_main_d_oeuvre = nombre_de_jours_parcelle * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
     prix_main_d_oeuvre_embarque = nombre_de_jours_parcelle_embarque * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
+    prix_main_d_oeuvre_main = nombre_de_jours_parcelle_main * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
+
 
     prix_achat_outils = nombre_outils*prix_outil;
     prix_achat_outils_embarque = nombre_outils*prix_outil_embarque;
+    prix_achat_outils_main = nombre_outils*prix_outil_main;
 
     cout_total = prix_consommable + prix_main_d_oeuvre;
     cout_total_embarque = prix_consommable_embarque + prix_main_d_oeuvre_embarque;
+    cout_total_main = prix_consommable_main + prix_main_d_oeuvre_main;
 
 
-    results_lea = {
+    results_lea = {         //Value                                     //Display                                       // Units             //Chiffres significatifs
         ____ :["","_ Entrées",""],
-        superficie:[superficie,"superficie","ha"],
-        pieds_par_ha:[pieds_par_ha,"pieds_par_ha","pieds/ha"],
-        attaches_par_pieds:[attaches_par_pieds,"attaches_par_pieds","attaches/pied"],
-        couts_horaire_salarie:[couts_horaire_salarie,"couts_horaire_salarie","euros/heure"],
-        couts_seconde_salarie:[couts_seconde_salarie,"couts_seconde_salarie","euros/seconde"],
-        nombre_outils:[nombre_outils,"nombre_outils","outils"],
-        type_de_bobine:[type_de_bobine,"type_de_bobine","type"],
-        temps_deplacement_entre_ceps :[temps_deplacement_entre_ceps,"temps_deplacement_entre_ceps","seconde"],
-        temps_cycle_outil : [temps_cycle_outil,"temps_cycle_outil","seconde"],
-        temps_changement_bobine :[temps_changement_bobine,"temps_changement_bobine","seconde"],
-        temps_pose_baguette :[temps_pose_baguette,"temps_pose_baguette","seconde"],
-        temps_entre_liens :[temps_entre_liens,"temps_entre_liens","seconde"],
-        temps_travail_journalier :[temps_travail_journalier,"temps_travail_journalier","secondes"],
-        temps_pause_journalier :[temps_pause_journalier,"temps_pause_journalier","secondes"],
-        temps_mise_en_route :[temps_mise_en_route,"temps_mise_en_route","secondes"],
-        prix_outil :[prix_outil,"prix_outil","euros"],
-        frais_revision :[frais_revision,"frais_revision","euros"],
+        superficie:[superficie,                                         "superficie",                                   "ha",               1],
+        pieds_par_ha:[pieds_par_ha,                                     "pieds_par_ha",                                 "pieds/ha",         0],
+        attaches_par_pieds:[attaches_par_pieds,                         "attaches_par_pieds",                           "attaches/pied",    0],
+        couts_horaire_salarie:[couts_horaire_salarie,                   "couts_horaire_salarie",                        "euros/heure",      0],
+        couts_seconde_salarie:[couts_seconde_salarie,                   "couts_seconde_salarie",                        "euros/seconde",    3],
+        nombre_outils:[nombre_outils,                                   "nombre_outils",                                "outils",           0],
+        type_de_bobine:[type_de_bobine,                                 "type_de_bobine",                               "type",             0],
+        temps_deplacement_entre_ceps :[temps_deplacement_entre_ceps,    "temps_deplacement_entre_ceps",                 "seconde",          1],
+        temps_cycle_outil : [temps_cycle_outil,                         "temps_cycle_outil",                            "seconde",          1],
+        temps_changement_bobine :[temps_changement_bobine,              "temps_changement_bobine",                      "seconde",          0],
+        temps_pose_baguette :[temps_pose_baguette,                      "temps_pose_baguette",                          "seconde",          1],
+        temps_entre_liens :[temps_entre_liens,                          "temps_entre_liens",                            "seconde",          1],
+        temps_travail_journalier :[temps_travail_journalier,            "temps_travail_journalier",                     "secondes",         0],
+        temps_pause_journalier :[temps_pause_journalier,                "temps_pause_journalier",                       "secondes",         0],
+        temps_mise_en_route :[temps_mise_en_route,                      "temps_mise_en_route",                          "secondes",         0],
+        prix_outil :[prix_outil,                                        "prix_outil",                                   "euros",            0],
+        frais_revision :[frais_revision,                                "frais_revision",                               "euros",            0],
         _ : ["","_Consommable",""],
         // Calculs exhaustifs du consommable
-        total_pieds:[total_pieds,"total_pieds","pieds"],
-        total_attaches:[total_attaches,"total_attaches","attaches"],
-        total_longueur_fil:[total_longueur_fil,"total_longueur_fil","metres"],
-        nombre_total_bobines:[nombre_total_bobines,"nombre_total_bobines","bobines"],
-        prix_par_bobine:[prix_par_bobine,"prix_par_bobine","euros/bobine"],
-        prix_total_bobines:[prix_total_bobines,"prix_total_bobines","euros"],
-        prix_consommable:[prix_consommable,"prix_consommable","euros"],
+        total_pieds:[total_pieds,                                       "total_pieds",                                  "pieds",            0],
+        total_attaches:[total_attaches,                                 "total_attaches",                               "attaches",         0],
+        total_longueur_fil:[total_longueur_fil,                         "total_longueur_fil",                           "metres",           0],
+        nombre_total_bobines:[nombre_total_bobines,                     "nombre_total_bobines",                         "bobines",          0],
+        prix_par_bobine:[prix_par_bobine,                               "prix_par_bobine",                              "euros/bobine",     2],
+        prix_total_bobines:[prix_total_bobines,                         "prix_total_bobines",                           "euros",            2],
+        prix_consommable:[prix_consommable,                             "prix_consommable",                             "euros",            2],
         // Main d'oeuvre
         __ : ["","_Main d'oeuvre",""],
 
-        temps_par_cep:[temps_par_cep,"temps_par_cep","secondes"],
-        temps_par_cep_corrige:[temps_par_cep_corrige,"temps_par_cep_corrige","secondes"],
-        temps_attache_journalier:[temps_attache_journalier,"temps_attache_journalier (pour N outils)","secondes"],
-        ceps_par_jour:[ceps_par_jour,"ceps_par_jour","ceps"],
-        attaches_par_jour:[attaches_par_jour,"attaches_par_jour","attaches/jour"],
-        bobines_par_jour:[bobines_par_jour,"bobines_par_jour","bobines"],
+        temps_par_cep:[temps_par_cep,                                   "temps_par_cep",                                "secondes",         0],
+        temps_par_cep_corrige:[temps_par_cep_corrige,                   "temps_par_cep_corrige",                        "secondes",         0],
+        temps_attache_journalier:[temps_attache_journalier,             "temps_attache_journalier (pour N outils)",     "secondes",         0],
+        ceps_par_jour:[ceps_par_jour,                                   "ceps_par_jour",                                "ceps",             0],
+        attaches_par_jour:[attaches_par_jour,                           "attaches_par_jour",                            "attaches/jour",    0],
+        bobines_par_jour:[bobines_par_jour,                             "bobines_par_jour",                             "bobines",          1],
         // nombre_de_jours_parcelle:[nombre_de_jours_parcelle,"nombre_de_jours_parcelle","jours"],
-        prix_main_d_oeuvre:[prix_main_d_oeuvre,"prix_main_d_oeuvre (bobines + revisions)","euros"],
-        nombre_de_jours_parcelle:[nombre_de_jours_parcelle,"nombre_de_jours_parcelle","jours"],
-        ___ : ["","_Total LEA30s",""],
-        prix_achat_outils : [prix_achat_outils,"prix_achat_outils (investissement)", "euros"],
-        prix_consommable_bis:[prix_consommable,"prix_consommable","euros"],
-        prix_main_d_oeuvre_bis:[prix_main_d_oeuvre,"prix_main_d_oeuvre (bobines + revisions)","euros"],
-        nombre_de_jours_parcelle_bis:[nombre_de_jours_parcelle,"nombre_de_jours_parcelle","jours"],
-        cout_total:[cout_total,"cout_total (hors investissement outils)","euros"]
+        prix_main_d_oeuvre:[prix_main_d_oeuvre,                         "prix_main_d_oeuvre (bobines + revisions)",     "euros",            2],
+        nombre_de_jours_parcelle:[nombre_de_jours_parcelle,             "nombre_de_jours_parcelle",                     "jours",            0],
+        ___ : ["","_Total LEA30s",""],          
+        prix_achat_outils : [prix_achat_outils,                         "prix_achat_outils (investissement)",           "euros",            2],
+        prix_consommable_bis:[prix_consommable,                         "prix_consommable",                             "euros",            2],
+        prix_main_d_oeuvre_bis:[prix_main_d_oeuvre,                     "prix_main_d_oeuvre (bobines + revisions)",     "euros",            2],
+        nombre_de_jours_parcelle_bis:[nombre_de_jours_parcelle,         "nombre_de_jours_parcelle",                     "jours",            1],
+        cout_total:[cout_total,                                         "cout_total (hors investissement outils)",      "euros",            2]
         //
     }
     
@@ -310,30 +336,45 @@ function calculateResults(inputs, extra_inputs) {
             cout_consommable :prix_consommable,
             cout_total: cout_total,
             cout_cummulatif : [
-                prix_achat_outils+1*cout_total,
-                prix_achat_outils+2*cout_total,
-                prix_achat_outils+3*cout_total,
-                prix_achat_outils+4*cout_total,
-                prix_achat_outils+5*cout_total,
-                prix_achat_outils+6*cout_total,
-                prix_achat_outils+7*cout_total,
-                prix_achat_outils+8*cout_total,
-                prix_achat_outils+9*cout_total
+            (prix_achat_outils+1*cout_total).toFixed(0),
+            (prix_achat_outils+2*cout_total).toFixed(0),
+            (prix_achat_outils+3*cout_total).toFixed(0),
+            (prix_achat_outils+4*cout_total).toFixed(0),
+            (prix_achat_outils+5*cout_total).toFixed(0),
+            (prix_achat_outils+6*cout_total).toFixed(0),
+            (prix_achat_outils+7*cout_total).toFixed(0),
+            (prix_achat_outils+8*cout_total).toFixed(0),
+            (prix_achat_outils+9*cout_total.toFixed(0))
             ]
         },
         EMBARQUE:{
             cout_consommable :prix_consommable_embarque,
             cout_total: cout_total_embarque,
             cout_cummulatif : [
-                prix_achat_outils_embarque+1*cout_total_embarque,
-                prix_achat_outils_embarque+2*cout_total_embarque,
-                prix_achat_outils_embarque+3*cout_total_embarque,
-                prix_achat_outils_embarque+4*cout_total_embarque,
-                prix_achat_outils_embarque+5*cout_total_embarque,
-                prix_achat_outils_embarque+6*cout_total_embarque,
-                prix_achat_outils_embarque+7*cout_total_embarque,
-                prix_achat_outils_embarque+8*cout_total_embarque,
-                prix_achat_outils_embarque+9*cout_total_embarque,
+            (prix_achat_outils_embarque+1*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+2*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+3*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+4*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+5*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+6*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+7*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+8*cout_total_embarque).toFixed(0),
+            (prix_achat_outils_embarque+9*cout_total_embarque).toFixed(0),
+            ],
+        },
+        MAIN:{
+            cout_consommable :prix_consommable_main,
+            cout_total: cout_total_main,
+            cout_cummulatif : [
+            (prix_achat_outils_main+1*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+2*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+3*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+4*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+5*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+6*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+7*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+8*cout_total_main).toFixed(0),
+            (prix_achat_outils_main+9*cout_total_main).toFixed(0),
             ],
         }
     }
@@ -376,7 +417,7 @@ function displayResultsRaw(results) {
             if (isNaN(value[0])) {
                 resultElement.innerHTML = `<strong>${value[1]}:</strong> ${value[0]} ${value[2]}`;
             } else {
-                resultElement.innerHTML = `<strong>${value[1]}:</strong> ${Number(value[0]).toFixed(3)} ${value[2]}`;
+                resultElement.innerHTML = `<strong>${value[1]}:</strong> ${Number(value[0]).toFixed(value[3])} ${value[2]}`;
             }
             currentSection.appendChild(resultElement);
         }
@@ -415,9 +456,6 @@ function displayResultsRaw(results) {
     // console.log("Chart data:", chart_data);
 }
 
-
-
-
 // Palette de couleurs pour les solutions
 const solutionColors = [
     {
@@ -447,16 +485,24 @@ function displayResultsBarGraph(chart_data) {
         datasets: [
             {
                 label: 'Consommable',
-                data: [chart_data["LEA30S"].cout_consommable, chart_data["EMBARQUE"].cout_consommable], // Coûts consommables
+                data: [
+                    chart_data["LEA30S"].cout_consommable,
+                    chart_data["EMBARQUE"].cout_consommable,
+                    chart_data["MAIN"].cout_consommable
+                ],
                 backgroundColor: [
                     solutionColors[0].backgroundColor,
                     solutionColors[1].backgroundColor,
-                    // solutionColors[2].backgroundColor
+                    solutionColors[2].backgroundColor
                 ]
             },
             {
-                label: 'Main d\'œuvre',
-                data: [chart_data["LEA30S"].cout_total, chart_data["EMBARQUE"].cout_total], // Coûts main d'œuvre
+                label: "Main d'oeuvre",
+                data: [
+                    chart_data["LEA30S"].cout_total,
+                    chart_data["EMBARQUE"].cout_total,
+                    chart_data["MAIN"].cout_total
+                ],
                 backgroundColor: [
                     solutionColors[0].backgroundColorLight,
                     solutionColors[1].backgroundColorLight,
@@ -470,7 +516,7 @@ function displayResultsBarGraph(chart_data) {
         plugins: {
             title: {
                 display: true,
-                text: 'Coûts annuel par solution (consommables et main d\'œuvre)'
+                text: "Coûts annuel par solution (consommables et main d'oeuvre)"
             },
             tooltip: {
                 mode: 'index',
@@ -492,11 +538,54 @@ function displayResultsBarGraph(chart_data) {
         }
     };
 
-    new Chart(ctx, {
+    // Création du graphique
+    const bar_graph = new Chart(ctx, {
         type: 'bar',
         data,
         options
     });
+
+    // Fonction pour gérer la visibilité des solutions
+    function toggleSolution(index, visible) {
+        bar_graph.data.datasets.forEach(dataset => {
+            dataset.data[index] = visible
+                ? chart_data[Object.keys(chart_data)[index]].cout_total
+                : 0; // Masque ou réaffiche la solution
+        });
+        bar_graph.update(); // Met à jour le graphique
+    }
+
+    // Gestion des checkboxes pour chaque solution
+    document.getElementById('lea30-checkbox').addEventListener('change', function () {
+        toggleSolution(0, this.checked); // Index 0 pour LEA30S
+    });
+
+    document.getElementById('bobine-embarquee-checkbox').addEventListener('change', function () {
+        toggleSolution(1, this.checked); // Index 1 pour Outil à bobine embarquée
+    });
+
+    document.getElementById('manuelle-checkbox').addEventListener('change', function () {
+        toggleSolution(2, this.checked); // Index 2 pour Attache manuelle
+    });
+
+    return bar_graph;
+}
+
+
+function getMinValueFromData(datasets) {
+    let minValue = Infinity;
+    datasets.forEach(dataset => {
+        dataset.data.forEach(value => {
+            // console.log(Number(value),Number(minValue));
+            // console.log(typeof(value),typeof(minValue));
+            if (Number(value) < Number(minValue)) {
+                // console.log("changed");
+                minValue=value;
+            }
+        });
+    });
+    // console.log("min",minValue);
+    return minValue;
 }
 
 // Fonction pour afficher un graphique en courbes
@@ -512,14 +601,21 @@ function displayResultsCurveGraph(chart_data) {
                 data: chart_data["LEA30S"].cout_cummulatif, // Coût cumulatif
                 borderColor: solutionColors[0].borderColor,
                 backgroundColor: solutionColors[0].backgroundColorLight,
-                fill: true
+                fill: false
             },
             {
                 label: 'Outil à bobine embarquée',
                 data: chart_data["EMBARQUE"].cout_cummulatif,
                 borderColor: solutionColors[1].borderColor,
                 backgroundColor: solutionColors[1].backgroundColorLight,
-                fill: true
+                fill: false
+            },
+            {
+                label: 'Attache manuelle',
+                data: chart_data["MAIN"].cout_cummulatif,
+                borderColor: solutionColors[2].borderColor,
+                backgroundColor: solutionColors[2].backgroundColorLight,
+                fill: false
             },
             // {
             //     label: 'Attache manuelle',
@@ -530,40 +626,59 @@ function displayResultsCurveGraph(chart_data) {
             // }
         ]
     };
-
     const options = {
         plugins: {
             title: {
                 display: true,
-                text: 'Coût cumulatif par solution selon les années'
-            },
-            tooltip: {
-                mode: 'index',
-                intersect: false
+                text: 'Coûts par solution'
             }
         },
         responsive: true,
+        // maintainAspectRatio: false,
         scales: {
             x: {
+                stacked: false,
                 title: {
                     display: true,
-                    text: 'Année'
+                    text: 'Solutions'
                 }
             },
             y: {
+                stacked: false,
+                min: getMinValueFromData(data.datasets)-5000, // Fixe la limite inférieure pour débogage
+                ticks: {
+                    // stepSize: 100
+                },
                 title: {
                     display: true,
-                    text: 'Coût cumulatif (€)'
+                    text: 'Coût (€)'
                 }
             }
         }
     };
 
-    new Chart(ctx, {
+    curve_chart = new Chart(ctx, {
         type: 'line',
         data,
         options
     });
+
+    // Gestion de la visibilité des courbes
+    document.getElementById('lea30-checkbox').addEventListener('change', function () {
+        curve_chart.data.datasets[0].hidden = !this.checked;
+        curve_chart.update();
+    });
+
+    document.getElementById('bobine-embarquee-checkbox').addEventListener('change', function () {
+        curve_chart.data.datasets[1].hidden = !this.checked;
+        curve_chart.update();
+    });
+
+    document.getElementById('manuelle-checkbox').addEventListener('change', function () {
+        curve_chart.data.datasets[2].hidden = !this.checked;
+        curve_chart.update();
+    });
+
 }
 
 
