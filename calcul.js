@@ -82,14 +82,14 @@ function changeLanguage() {
     document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
     document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
 
-    const extraOptions = document.getElementById('extra-options');
-    if (extraOptions.style.display === 'none') {
-        document.getElementById("show-more-options").textContent = dictionary[language].moreOptions;
-    }
-    else {
-        document.getElementById("show-more-options").textContent = dictionary[language].lessOptions;
+    // const extraOptions = document.getElementById('extra-options');
+    // if (extraOptions.style.display === 'none') {
+    //     document.getElementById("show-more-options").textContent = dictionary[language].moreOptions;
+    // }
+    // else {
+    //     document.getElementById("show-more-options").textContent = dictionary[language].lessOptions;
 
-    }
+    // }
 
     loadInputFields();
     loadExtraOptions();
@@ -170,7 +170,6 @@ function loadExtraOptions() {
     });
 }
 
-
 // Lancer le calcul
 function launchCalculation() {
     if (validateInputs()) {
@@ -181,6 +180,10 @@ function launchCalculation() {
         displayResultsRaw(results);
         displayResultsBarGraph(chart_data);
         displayResultsCurveGraph(chart_data);
+        
+        // Appel de la fonction
+        displayPieCharts(chart_data);
+        
         // saveResultsAsJson(inputs, results);
     }
     else {
@@ -239,26 +242,49 @@ function calculateResults(inputs, extra_inputs) {
     //embarque main const
     temps_changement_bobine_embarque = 120.;//s
     temps_changement_bobine_main = 30.;//s
-    temps_cycle_outil_embarque=1.;//s
+    temps_cycle_outil_embarquee=1.;//s
     temps_cycle_outil_main=5.;//s
+    temps_pose_baguette_embarquee = temps_pose_baguette*1.0;
+    temps_pose_baguette_main = temps_pose_baguette*1.0;
+    temps_deplacement_entre_ceps_embarquee = temps_deplacement_entre_ceps*1.0;
+    temps_deplacement_entre_ceps_main = temps_deplacement_entre_ceps*1.0;
+
     prix_outil_embarque = 900.;//e
     prix_outil_main = 0;//e
-    temps_entre_liens_embarque=temps_entre_liens*1.0;
+    temps_entre_liens_embarquee=temps_entre_liens*1.0;
     temps_entre_liens_main=2.;
     // Calculs du exhaustifs du temps de travail
     // on calcule le nombre d'attache possible a la journee
     temps_par_cep = temps_pose_baguette + (temps_entre_liens+temps_cycle_outil)*attaches_par_pieds+temps_deplacement_entre_ceps;
     temps_par_cep_corrige = temps_par_cep + temps_changement_bobine * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine; 
-    temps_par_cep_embarque = temps_pose_baguette + (temps_entre_liens_embarque+temps_cycle_outil_embarque)*attaches_par_pieds+temps_deplacement_entre_ceps;
+    temps_par_cep_embarque = temps_pose_baguette_embarquee + (temps_entre_liens_embarquee+temps_cycle_outil_embarquee)*attaches_par_pieds+temps_deplacement_entre_ceps_embarquee;
     temps_par_cep_corrige_embarque = temps_par_cep_embarque + temps_changement_bobine_embarque * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine_embarque; 
-    temps_par_cep_main = temps_pose_baguette + (temps_entre_liens_main+temps_cycle_outil_main)*attaches_par_pieds+temps_deplacement_entre_ceps;
+    temps_par_cep_main = temps_pose_baguette_main + (temps_entre_liens_main+temps_cycle_outil_main)*attaches_par_pieds+temps_deplacement_entre_ceps_main;
     temps_par_cep_corrige_main = temps_par_cep_main + temps_changement_bobine_main * attaches_par_pieds/bobines[type_de_bobine].Nombre_lien_bobine_main; 
 
+    //Temps totaux pour pie-chart
+    temps_total_pose_baguette = (temps_pose_baguette*total_pieds/3600).toFixed(1);
+    temps_total_cycle_outil = (temps_cycle_outil*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_entre_liens = (temps_entre_liens*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_deplacement_entre_ceps = (temps_deplacement_entre_ceps*total_pieds/3600).toFixed(1);
+
+    temps_total_pose_baguette_embarquee = (temps_pose_baguette_embarquee*total_pieds/3600).toFixed(1);
+    temps_total_cycle_outil_embarquee = (temps_cycle_outil_embarquee*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_entre_liens_embarquee = (temps_entre_liens_embarquee*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_deplacement_entre_ceps_embarquee = (temps_deplacement_entre_ceps_embarquee*total_pieds/3600).toFixed(1);
+
+    temps_total_pose_baguette_main = (temps_pose_baguette_main*total_pieds/3600).toFixed(1);
+    temps_total_cycle_outil_main = (temps_cycle_outil_main*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_entre_liens_main = (temps_entre_liens_main*total_pieds*attaches_par_pieds/3600).toFixed(1);
+    temps_total_deplacement_entre_ceps_main = (temps_deplacement_entre_ceps_main*total_pieds/3600).toFixed(1);
+
+    //calcul a la journee
     temps_attache_journalier = (temps_travail_journalier-2*temps_mise_en_route)*nombre_outils; // temps jounralier consacré a attacher (facteur 2 = un rangement a midi)
     ceps_par_jour = temps_attache_journalier/temps_par_cep_corrige;
     ceps_par_jour_embarque = temps_attache_journalier/temps_par_cep_corrige_embarque;
     ceps_par_jour_main = temps_attache_journalier/temps_par_cep_corrige_main;
 
+    //calcul nbre de jours
     attaches_par_jour = ceps_par_jour * attaches_par_pieds;
     attaches_par_jour_embarque = ceps_par_jour_embarque * attaches_par_pieds;
     attaches_par_jour_main = ceps_par_jour_main * attaches_par_pieds;
@@ -266,11 +292,21 @@ function calculateResults(inputs, extra_inputs) {
     bobines_par_jour_embarque = attaches_par_jour /bobines[type_de_bobine].Nombre_lien_bobine_embarque;
     bobines_par_jour_main = attaches_par_jour /bobines[type_de_bobine].Nombre_lien_bobine_main;
     nombre_de_jours_parcelle = total_pieds/ceps_par_jour;
-    nombre_de_jours_parcelle_embarque = total_pieds/ceps_par_jour_embarque;
+    nombre_de_jours_parcelle_embarquee = total_pieds/ceps_par_jour_embarque;
     nombre_de_jours_parcelle_main = total_pieds/ceps_par_jour_main;
     prix_main_d_oeuvre = nombre_de_jours_parcelle * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
-    prix_main_d_oeuvre_embarque = nombre_de_jours_parcelle_embarque * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
+    prix_main_d_oeuvre_embarque = nombre_de_jours_parcelle_embarquee * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
     prix_main_d_oeuvre_main = nombre_de_jours_parcelle_main * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
+
+    //pie-chart
+    temps_total_pause = (nombre_de_jours_parcelle*nombre_outils*temps_pause_journalier/3600).toFixed(1);
+    temps_total_mise_en_route = (2*nombre_de_jours_parcelle*nombre_outils*temps_mise_en_route/3600).toFixed(1);
+
+    temps_total_pause_embarquee = (nombre_de_jours_parcelle_embarquee*nombre_outils*temps_pause_journalier/3600).toFixed(1);
+    temps_total_mise_en_route_embarquee = (2*nombre_de_jours_parcelle_embarquee*nombre_outils*temps_mise_en_route/3600).toFixed(1);
+
+    temps_total_pause_main = (nombre_de_jours_parcelle_main*nombre_outils*temps_pause_journalier/3600).toFixed(1);
+    temps_total_mise_en_route_main = (2*nombre_de_jours_parcelle_main*nombre_outils*temps_mise_en_route/3600).toFixed(1);
 
 
     prix_achat_outils = nombre_outils*prix_outil;
@@ -333,8 +369,12 @@ function calculateResults(inputs, extra_inputs) {
     
     chart_data ={
         LEA30S:{
-            cout_consommable :prix_consommable,
-            cout_total: cout_total,
+            cout_consommable :prix_consommable.toFixed(0),
+            cout_total: cout_total.toFixed(0),
+            detail_consommable:[prix_total_bobines,frais_revision*nombre_outils],
+            detail_consommable_label:["Prix total bobines","Frais de révisions"],
+            detail_main_d_oeuvre:[temps_total_pose_baguette,temps_total_cycle_outil,temps_total_entre_liens,temps_total_deplacement_entre_ceps,temps_total_pause,temps_total_mise_en_route],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
             cout_cummulatif : [
             (prix_achat_outils+1*cout_total).toFixed(0),
             (prix_achat_outils+2*cout_total).toFixed(0),
@@ -348,8 +388,12 @@ function calculateResults(inputs, extra_inputs) {
             ]
         },
         EMBARQUE:{
-            cout_consommable :prix_consommable_embarque,
-            cout_total: cout_total_embarque,
+            cout_consommable :prix_consommable_embarque.toFixed(0),
+            cout_total: cout_total_embarque.toFixed(0),
+            detail_consommable:[prix_total_bobines_embarque,frais_revision_embarque*nombre_outils],
+            detail_consommable_label:["Prix total bobines","Frais de révisions"],
+            detail_main_d_oeuvre:[temps_total_pose_baguette_embarquee, temps_total_cycle_outil_embarquee, temps_total_entre_liens_embarquee, temps_total_deplacement_entre_ceps_embarquee, temps_total_pause_embarquee, temps_total_mise_en_route_embarquee],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
             cout_cummulatif : [
             (prix_achat_outils_embarque+1*cout_total_embarque).toFixed(0),
             (prix_achat_outils_embarque+2*cout_total_embarque).toFixed(0),
@@ -363,8 +407,13 @@ function calculateResults(inputs, extra_inputs) {
             ],
         },
         MAIN:{
-            cout_consommable :prix_consommable_main,
-            cout_total: cout_total_main,
+            cout_consommable :prix_consommable_main.toFixed(0),
+            cout_total: cout_total_main.toFixed(0),
+            detail_consommable:[prix_total_bobines_main,frais_revision_main*nombre_outils],
+            detail_consommable_label:["Prix total bobines","Frais de révisions"],
+            detail_main_d_oeuvre:[temps_total_pose_baguette_main, temps_total_cycle_outil_main, temps_total_entre_liens_main, temps_total_deplacement_entre_ceps_main ,temps_total_pause_main, temps_total_mise_en_route_main],
+            detail_main_d_oeuvre_label:["temps_total_pose_baguette","temps_total_cycle_outil","temps_total_entre_liens","temps_total_deplacement_entre_ceps","temps_total_pause","temps_total_mise_en_route"], 
+
             cout_cummulatif : [
             (prix_achat_outils_main+1*cout_total_main).toFixed(0),
             (prix_achat_outils_main+2*cout_total_main).toFixed(0),
@@ -403,8 +452,7 @@ function displayResultsRaw(results) {
 
             // Ajoute une classe pour identifier les sections non "Total"
             if (sectionTitle !== "Total LEA30s") {
-                currentSection.classList.add('hidden-section');
-                currentSection.style.display = 'none'; // Masquer par défaut
+                currentSection.classList.add('hidden-section'); // Classe pour transition
                 hiddenSections.push(currentSection); // Ajoute aux sections cachées
             }
 
@@ -430,30 +478,36 @@ function displayResultsRaw(results) {
     const showMoreButton = document.createElement('p');
     showMoreButton.classList.add('text-primary');
     showMoreButton.style.cursor = 'pointer';
-    showMoreButton.textContent = "+ voir plus";
-    showMoreButton.onclick = () => {
-        hiddenSections.forEach(section => section.style.display = 'block');
-        showMoreButton.style.display = 'none';
-        showLessButton.style.display = 'inline'; // Affiche le bouton "voir moins"
-    };
+    showMoreButton.textContent = "+ Voir plus d'informations sur les résultats";
 
     const showLessButton = document.createElement('p');
     showLessButton.classList.add('text-primary');
     showLessButton.style.cursor = 'pointer';
-    showLessButton.textContent = "voir moins";
+    showLessButton.textContent = "- Voir moins d'informations sur les résultats";
     showLessButton.style.display = 'none'; // Caché par défaut
+
+    // Gestion des clics sur les boutons
+    showMoreButton.onclick = () => {
+        hiddenSections.forEach(section => section.classList.add('visible')); // Ajoute la classe 'visible'
+        showMoreButton.style.display = 'none'; // Cache le bouton "voir plus"
+        showLessButton.style.display = 'inline'; // Affiche le bouton "voir moins"
+    };
+
     showLessButton.onclick = () => {
-        hiddenSections.forEach(section => section.style.display = 'none');
-        showLessButton.style.display = 'none';
+        hiddenSections.forEach(section => section.classList.remove('visible')); // Retire la classe 'visible'
+        showLessButton.style.display = 'none'; // Cache le bouton "voir moins"
         showMoreButton.style.display = 'inline'; // Réaffiche le bouton "voir plus"
     };
 
+    // Ajoutez les boutons après le titre "Résultats"
     buttonsContainer.appendChild(showMoreButton);
     buttonsContainer.appendChild(showLessButton);
-    resultsSummary.appendChild(buttonsContainer);
 
-    // Gestion du graphique (TODO)
-    // console.log("Chart data:", chart_data);
+    const resultsTitle = document.getElementById('results-title');
+    resultsTitle.insertAdjacentElement('afterend', buttonsContainer); // Insère les boutons après le titre "Résultats"
+
+    // Initialisation des sections cachées
+    hiddenSections.forEach(section => section.classList.remove('visible')); // Masque les sections
 }
 
 // Palette de couleurs pour les solutions
@@ -516,11 +570,21 @@ function displayResultsBarGraph(chart_data) {
         plugins: {
             title: {
                 display: true,
-                text: "Coûts annuel par solution (consommables et main d'oeuvre)"
+                text: "Coûts annuel par solution (consommables et main d'oeuvre)",
+                font: {
+                    size: 18 // Taille de la police en pixels
+                }
             },
             tooltip: {
                 mode: 'index',
-                intersect: false
+                intersect: false,
+                callbacks: {
+                    label: function (tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw; // Accède à la valeur brute
+                        return `${label}: ${value} €`; // Ajoute l'unité ici
+                    }
+                }
             }
         },
         responsive: true,
@@ -555,17 +619,23 @@ function displayResultsBarGraph(chart_data) {
         bar_graph.update(); // Met à jour le graphique
     }
 
-    // Gestion des checkboxes pour chaque solution
-    document.getElementById('lea30-checkbox').addEventListener('change', function () {
-        toggleSolution(0, this.checked); // Index 0 pour LEA30S
-    });
+    // Initialisation des solutions avec l'état des checkboxes
+    const solutions = [
+        { checkboxId: 'lea30-checkbox', index: 0 },
+        { checkboxId: 'bobine-embarquee-checkbox', index: 1 },
+        { checkboxId: 'manuelle-checkbox', index: 2 }
+    ];
 
-    document.getElementById('bobine-embarquee-checkbox').addEventListener('change', function () {
-        toggleSolution(1, this.checked); // Index 1 pour Outil à bobine embarquée
-    });
+    solutions.forEach(solution => {
+        const checkbox = document.getElementById(solution.checkboxId);
 
-    document.getElementById('manuelle-checkbox').addEventListener('change', function () {
-        toggleSolution(2, this.checked); // Index 2 pour Attache manuelle
+        // Initialise la visibilité en fonction de l'état initial de la checkbox
+        toggleSolution(solution.index, checkbox.checked);
+
+        // Ajoute un écouteur pour mettre à jour dynamiquement
+        checkbox.addEventListener('change', function () {
+            toggleSolution(solution.index, this.checked);
+        });
     });
 
     return bar_graph;
@@ -594,7 +664,7 @@ function displayResultsCurveGraph(chart_data) {
 
     // Données fictives pour 3 solutions
     const data = {
-        labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5','Année 6','Année 7','Année 8','Année 9',],
+        labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5', 'Année 6', 'Année 7', 'Année 8', 'Année 9'],
         datasets: [
             {
                 label: 'LEA30s',
@@ -616,39 +686,41 @@ function displayResultsCurveGraph(chart_data) {
                 borderColor: solutionColors[2].borderColor,
                 backgroundColor: solutionColors[2].backgroundColorLight,
                 fill: false
-            },
-            // {
-            //     label: 'Attache manuelle',
-            //     data: [150, 350, 650, 1050, 1400],
-            //     borderColor: solutionColors[2].borderColor,
-            //     backgroundColor: solutionColors[2].backgroundColorLight,
-            //     fill: true
-            // }
+            }
         ]
     };
+
     const options = {
         plugins: {
             title: {
                 display: true,
-                text: 'Coûts par solution'
+                text: 'Coûts par solution',
+                font: {
+                    size: 18 // Taille de la police en pixels
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw; // Accède à la valeur brute
+                        return `${label}: ${value} €`; // Ajoute l'unité ici
+                    }
+                }
             }
         },
         responsive: true,
-        // maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: false,
                 title: {
                     display: true,
-                    text: 'Solutions'
+                    text: 'Années'
                 }
             },
             y: {
                 stacked: false,
-                min: getMinValueFromData(data.datasets)-5000, // Fixe la limite inférieure pour débogage
-                ticks: {
-                    // stepSize: 100
-                },
+                min: getMinValueFromData(data.datasets) - 5000, // Ajuste la limite inférieure
                 title: {
                     display: true,
                     text: 'Coût (€)'
@@ -657,27 +729,227 @@ function displayResultsCurveGraph(chart_data) {
         }
     };
 
-    curve_chart = new Chart(ctx, {
+    // Création du graphique
+    const curve_chart = new Chart(ctx, {
         type: 'line',
         data,
         options
     });
 
-    // Gestion de la visibilité des courbes
-    document.getElementById('lea30-checkbox').addEventListener('change', function () {
-        curve_chart.data.datasets[0].hidden = !this.checked;
-        curve_chart.update();
+    // Initialisation et gestion de la visibilité des courbes avec les checkboxes
+    const solutions = [
+        { checkboxId: 'lea30-checkbox', datasetIndex: 0 },
+        { checkboxId: 'bobine-embarquee-checkbox', datasetIndex: 1 },
+        { checkboxId: 'manuelle-checkbox', datasetIndex: 2 }
+    ];
+
+    solutions.forEach(solution => {
+        const checkbox = document.getElementById(solution.checkboxId);
+
+        // Initialise la visibilité des courbes en fonction de l'état des checkboxes
+        curve_chart.data.datasets[solution.datasetIndex].hidden = !checkbox.checked;
+
+        // Ajoute un écouteur pour mettre à jour la visibilité des courbes
+        checkbox.addEventListener('change', function () {
+            curve_chart.data.datasets[solution.datasetIndex].hidden = !this.checked;
+            curve_chart.update();
+        });
     });
 
-    document.getElementById('bobine-embarquee-checkbox').addEventListener('change', function () {
-        curve_chart.data.datasets[1].hidden = !this.checked;
-        curve_chart.update();
+    curve_chart.update(); // Applique les modifications initiales
+}
+
+
+LEA30_PIE_COLORS = [
+    'rgba(54, 162, 235, 0.8)',
+    'rgba(75, 192, 245, 0.8)',
+    'rgba(40, 140, 210, 0.8)',
+    'rgba(130, 202, 255, 0.8)',
+    'rgba(90, 150, 210, 0.8)',
+    'rgba(30, 120, 200, 0.8)',
+    'rgba(80, 170, 250, 0.8)'
+]
+
+EMBARQUE_PIE_COLORS = [
+    'rgba(255, 99, 132, 0.8)',
+    'rgba(255, 120, 150, 0.8)',
+    'rgba(235, 50, 85, 0.8)',
+    'rgba(255, 150, 170, 0.8)',
+    'rgba(210, 70, 130, 0.8)',
+    'rgba(200, 40, 80, 0.8)',
+    'rgba(255, 120, 100, 0.8)'
+]
+
+MAIN_PIE_COLOR = [
+    'rgba(75, 192, 192, 0.8)',
+    'rgba(90, 210, 210, 0.8)',
+    'rgba(60, 175, 175, 0.8)',
+    'rgba(120, 220, 220, 0.8)',
+    'rgba(55, 160, 160, 0.8)',
+    'rgba(40, 130, 130, 0.8)',
+    'rgba(100, 200, 200, 0.8)'
+]
+
+
+
+function displayPieCharts(chart_data) {
+    // Conteneurs des graphiques pour chaque solution
+    const solutions = [
+        { name: 'LEA30', checkboxId: 'lea30-checkbox', containerId: 'lea30-pie-container', main: 'pie-chart-lea30-main', consommable: 'pie-chart-lea30-consommable',colors:LEA30_PIE_COLORS,name_fancy:"LEA30s"},
+        { name: 'EMBARQUE', checkboxId: 'bobine-embarquee-checkbox', containerId: 'bobine-pie-container', main: 'pie-chart-bobine-main', consommable: 'pie-chart-bobine-consommable',colors:EMBARQUE_PIE_COLORS,name_fancy:"Outil à bobine embarquée" },
+        { name: 'MAIN', checkboxId: 'manuelle-checkbox', containerId: 'manuelle-pie-container', main: 'pie-chart-manuelle-main', consommable: 'pie-chart-manuelle-consommable',colors:MAIN_PIE_COLOR,name_fancy:"Attache manuelle" }
+    ];
+
+    // Données fictives pour les détails
+    const detailsMainOeuvre = {
+        LEA30: chart_data.LEA30S.detail_main_d_oeuvre, // Exemple : [Temps attache, Temps pause]
+        EMBARQUE: chart_data.EMBARQUE.detail_main_d_oeuvre,
+        MAIN: chart_data.MAIN.detail_main_d_oeuvre
+    };
+    const labelMainOeuvre = chart_data.LEA30S.detail_main_d_oeuvre_label;
+    const labelConsommable = chart_data.LEA30S.detail_consommable_label;
+
+    const detailsConsommable = {
+        LEA30: chart_data.LEA30S.detail_consommable, // Exemple : [Corde, Autres consommables]
+        EMBARQUE: chart_data.EMBARQUE.detail_consommable,
+        MAIN: chart_data.MAIN.detail_consommable
+    };
+
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Répartition des coûts',
+                font: {
+                    size: 18 // Taille de la police en pixels
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw; // Accède à la valeur brute
+                        return `${label}: ${value} €`; // Ajoute l'unité ici
+                    }
+                }
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: true
+    };
+
+// Fonction pour trier les données d'un PieChart
+function sortPieChartData(chartData) {
+    // Regroupe les données et les étiquettes
+    console.log(chartData);
+    const combined = chartData.labels.map((label, index) => ({
+        label: label,
+        value: chartData.datasets[0].data[index],
+        color: chartData.datasets[0].backgroundColor[index]
+    }));
+
+    // Trie par ordre decroissant des valeurs
+    combined.sort((a, b) => b.value - a.value);
+
+    // Met à jour les données triées
+    chartData.labels = combined.map(item => item.label);
+    chartData.datasets[0].data = combined.map(item => item.value);
+    chartData.datasets[0].backgroundColor = combined.map(item => item.color);
+
+    return chartData;
+}
+
+// Crée les camemberts pour chaque solution
+solutions.forEach(solution => {
+    const ctxMain = document.getElementById(solution.main).getContext('2d');
+    const ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
+
+    // Données pour le détail main d'œuvre
+    const mainOeuvreData = {
+        labels: labelMainOeuvre,
+        datasets: [{
+            data: detailsMainOeuvre[solution.name],
+            backgroundColor: solution.colors
+        }]
+    };
+
+    // Données pour le détail consommable
+    const consommableData = {
+        labels: labelConsommable,
+        datasets: [{
+            data: detailsConsommable[solution.name],
+            backgroundColor: solution.colors
+        }]
+    };
+
+    // Trie des données
+    const sortedMainOeuvreData = sortPieChartData(mainOeuvreData);
+    const sortedConsommableData = sortPieChartData(consommableData);
+
+    // Création du camembert pour Main d'œuvre
+    new Chart(ctxMain, {
+        type: 'pie',
+        data: sortedMainOeuvreData,
+        options: { ...options, plugins: { title: { display: true, text: `Détail main d'oeuvre (heures) : ${solution.name_fancy}`,font:{size: 18} },
+            tooltip: {
+                callbacks: {
+                    label: function (tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw; // Accède à la valeur brute
+                        return `${label}: ${value} h`; // Ajoute l'unité ici
+                    }
+                }
+            } } }
     });
 
-    document.getElementById('manuelle-checkbox').addEventListener('change', function () {
-        curve_chart.data.datasets[2].hidden = !this.checked;
-        curve_chart.update();
+    // Création du camembert pour Consommable
+    new Chart(ctxConsommable, {
+        type: 'pie',
+        data: sortedConsommableData,
+        options: { ...options, plugins: { title: { display: true, text: `Détail consommable (euros) : ${solution.name_fancy}` ,font:{size: 18} },
+        tooltip: {
+            callbacks: {
+                label: function (tooltipItem) {
+                    const label = tooltipItem.label || '';
+                    const value = tooltipItem.raw; // Accède à la valeur brute
+                    return `${label}: ${value} €`; // Ajoute l'unité ici
+                }
+            }
+        } } }
     });
+});
+
+// Gestion de la visibilité des camemberts avec les checkboxes
+function togglePieCharts(solutionIndex, visible) {
+    const container = document.getElementById(solutions[solutionIndex].containerId);
+    container.style.display = visible ? 'flex' : 'none';
+}
+
+// Initialisation des camemberts avec les états des checkboxes
+solutions.forEach((solution, index) => {
+    const checkbox = document.getElementById(solution.checkboxId);
+    togglePieCharts(index, checkbox.checked);
+
+    // Attache l'événement de changement
+    checkbox.addEventListener('change', function () {
+        togglePieCharts(index, this.checked);
+    });
+});
+
+// Texte Cliquable "Voir plus / Voir moins"
+const toggleText = document.getElementById('toggle-pie-charts');
+const container = document.getElementById('pie-charts-container');
+
+toggleText.addEventListener('click', function () {
+    if (container.classList.contains('visible')) {
+        container.classList.remove('visible'); // Réduit avec transition
+        toggleText.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
+    } else {
+        container.classList.add('visible'); // Étend avec transition
+        toggleText.textContent = '- Voir moins';
+    }
+});
+
 
 }
 
@@ -736,14 +1008,17 @@ function toggleExtraOptions() {
     const extraOptions = document.getElementById('extra-options');
     const showMoreText = document.getElementById('show-more-options');
 
-    if (extraOptions.style.display === 'none') {
-        extraOptions.style.display = 'block';
-        showMoreText.innerText = dictionary[language].lessOptions;
+    // Vérifie si la section est visible
+    if (extraOptions.classList.contains('visible')) {
+        extraOptions.classList.remove('visible'); // Masque avec transition
+        showMoreText.innerText = '+ Afficher plus d\'options'; // Texte "Afficher plus"
     } else {
-        extraOptions.style.display = 'none';
-        showMoreText.innerText = dictionary[language].moreOptions;
+        extraOptions.classList.add('visible'); // Affiche avec transition
+        showMoreText.innerText = '- Afficher moins d\'options'; // Texte "Afficher moins"
     }
 }
+
+
 
 function attachTooltipEvents() {
     const helpIcons = document.querySelectorAll('.help-icon');
@@ -810,3 +1085,5 @@ document.addEventListener('click', function (event) {
 
 // Initialisation
 changeLanguage();
+// Attache l'événement au clic
+document.getElementById('show-more-options').addEventListener('click', toggleExtraOptions);

@@ -148,6 +148,49 @@
 .tooltip-content-extra-options {
     transition: opacity 0.2s ease-in-out;
 }
+#pie-charts-container {
+    display: flex; /* Définit flexbox pour la mise en page */
+    flex-wrap: wrap;
+    gap: 30px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#pie-charts-container.visible {
+    max-height: 5000px; /* Une valeur très grande pour tester */
+    opacity: 1;
+    padding: 20px; /* Ajoute de l'espace visuel */
+}
+.extra-options-container {
+    max-height: 0; /* Masque complètement la section */
+    overflow: hidden; /* Empêche le débordement */
+    opacity: 0; /* Rend la section invisible */
+    padding: 0; /* Évite les marges inutiles lors du repli */
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+.extra-options-container.visible {
+    max-height: 5000px; /* Ajustez selon la taille de votre contenu */
+    opacity: 1; /* Restaure la visibilité */
+    padding: 10px; /* Ajoute de l'espace visuel lors de l'expansion */
+}
+.hidden-section {
+    max-height: 0; /* Cache complètement la section */
+    overflow: hidden; /* Empêche le débordement */
+    opacity: 0; /* Rend la section invisible */
+    padding: 0; /* Supprime les marges */
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+.hidden-section.visible {
+    max-height: 500px; /* Ajustez selon la taille du contenu */
+    opacity: 1;
+    padding: 10px; /* Ajoute de l'espace visuel */
+}
+
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */
