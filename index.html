@@ -75,7 +75,7 @@
                 <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée    </label>
                 <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle    </label>
             </div>
-            <button type="button" id="calculate-button" class="btn btn-primary" onclick="launchCalculation()">Lancer le
+            <button type="button" id="calculate-button" class="btn btn-primary">Lancer le
                 calcul
             </button>
         </form>
@@ -115,7 +115,12 @@
         </div>
     </div>
 
-    <script src="calcul.js"></script>
+    <script type="module" src="utils.js" defer></script>
+    <script type="module" src="lang/dictionnary.js" defer></script>
+    <script type="module" src="chart.js" defer></script>
+    <script type="module" src="calcul.js" defer></script>
+    <script type="module" src="display.js" defer></script>
+    <script type="module" src="main.js"></script>
 
 </body>
 
