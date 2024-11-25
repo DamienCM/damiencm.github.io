@@ -84,7 +84,7 @@ export function loadExtraOptions(language) {
     });
 }
 
-export function displayResultsRaw(results,language) {
+export function displayResultsRaw(results, language) {
     const resultsSection = document.getElementById('results-section');
     resultsSection.style.display = 'block'; // Rendre visible la section des résultats
 
@@ -221,6 +221,7 @@ export function displayResultsBarGraph(chart_data) {
             }
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: true
@@ -242,19 +243,19 @@ export function displayResultsBarGraph(chart_data) {
         options
     });
 
-// Fonction pour gérer la visibilité des solutions
-function toggleSolution(index, visible) {
-    // Met à jour le dataset correspondant uniquement
-    bar_graph.data.datasets[0].data[index] = visible
-        ? chart_data[Object.keys(chart_data)[index]].cout_consommable
-        : 0; // Met à jour uniquement la valeur "Consommable"
+    // Fonction pour gérer la visibilité des solutions
+    function toggleSolution(index, visible) {
+        // Met à jour le dataset correspondant uniquement
+        bar_graph.data.datasets[0].data[index] = visible
+            ? chart_data[Object.keys(chart_data)[index]].cout_consommable
+            : 0; // Met à jour uniquement la valeur "Consommable"
 
-    bar_graph.data.datasets[1].data[index] = visible
-        ? chart_data[Object.keys(chart_data)[index]].cout_main_d_oeuvre
-        : 0; // Met à jour uniquement la valeur "Main d'œuvre"
+        bar_graph.data.datasets[1].data[index] = visible
+            ? chart_data[Object.keys(chart_data)[index]].cout_main_d_oeuvre
+            : 0; // Met à jour uniquement la valeur "Main d'œuvre"
 
-    bar_graph.update(); // Met à jour le graphique
-}
+        bar_graph.update(); // Met à jour le graphique
+    }
 
     // Initialisation des solutions avec l'état des checkboxes
     const solutions = [
@@ -330,6 +331,7 @@ export function displayResultsCurveGraph(chart_data) {
             }
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: false,
@@ -382,9 +384,9 @@ export function displayResultsCurveGraph(chart_data) {
 export function displayPieCharts(chart_data) {
     // Conteneurs des graphiques pour chaque solution
     const solutions = [
-        { name: 'LEA30', checkboxId: 'lea30-checkbox', containerId: 'lea30-pie-container', main: 'pie-chart-lea30-main', consommable: 'pie-chart-lea30-consommable',colors:LEA30_PIE_COLORS,name_fancy:"LEA30s"},
-        { name: 'EMBARQUE', checkboxId: 'bobine-embarquee-checkbox', containerId: 'bobine-pie-container', main: 'pie-chart-bobine-main', consommable: 'pie-chart-bobine-consommable',colors:EMBARQUE_PIE_COLORS,name_fancy:"Outil à bobine embarquée" },
-        { name: 'MAIN', checkboxId: 'manuelle-checkbox', containerId: 'manuelle-pie-container', main: 'pie-chart-manuelle-main', consommable: 'pie-chart-manuelle-consommable',colors:MAIN_PIE_COLOR,name_fancy:"Attache manuelle" }
+        { name: 'LEA30', checkboxId: 'lea30-checkbox', containerId: 'lea30-pie-container', main: 'pie-chart-lea30-main', consommable: 'pie-chart-lea30-consommable', colors: LEA30_PIE_COLORS, name_fancy: "LEA30s" },
+        { name: 'EMBARQUE', checkboxId: 'bobine-embarquee-checkbox', containerId: 'bobine-pie-container', main: 'pie-chart-bobine-main', consommable: 'pie-chart-bobine-consommable', colors: EMBARQUE_PIE_COLORS, name_fancy: "Outil à bobine embarquée" },
+        { name: 'MAIN', checkboxId: 'manuelle-checkbox', containerId: 'manuelle-pie-container', main: 'pie-chart-manuelle-main', consommable: 'pie-chart-manuelle-consommable', colors: MAIN_PIE_COLOR, name_fancy: "Attache manuelle" }
     ];
 
     // Données fictives pour les détails
@@ -422,120 +424,134 @@ export function displayPieCharts(chart_data) {
             }
         },
         responsive: true,
-        maintainAspectRatio: true
+        maintainAspectRatio: false
     };
 
-// Fonction pour trier les données d'un PieChart
-function sortPieChartData(chartData) {
-    // Regroupe les données et les étiquettes
-    console.log(chartData);
-    const combined = chartData.labels.map((label, index) => ({
-        label: label,
-        value: chartData.datasets[0].data[index],
-        color: chartData.datasets[0].backgroundColor[index]
-    }));
+    // Fonction pour trier les données d'un PieChart
+    function sortPieChartData(chartData) {
+        // Regroupe les données et les étiquettes
+        console.log(chartData);
+        const combined = chartData.labels.map((label, index) => ({
+            label: label,
+            value: chartData.datasets[0].data[index],
+            color: chartData.datasets[0].backgroundColor[index]
+        }));
 
-    // Trie par ordre decroissant des valeurs
-    combined.sort((a, b) => b.value - a.value);
+        // Trie par ordre decroissant des valeurs
+        combined.sort((a, b) => b.value - a.value);
 
-    // Met à jour les données triées
-    chartData.labels = combined.map(item => item.label);
-    chartData.datasets[0].data = combined.map(item => item.value);
-    chartData.datasets[0].backgroundColor = combined.map(item => item.color);
+        // Met à jour les données triées
+        chartData.labels = combined.map(item => item.label);
+        chartData.datasets[0].data = combined.map(item => item.value);
+        chartData.datasets[0].backgroundColor = combined.map(item => item.color);
 
-    return chartData;
-}
+        return chartData;
+    }
 
-// Crée les camemberts pour chaque solution
-solutions.forEach(solution => {
-    const ctxMain = document.getElementById(solution.main).getContext('2d');
-    const ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
+    // Crée les camemberts pour chaque solution
+    solutions.forEach(solution => {
+        const ctxMain = document.getElementById(solution.main).getContext('2d');
+        const ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
 
-    // Données pour le détail main d'œuvre
-    const mainOeuvreData = {
-        labels: labelMainOeuvre,
-        datasets: [{
-            data: detailsMainOeuvre[solution.name],
-            backgroundColor: solution.colors
-        }]
-    };
+        // Données pour le détail main d'œuvre
+        const mainOeuvreData = {
+            labels: labelMainOeuvre,
+            datasets: [{
+                data: detailsMainOeuvre[solution.name],
+                backgroundColor: solution.colors
+            }]
+        };
 
-    // Données pour le détail consommable
-    const consommableData = {
-        labels: labelConsommable,
-        datasets: [{
-            data: detailsConsommable[solution.name],
-            backgroundColor: solution.colors
-        }]
-    };
+        // Données pour le détail consommable
+        const consommableData = {
+            labels: labelConsommable,
+            datasets: [{
+                data: detailsConsommable[solution.name],
+                backgroundColor: solution.colors
+            }]
+        };
 
-    // Trie des données
-    const sortedMainOeuvreData = sortPieChartData(mainOeuvreData);
-    const sortedConsommableData = sortPieChartData(consommableData);
+        // Trie des données
+        const sortedMainOeuvreData = sortPieChartData(mainOeuvreData);
+        const sortedConsommableData = sortPieChartData(consommableData);
 
-    // Création du camembert pour Main d'œuvre
-    new Chart(ctxMain, {
-        type: 'pie',
-        data: sortedMainOeuvreData,
-        options: { ...options, plugins: { title: { display: true, text: `Détail main d'oeuvre (heures) : ${solution.name_fancy}`,font:{size: 18} },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        const label = tooltipItem.label || '';
-                        const value = tooltipItem.raw; // Accède à la valeur brute
-                        return `${label}: ${value} h`; // Ajoute l'unité ici
+        // Création du camembert pour Main d'œuvre
+        new Chart(ctxMain, {
+            type: 'pie',
+            data: sortedMainOeuvreData,
+            options: {
+                ...options, plugins: {
+                    legend: {
+                        display : false
+                    },
+                    title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw; // Accède à la valeur brute
+                                return `${label}: ${value} h`; // Ajoute l'unité ici
+                            }
+                        }
                     }
                 }
-            } } }
-    });
+            }
+        });
 
-    // Création du camembert pour Consommable
-    new Chart(ctxConsommable, {
-        type: 'pie',
-        data: sortedConsommableData,
-        options: { ...options, plugins: { title: { display: true, text: `Détail consommable (euros) : ${solution.name_fancy}` ,font:{size: 18} },
-        tooltip: {
-            callbacks: {
-                label: function (tooltipItem) {
-                    const label = tooltipItem.label || '';
-                    const value = tooltipItem.raw; // Accède à la valeur brute
-                    return `${label}: ${value} €`; // Ajoute l'unité ici
+        // Création du camembert pour Consommable
+        new Chart(ctxConsommable, {
+            type: 'pie',
+            data: sortedConsommableData,
+            options: {
+                ...options, plugins: {
+                    legend: {
+                        display : false
+                    },
+                    title: { display: true, text: `Consommable`, font: { size: 18 } },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw; // Accède à la valeur brute
+                                return `${label}: ${value} €`; // Ajoute l'unité ici
+                            }
+                        }
+                    }
                 }
             }
-        } } }
+        });
     });
-});
 
-// Gestion de la visibilité des camemberts avec les checkboxes
-function togglePieCharts(solutionIndex, visible) {
-    const container = document.getElementById(solutions[solutionIndex].containerId);
-    container.style.display = visible ? 'flex' : 'none';
-}
-
-// Initialisation des camemberts avec les états des checkboxes
-solutions.forEach((solution, index) => {
-    const checkbox = document.getElementById(solution.checkboxId);
-    togglePieCharts(index, checkbox.checked);
-
-    // Attache l'événement de changement
-    checkbox.addEventListener('change', function () {
-        togglePieCharts(index, this.checked);
-    });
-});
-
-// Texte Cliquable "Voir plus / Voir moins"
-const toggleText = document.getElementById('toggle-pie-charts');
-const container = document.getElementById('pie-charts-container');
-
-toggleText.addEventListener('click', function () {
-    if (container.classList.contains('visible')) {
-        container.classList.remove('visible'); // Réduit avec transition
-        toggleText.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
-    } else {
-        container.classList.add('visible'); // Étend avec transition
-        toggleText.textContent = '- Voir moins';
+    // Gestion de la visibilité des camemberts avec les checkboxes
+    function togglePieCharts(solutionIndex, visible) {
+        const container = document.getElementById(solutions[solutionIndex].containerId);
+        container.style.display = visible ? 'flex' : 'none';
     }
-});
+
+    // Initialisation des camemberts avec les états des checkboxes
+    solutions.forEach((solution, index) => {
+        const checkbox = document.getElementById(solution.checkboxId);
+        togglePieCharts(index, checkbox.checked);
+
+        // Attache l'événement de changement
+        checkbox.addEventListener('change', function () {
+            togglePieCharts(index, this.checked);
+        });
+    });
+
+    // Texte Cliquable "Voir plus / Voir moins"
+    const toggleText = document.getElementById('toggle-pie-charts');
+    const container = document.getElementById('pie-charts-container');
+
+    toggleText.addEventListener('click', function () {
+        if (container.classList.contains('visible')) {
+            container.classList.remove('visible'); // Réduit avec transition
+            toggleText.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
+        } else {
+            container.classList.add('visible'); // Étend avec transition
+            toggleText.textContent = '- Voir moins';
+        }
+    });
 
 
 }

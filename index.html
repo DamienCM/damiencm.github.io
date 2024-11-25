@@ -35,13 +35,13 @@
                     <li onclick="selectLanguage('Francais', 'fr')"><img src="icons/flags/fr.png" alt="French flag"
                             class="flag-icon"> Francais</li>
                     <li onclick="selectLanguage('English', 'uk')"><img src="icons/flags/uk.png" alt="English flag"
-                            class="flag-icon"> English</li>
+                            class="flag-icon"> <s>English</s></li>
                     <li onclick="selectLanguage('Spanish', 'es')"><img src="icons/flags/es.png" alt="Spanish flag"
-                            class="flag-icon"> Spanish</li>
+                            class="flag-icon"> <s>Spanish</s></li>
                     <li onclick="selectLanguage('Italian', 'it')"><img src="icons/flags/it.png" alt="Italian flag"
-                            class="flag-icon"> Italian</li>
+                            class="flag-icon"> <s>Italian</s></li>
                     <li onclick="selectLanguage('German', 'de')"><img src="icons/flags/de.png" alt="German flag"
-                            class="flag-icon"> German</li>
+                            class="flag-icon"> <s>German</s></li>
                 </ul>
             </div>
         </div>
@@ -71,9 +71,9 @@
 
             <div id="error-message" class="text-danger mb-3"></div>
             <div id="chart-options" class="mb-3">
-                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30    </label>
-                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée    </label>
-                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle    </label>
+                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 </label>
+                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée </label>
+                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle </label>
             </div>
             <button type="button" id="calculate-button" class="btn btn-primary">Lancer le
                 calcul
@@ -83,8 +83,8 @@
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>
             <div id="results-summary"></div>
-            <div>
-                <canvas id="bar-chart" width="100%" height="50"></canvas>
+            <div id="bar-chart-container">
+                <canvas id="bar-chart"></canvas>
             </div>
             <div id="pie-charts-container" style="flex-wrap: wrap; gap: 30px;">
                 <!-- Solution LEA30 -->
@@ -103,16 +103,18 @@
                     <div style="width: 45%;"><canvas id="pie-chart-manuelle-consommable"></canvas></div>
                 </div>
             </div>
-            <p id="toggle-pie-charts" class="text-primary" style="cursor: pointer;">+ Voir le detail des main d'oeuvre et du consommable</p>
-
-            <canvas id="curve-chart" width="100%" height="50"></canvas>
-            </div>
-
-            <div class="mt-3">
-                <button class="btn btn-secondary" onclick="printResults()">Imprimer</button>
-                <button class="btn btn-secondary" onclick="resetForm()">Relancer un calcul</button>
+            <p id="toggle-pie-charts" class="text-primary" style="cursor: pointer;">+ Voir le detail des main d'oeuvre
+                et du consommable</p>
+            <div id="curve-chart-container">
+                <canvas id="curve-chart"></canvas>
             </div>
         </div>
+
+        <!-- <div class="mt-3">
+            <button class="btn btn-secondary" onclick="printResults()">Imprimer</button>
+            <button class="btn btn-secondary" onclick="resetForm()">Relancer un calcul</button>
+        </div> -->
+    </div>
     </div>
 
     <script type="module" src="utils.js" defer></script>

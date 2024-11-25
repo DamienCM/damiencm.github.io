@@ -4,6 +4,7 @@ import * as display from "./display.js";
 import * as database from "./database.js";
 import * as colortheme from "./color-theme.js";
 import { dictionary } from "./lang/dictionnary.js";
+import { toggleDropdown } from "./display.js";
 import * as chart from "./chart.js";
 import * as calcul from "./calcul.js";
 
@@ -23,6 +24,9 @@ function init_document(){
     // Attache l'événement au clic
     document.getElementById('show-more-options').addEventListener('click', display.toggleExtraOptions);
     document.getElementById('calculate-button').addEventListener('click',launchCalculation);
+    // Rendre la fonction globale
+    window.toggleDropdown = toggleDropdown;
+    window.selectLanguage = selectLanguage;
 
 }
 

@@ -190,7 +190,39 @@
     opacity: 1;
     padding: 10px; /* Ajoute de l'espace visuel */
 }
-
+/* Conteneur pour le graphique */
+#bar-chart-container{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-lea30-main{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-lea30-consommable{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-bobine-main{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-bobine-consommable{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-manuelle-main{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#pie-chart-manuelle-consommable{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
+#curve-chart-container{
+    height: 50vh; /* 50% de la hauteur de l'écran */
+    width: 100%;  /* 100% de la largeur */
+}
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */
