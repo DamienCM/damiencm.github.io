@@ -524,6 +524,10 @@ export function displayPieCharts(chart_data, pie_charts) {
         let ctxMain = document.getElementById(solution.main).getContext('2d');
         let ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
 
+        detailsConsommable[solution.name] = detailsConsommable[solution.name].map((number) => Number(number).toFixed(1));
+
+        detailsMainOeuvre[solution.name] = detailsMainOeuvre[solution.name].map((number) => Number(number).toFixed(1));
+
         // Données pour le détail main d'œuvre
         let mainOeuvreData = {
             labels: labelMainOeuvre,
