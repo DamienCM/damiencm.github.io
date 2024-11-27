@@ -8,7 +8,7 @@ export const dictionary = {
         defaultValues: [
             10, //superficie
              4000,//vigne par ha
-             3,//attache par pied
+             4,//attache par pied
              18,//cout h du salarie
              2,//nbre outil
              null],
@@ -20,11 +20,11 @@ export const dictionary = {
         lessOptions: ["- Voir moins"],
         extraOptions: ["Temps deplacement entre les ceps (s)", "Temps de cycle outil (s)", "Temps changement bobine (s) ","Temps de pose de la baguette (s)","Temps entre les liens (s)", "Temps de travail (heures/jours)","Temps de pause par jour en minutes (hors pause midi)", "Temps de mise en route et rangement (min)","Prix d'achat de l'outil (€)", "Frais de révision annuelle (€)" ],
         defaultValuesExtra: [
-            2, //deplacement
+            0.7, //deplacement
             .6, // cycle outil 
             120, //t chgt bbobin
-            1.5, //t pose baguete
-            1, // t entre lien
+            0.45, //t pose baguette
+            0.7, // t entre lien
             8, //h travial
             30,//pause
             15,//mise en route

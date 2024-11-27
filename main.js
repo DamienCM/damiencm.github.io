@@ -9,6 +9,9 @@ import * as chart from "./chart.js";
 import * as calcul from "./calcul.js";
 
 let language = 'fr';
+let bar_graph = null;
+let curve_chart = null;
+let pie_charts=null;
 
 function init_document(){
     // Masquer les tooltips si l’utilisateur clique ailleurs
@@ -27,14 +30,13 @@ function init_document(){
     // Rendre la fonction globale
     window.toggleDropdown = toggleDropdown;
     window.selectLanguage = selectLanguage;
-
 }
 
 // Initialisation de la langue
 function changeLanguage() {
     
     language = document.getElementById('selected-language').innerText
-    console.log(language);
+    // console.log(language);
     document.getElementById('page-title').innerText = dictionary[language].pageTitle;
     document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
     document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
@@ -55,16 +57,16 @@ function changeLanguage() {
 // Lancer le calcul
 function launchCalculation() {
     if (utils.validateInputs(language)) {
-        const inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
-        const extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
-        const [results,chart_data] = calcul.calculateResults(inputs, extra_inputs,language);
-
-        display.displayResultsRaw(results);
-        display.displayResultsBarGraph(chart_data);
-        display.displayResultsCurveGraph(chart_data);
+        let inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
+        let extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
+        let [results,chart_data] = calcul.calculateResults(inputs, extra_inputs,language);
+        display.displayResultsRaw(results,language);
+        // console.log(bar_graph);
+        bar_graph =  display.displayResultsBarGraph(chart_data, bar_graph);
+        curve_chart = display.displayResultsCurveGraph(chart_data,curve_chart);
         
         // Appel de la fonction
-        display.displayPieCharts(chart_data);
+        pie_charts = display.displayPieCharts(chart_data, pie_charts);
         
         // saveResultsAsJson(inputs, results);
     }

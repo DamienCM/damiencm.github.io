@@ -47,48 +47,51 @@ export function calculateResults(inputs, extra_inputs, language) {
     let prix_consommable_embarque = prix_total_bobines_embarque + frais_revision_embarque * nombre_outils;
     let prix_consommable_main = prix_total_bobines_main + frais_revision_main * nombre_outils;
 
+    let facteur_embarquee = 567/505; // cf revue LaVigne mars 2015 11%
     //embarque main const
-    let temps_changement_bobine_embarque = 120.;//s
+    let temps_changement_bobine_embarque = 120;//s
     let temps_changement_bobine_main = 30.;//s
-    let temps_cycle_outil_embarquee = 1.;//s
+    let temps_cycle_outil_embarquee = 0.6*facteur_embarquee;//s 
     let temps_cycle_outil_main = 5.;//s
-    let temps_pose_baguette_embarquee = temps_pose_baguette * 1.0;
+    let temps_pose_baguette_embarquee = temps_pose_baguette * facteur_embarquee;
     let temps_pose_baguette_main = temps_pose_baguette * 1.0;
-    let temps_deplacement_entre_ceps_embarquee = temps_deplacement_entre_ceps * 1.0;
+    let temps_deplacement_entre_ceps_embarquee = temps_deplacement_entre_ceps * facteur_embarquee;
     let temps_deplacement_entre_ceps_main = temps_deplacement_entre_ceps * 1.0;
 
     let prix_outil_embarque = 900.;//e
     let prix_outil_main = 0;//e
-    let temps_entre_liens_embarquee = temps_entre_liens * 1.0;
+    let temps_entre_liens_embarquee = temps_entre_liens *facteur_embarquee;
     let temps_entre_liens_main = 2.;
     // Calculs du exhaustifs du temps de travail
     // on calcule le nombre d'attache possible a la journee
     let temps_par_cep = temps_pose_baguette + (temps_entre_liens + temps_cycle_outil) * attaches_par_pieds + temps_deplacement_entre_ceps;
+    let ceps_par_heure = 3600/temps_par_cep;
     let temps_par_cep_corrige = temps_par_cep + temps_changement_bobine * attaches_par_pieds / bobines[type_de_bobine].Nombre_lien_bobine;
+    let ceps_par_heure_corrige = 3600/temps_par_cep_corrige;
     let temps_par_cep_embarque = temps_pose_baguette_embarquee + (temps_entre_liens_embarquee + temps_cycle_outil_embarquee) * attaches_par_pieds + temps_deplacement_entre_ceps_embarquee;
     let temps_par_cep_corrige_embarque = temps_par_cep_embarque + temps_changement_bobine_embarque * attaches_par_pieds / bobines[type_de_bobine].Nombre_lien_bobine_embarque;
     let temps_par_cep_main = temps_pose_baguette_main + (temps_entre_liens_main + temps_cycle_outil_main) * attaches_par_pieds + temps_deplacement_entre_ceps_main;
     let temps_par_cep_corrige_main = temps_par_cep_main + temps_changement_bobine_main * attaches_par_pieds / bobines[type_de_bobine].Nombre_lien_bobine_main;
 
     //Temps totaux pour pie-chart
-    let temps_total_pose_baguette = (temps_pose_baguette * total_pieds / 3600).toFixed(1);
-    let temps_total_cycle_outil = (temps_cycle_outil * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_entre_liens = (temps_entre_liens * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_deplacement_entre_ceps = (temps_deplacement_entre_ceps * total_pieds / 3600).toFixed(1);
-    let temps_total_changement_bobine = (nombre_total_bobines * temps_changement_bobine / 3600).toFixed(1);
+    let temps_total_pose_baguette = (temps_pose_baguette * total_pieds / 3600);
+    let temps_total_cycle_outil = (temps_cycle_outil * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_entre_liens = (temps_entre_liens * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_deplacement_entre_ceps = (temps_deplacement_entre_ceps * total_pieds / 3600);
+    let temps_total_changement_bobine = (nombre_total_bobines * temps_changement_bobine / 3600);
 
-    let temps_total_pose_baguette_embarquee = (temps_pose_baguette_embarquee * total_pieds / 3600).toFixed(1);
-    let temps_total_cycle_outil_embarquee = (temps_cycle_outil_embarquee * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_entre_liens_embarquee = (temps_entre_liens_embarquee * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_deplacement_entre_ceps_embarquee = (temps_deplacement_entre_ceps_embarquee * total_pieds / 3600).toFixed(1);
-    let temps_total_changement_bobine_embarque = (nombre_total_bobines_embarque * temps_changement_bobine_embarque / 3600).toFixed(1);
+    let temps_total_pose_baguette_embarquee = (temps_pose_baguette_embarquee * total_pieds / 3600);
+    let temps_total_cycle_outil_embarquee = (temps_cycle_outil_embarquee * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_entre_liens_embarquee = (temps_entre_liens_embarquee * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_deplacement_entre_ceps_embarquee = (temps_deplacement_entre_ceps_embarquee * total_pieds / 3600);
+    let temps_total_changement_bobine_embarque = (nombre_total_bobines_embarque * temps_changement_bobine_embarque / 3600);
 
 
-    let temps_total_pose_baguette_main = (temps_pose_baguette_main * total_pieds / 3600).toFixed(1);
-    let temps_total_cycle_outil_main = (temps_cycle_outil_main * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_entre_liens_main = (temps_entre_liens_main * total_pieds * attaches_par_pieds / 3600).toFixed(1);
-    let temps_total_deplacement_entre_ceps_main = (temps_deplacement_entre_ceps_main * total_pieds / 3600).toFixed(1);
-    let temps_total_changement_bobine_main = (nombre_total_bobines_main * temps_changement_bobine_main / 3600).toFixed(1);
+    let temps_total_pose_baguette_main = (temps_pose_baguette_main * total_pieds / 3600);
+    let temps_total_cycle_outil_main = (temps_cycle_outil_main * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_entre_liens_main = (temps_entre_liens_main * total_pieds * attaches_par_pieds / 3600);
+    let temps_total_deplacement_entre_ceps_main = (temps_deplacement_entre_ceps_main * total_pieds / 3600);
+    let temps_total_changement_bobine_main = (nombre_total_bobines_main * temps_changement_bobine_main / 3600);
 
     //calcul a la journee
     let temps_attache_journalier = (temps_travail_journalier - 2 * temps_mise_en_route) * nombre_outils; // temps jounralier consacré a attacher (facteur 2 = un rangement a midi)
@@ -111,14 +114,14 @@ export function calculateResults(inputs, extra_inputs, language) {
     let prix_main_d_oeuvre_main = nombre_de_jours_parcelle_main * temps_travail_journalier * couts_seconde_salarie * nombre_outils;
 
     //pie-chart
-    let temps_total_pause = (nombre_de_jours_parcelle * nombre_outils * temps_pause_journalier / 3600).toFixed(1);
-    let temps_total_mise_en_route = (2 * nombre_de_jours_parcelle * nombre_outils * temps_mise_en_route / 3600).toFixed(1);
+    let temps_total_pause = (nombre_de_jours_parcelle * nombre_outils * temps_pause_journalier / 3600);
+    let temps_total_mise_en_route = (2 * nombre_de_jours_parcelle * nombre_outils * temps_mise_en_route / 3600);
 
-    let temps_total_pause_embarquee = (nombre_de_jours_parcelle_embarquee * nombre_outils * temps_pause_journalier / 3600).toFixed(1);
-    let temps_total_mise_en_route_embarquee = (2 * nombre_de_jours_parcelle_embarquee * nombre_outils * temps_mise_en_route / 3600).toFixed(1);
+    let temps_total_pause_embarquee = (nombre_de_jours_parcelle_embarquee * nombre_outils * temps_pause_journalier / 3600);
+    let temps_total_mise_en_route_embarquee = (2 * nombre_de_jours_parcelle_embarquee * nombre_outils * temps_mise_en_route / 3600);
 
-    let temps_total_pause_main = (nombre_de_jours_parcelle_main * nombre_outils * temps_pause_journalier / 3600).toFixed(1);
-    let temps_total_mise_en_route_main = (2 * nombre_de_jours_parcelle_main * nombre_outils * temps_mise_en_route / 3600).toFixed(1);
+    let temps_total_pause_main = (nombre_de_jours_parcelle_main * nombre_outils * temps_pause_journalier / 3600);
+    let temps_total_mise_en_route_main = (2 * nombre_de_jours_parcelle_main * nombre_outils * temps_mise_en_route / 3600);
 
 
     let prix_achat_outils = nombre_outils * prix_outil;
@@ -128,7 +131,6 @@ export function calculateResults(inputs, extra_inputs, language) {
     let cout_total = prix_consommable + prix_main_d_oeuvre;
     let cout_total_embarque = prix_consommable_embarque + prix_main_d_oeuvre_embarque;
     let cout_total_main = prix_consommable_main + prix_main_d_oeuvre_main;
-
 
     let results_lea = {         //Value                                     //Display                                       // Units             //Chiffres significatifs
         ____: ["", "_ Entrées", ""],
@@ -161,7 +163,8 @@ export function calculateResults(inputs, extra_inputs, language) {
         // Main d'oeuvre
         __: ["", "_Main d'oeuvre", ""],
 
-        temps_par_cep: [temps_par_cep, "Temps passe par cep", "secondes", 0],
+        temps_par_cep: [temps_par_cep, "Temps passe par cep", "secondes", 1],
+        ceps_par_heure: [ceps_par_heure, "Ceps par heure", "ceps/heures", 0],
         temps_par_cep_corrige: [temps_par_cep_corrige, "Temps par cep corrige (incluant changement de bobine)", "secondes", 0],
         temps_attache_journalier: [temps_attache_journalier, "Temps d'attache journalier (pour N outils)", "secondes", 0],
         ceps_par_jour: [ceps_par_jour, "Ceps par jours attaches", "ceps", 0],
@@ -172,7 +175,7 @@ export function calculateResults(inputs, extra_inputs, language) {
         nombre_de_jours_parcelle: [nombre_de_jours_parcelle, "Nombre de jours pour faire la parcelle", "jours", 0],
         ___: ["", "_Total LEA30s", ""],
         prix_achat_outils: [prix_achat_outils, "Prix d'achat outils (investissement)", "euros", 2],
-        prix_consommable_bis: [prix_consommable, "Prix du consommable", "euros", 2],
+        prix_consommable_bis: [prix_consommable, "Prix du consommable (bobines+revisions)", "euros", 2],
         prix_main_d_oeuvre_bis: [prix_main_d_oeuvre, "Prix de la main d'oeuvre", "euros", 2],
         nombre_de_jours_parcelle_bis: [nombre_de_jours_parcelle, "Nombre de jour pour faire la parcelle", "jours", 1],
         cout_total: [cout_total, "Cout total annuel (hors investissement outils)", "euros", 2]

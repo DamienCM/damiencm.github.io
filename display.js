@@ -7,6 +7,44 @@ const SOLUTION_COLORS = color_theme.SOLUTION_COLORS;
 const LEA30_PIE_COLORS = color_theme.LEA30_PIE_COLORS;
 const MAIN_PIE_COLOR = color_theme.MAIN_PIE_COLOR;
 const EMBARQUE_PIE_COLORS = color_theme.EMBARQUE_PIE_COLORS;
+let showMoreButtonRaw = null;
+let showLessButtonRaw = null;
+let showMoreLessPieChart = null;
+let pieChartContainer = null;
+
+
+function addData(chart, newData) {
+    // chart.data.labels.push(label);
+    // chart.data.datasets.forEach((dataset) => {
+    //     dataset.data.push(newData.dataset);
+    // });
+    chart.data = newData;
+    chart.update();
+    return chart;
+}
+
+function addDataPieChart(chart, newData) {
+    // chart.data.labels.push(label);
+    chart.data = newData;
+    chart.update();
+    return chart;
+}
+
+function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+    return chart;
+}
+
+function change_options(chart, new_options) {
+    chart.options = new_options;
+    chart.update();
+    return chart;
+}
+
 
 
 export function loadInputFields(language) {
@@ -125,48 +163,58 @@ export function displayResultsRaw(results, language) {
     const buttonsContainer = document.createElement('div');
     buttonsContainer.classList.add('results-buttons');
 
-    const showMoreButton = document.createElement('p');
-    showMoreButton.classList.add('text-primary');
-    showMoreButton.style.cursor = 'pointer';
-    showMoreButton.textContent = "+ Voir plus d'informations sur les résultats";
-
-    const showLessButton = document.createElement('p');
-    showLessButton.classList.add('text-primary');
-    showLessButton.style.cursor = 'pointer';
-    showLessButton.textContent = "- Voir moins d'informations sur les résultats";
-    showLessButton.style.display = 'none'; // Caché par défaut
+    if (showMoreButtonRaw === null) {
+        showMoreButtonRaw = document.createElement('p');
+        showMoreButtonRaw.classList.add('text-primary');
+        showMoreButtonRaw.style.cursor = 'pointer';
+        showMoreButtonRaw.textContent = "+ Voir plus d'informations sur les résultats";
+        showMoreButtonRaw.style.display = 'inline';
+    }
+    if (showLessButtonRaw === null) {
+        showLessButtonRaw = document.createElement('p');
+        showLessButtonRaw.classList.add('text-primary');
+        showLessButtonRaw.style.cursor = 'pointer';
+        showLessButtonRaw.textContent = "- Voir moins d'informations sur les résultats";
+        showLessButtonRaw.style.display = 'none'; // Caché par défaut
+    }
 
     // Gestion des clics sur les boutons
-    showMoreButton.onclick = () => {
+    showMoreButtonRaw.onclick = () => {
         hiddenSections.forEach(section => section.classList.add('visible')); // Ajoute la classe 'visible'
-        showMoreButton.style.display = 'none'; // Cache le bouton "voir plus"
-        showLessButton.style.display = 'inline'; // Affiche le bouton "voir moins"
+        showMoreButtonRaw.style.display = 'none'; // Cache le bouton "voir plus"
+        showLessButtonRaw.style.display = 'inline'; // Affiche le bouton "voir moins"
     };
 
-    showLessButton.onclick = () => {
+    showLessButtonRaw.onclick = () => {
         hiddenSections.forEach(section => section.classList.remove('visible')); // Retire la classe 'visible'
-        showLessButton.style.display = 'none'; // Cache le bouton "voir moins"
-        showMoreButton.style.display = 'inline'; // Réaffiche le bouton "voir plus"
+        showLessButtonRaw.style.display = 'none'; // Cache le bouton "voir moins"
+        showMoreButtonRaw.style.display = 'inline'; // Réaffiche le bouton "voir plus"
     };
 
     // Ajoutez les boutons après le titre "Résultats"
-    buttonsContainer.appendChild(showMoreButton);
-    buttonsContainer.appendChild(showLessButton);
+    buttonsContainer.appendChild(showMoreButtonRaw);
+    buttonsContainer.appendChild(showLessButtonRaw);
 
     const resultsTitle = document.getElementById('results-title');
     resultsTitle.insertAdjacentElement('afterend', buttonsContainer); // Insère les boutons après le titre "Résultats"
 
     // Initialisation des sections cachées
-    hiddenSections.forEach(section => section.classList.remove('visible')); // Masque les sections
+    if (showMoreButtonRaw.style.display === 'inline') { //menu contracte
+        // console.log("masquer les sections")
+        hiddenSections.forEach(section => section.classList.remove('visible')); // Masque les sections
+    }
+    else {
+        hiddenSections.forEach(section => section.classList.add('visible')); // Masque les sections
+    }
 }
 
 // Fonction pour afficher un graphique en barres empilées
-export function displayResultsBarGraph(chart_data) {
+export function displayResultsBarGraph(chart_data, bar_graph) {
     const ctx = document.getElementById('bar-chart').getContext('2d');
-    console.log(chart_data["LEA30S"].cout_consommable);
-    console.log(chart_data["LEA30S"].cout_main_d_oeuvre);
-    console.log(chart_data["LEA30S"].cout_total);
-    console.log(SOLUTION_COLORS[0].backgroundColor);
+    // console.log(chart_data["LEA30S"].cout_consommable);
+    // console.log(chart_data["LEA30S"].cout_main_d_oeuvre);
+    // console.log(chart_data["LEA30S"].cout_total);
+    // console.log(SOLUTION_COLORS[0].backgroundColor);
     let data = {
         labels: ['LEA30s', 'Outil à bobine embarquée', 'Attache manuelle'],
         datasets: [
@@ -237,12 +285,19 @@ export function displayResultsBarGraph(chart_data) {
     };
 
     // Création du graphique
-    const bar_graph = new Chart(ctx, {
-        type: 'bar',
-        data,
-        options
-    });
-
+    if (bar_graph === null) {
+        // console.log("Creating new graph");
+        bar_graph = new Chart(ctx, {
+            type: 'bar',
+            data,
+            options
+        });
+    }
+    else { // Edition du graph
+        // console.log("Changing graph data");
+        bar_graph = removeData(bar_graph);
+        bar_graph = addData(bar_graph, data);
+    }
     // Fonction pour gérer la visibilité des solutions
     function toggleSolution(index, visible) {
         // Met à jour le dataset correspondant uniquement
@@ -280,7 +335,7 @@ export function displayResultsBarGraph(chart_data) {
 }
 
 // Fonction pour afficher un graphique en courbes
-export function displayResultsCurveGraph(chart_data) {
+export function displayResultsCurveGraph(chart_data, curve_chart) {
     const ctx = document.getElementById('curve-chart').getContext('2d');
 
     // Données fictives pour 3 solutions
@@ -351,13 +406,19 @@ export function displayResultsCurveGraph(chart_data) {
         }
     };
 
-    // Création du graphique
-    const curve_chart = new Chart(ctx, {
-        type: 'line',
-        data,
-        options
-    });
-
+    if (curve_chart === null) {
+        // Création du graphique
+        curve_chart = new Chart(ctx, {
+            type: 'line',
+            data,
+            options
+        });
+    }
+    else { // Edition du graph
+        // console.log("Changing graph data");
+        curve_chart = removeData(curve_chart);
+        curve_chart = addData(curve_chart, data);
+    }
     // Initialisation et gestion de la visibilité des courbes avec les checkboxes
     const solutions = [
         { checkboxId: 'lea30-checkbox', datasetIndex: 0 },
@@ -379,59 +440,68 @@ export function displayResultsCurveGraph(chart_data) {
     });
 
     curve_chart.update(); // Applique les modifications initiales
+    return curve_chart;
 }
 
-export function displayPieCharts(chart_data) {
+export function displayPieCharts(chart_data, pie_charts) {
+    if (pie_charts === null) {
+        pie_charts = [
+            [null, null],
+            [null, null],
+            [null, null]
+        ];
+    }
     // Conteneurs des graphiques pour chaque solution
-    const solutions = [
+    let solutions = [
         { name: 'LEA30', checkboxId: 'lea30-checkbox', containerId: 'lea30-pie-container', main: 'pie-chart-lea30-main', consommable: 'pie-chart-lea30-consommable', colors: LEA30_PIE_COLORS, name_fancy: "LEA30s" },
         { name: 'EMBARQUE', checkboxId: 'bobine-embarquee-checkbox', containerId: 'bobine-pie-container', main: 'pie-chart-bobine-main', consommable: 'pie-chart-bobine-consommable', colors: EMBARQUE_PIE_COLORS, name_fancy: "Outil à bobine embarquée" },
         { name: 'MAIN', checkboxId: 'manuelle-checkbox', containerId: 'manuelle-pie-container', main: 'pie-chart-manuelle-main', consommable: 'pie-chart-manuelle-consommable', colors: MAIN_PIE_COLOR, name_fancy: "Attache manuelle" }
     ];
 
     // Données fictives pour les détails
-    const detailsMainOeuvre = {
+    let detailsMainOeuvre = {
         LEA30: chart_data.LEA30S.detail_main_d_oeuvre, // Exemple : [Temps attache, Temps pause]
         EMBARQUE: chart_data.EMBARQUE.detail_main_d_oeuvre,
         MAIN: chart_data.MAIN.detail_main_d_oeuvre
     };
-    const labelMainOeuvre = chart_data.LEA30S.detail_main_d_oeuvre_label;
-    const labelConsommable = chart_data.LEA30S.detail_consommable_label;
+    let labelMainOeuvre = chart_data.LEA30S.detail_main_d_oeuvre_label;
+    let labelConsommable = chart_data.LEA30S.detail_consommable_label;
 
-    const detailsConsommable = {
+    let detailsConsommable = {
         LEA30: chart_data.LEA30S.detail_consommable, // Exemple : [Corde, Autres consommables]
         EMBARQUE: chart_data.EMBARQUE.detail_consommable,
         MAIN: chart_data.MAIN.detail_consommable
     };
 
-    const options = {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Répartition des coûts',
-                font: {
-                    size: 18 // Taille de la police en pixels
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        const label = tooltipItem.label || '';
-                        const value = tooltipItem.raw; // Accède à la valeur brute
-                        return `${label}: ${value} €`; // Ajoute l'unité ici
-                    }
-                }
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false
-    };
+    // OUTDATED ?
+    // let options = {
+    //     plugins: {
+    //         title: {
+    //             display: true,
+    //             text: 'Répartition des coûts',
+    //             font: {
+    //                 size: 18 // Taille de la police en pixels
+    //             }
+    //         },
+    //         tooltip: {
+    //             callbacks: {
+    //                 label: function (tooltipItem) {
+    //                     let label = tooltipItem.label || '';
+    //                     let value = tooltipItem.raw; // Accède à la valeur brute
+    //                     return `${label}: ${value} €`; // Ajoute l'unité ici
+    //                 }
+    //             }
+    //         }
+    //     },
+    //     responsive: true,
+    //     maintainAspectRatio: false
+    // };
 
     // Fonction pour trier les données d'un PieChart
     function sortPieChartData(chartData) {
         // Regroupe les données et les étiquettes
-        console.log(chartData);
-        const combined = chartData.labels.map((label, index) => ({
+        // console.log(chartData);
+        let combined = chartData.labels.map((label, index) => ({
             label: label,
             value: chartData.datasets[0].data[index],
             color: chartData.datasets[0].backgroundColor[index]
@@ -448,13 +518,14 @@ export function displayPieCharts(chart_data) {
         return chartData;
     }
 
+    let i = 0;
     // Crée les camemberts pour chaque solution
     solutions.forEach(solution => {
-        const ctxMain = document.getElementById(solution.main).getContext('2d');
-        const ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
+        let ctxMain = document.getElementById(solution.main).getContext('2d');
+        let ctxConsommable = document.getElementById(solution.consommable).getContext('2d');
 
         // Données pour le détail main d'œuvre
-        const mainOeuvreData = {
+        let mainOeuvreData = {
             labels: labelMainOeuvre,
             datasets: [{
                 data: detailsMainOeuvre[solution.name],
@@ -463,7 +534,7 @@ export function displayPieCharts(chart_data) {
         };
 
         // Données pour le détail consommable
-        const consommableData = {
+        let consommableData = {
             labels: labelConsommable,
             datasets: [{
                 data: detailsConsommable[solution.name],
@@ -472,65 +543,79 @@ export function displayPieCharts(chart_data) {
         };
 
         // Trie des données
-        const sortedMainOeuvreData = sortPieChartData(mainOeuvreData);
-        const sortedConsommableData = sortPieChartData(consommableData);
+        let sortedMainOeuvreData = sortPieChartData(mainOeuvreData);
+        let sortedConsommableData = sortPieChartData(consommableData);
 
+        let options_consommable = {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: { display: true, text: `Consommable`, font: { size: 18 } },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            let label = tooltipItem.label || '';
+                            let value = tooltipItem.raw; // Accède à la valeur brute
+                            return `${label}: ${value} €`; // Ajoute l'unité ici
+                        }
+                    }
+                }
+            }
+        }
+
+        let options_main_d_oeuvre = {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            let label = tooltipItem.label || '';
+                            let value = tooltipItem.raw; // Accède à la valeur brute
+                            return `${label}: ${value} h`; // Ajoute l'unité ici
+                        }
+                    }
+                }
+            }
+        }
         // Création du camembert pour Main d'œuvre
-        new Chart(ctxMain, {
-            type: 'pie',
-            data: sortedMainOeuvreData,
-            options: {
-                ...options, plugins: {
-                    legend: {
-                        display : false
-                    },
-                    title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
-                    tooltip: {
-                        callbacks: {
-                            label: function (tooltipItem) {
-                                const label = tooltipItem.label || '';
-                                const value = tooltipItem.raw; // Accède à la valeur brute
-                                return `${label}: ${value} h`; // Ajoute l'unité ici
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        if (pie_charts[i][0] === null) {
+            pie_charts[i][0] = new Chart(ctxMain, {
+                type: 'pie',
+                data: sortedMainOeuvreData,
+                options: options_main_d_oeuvre
+            });
 
-        // Création du camembert pour Consommable
-        new Chart(ctxConsommable, {
-            type: 'pie',
-            data: sortedConsommableData,
-            options: {
-                ...options, plugins: {
-                    legend: {
-                        display : false
-                    },
-                    title: { display: true, text: `Consommable`, font: { size: 18 } },
-                    tooltip: {
-                        callbacks: {
-                            label: function (tooltipItem) {
-                                const label = tooltipItem.label || '';
-                                const value = tooltipItem.raw; // Accède à la valeur brute
-                                return `${label}: ${value} €`; // Ajoute l'unité ici
-                            }
-                        }
-                    }
-                }
-            }
-        });
+            // Création du camembert pour Consommable
+            pie_charts[i][1] = new Chart(ctxConsommable, {
+                type: 'pie',
+                data: sortedConsommableData,
+                options: options_consommable
+            });
+        }
+        else {
+            pie_charts[i][0] = removeData(pie_charts[i][0]);
+            pie_charts[i][1] = removeData(pie_charts[i][1]);
+            pie_charts[i][0] = addDataPieChart(pie_charts[i][0], sortedMainOeuvreData);
+            pie_charts[i][1] = addDataPieChart(pie_charts[i][1], sortedConsommableData);
+            pie_charts[i][0] = change_options(pie_charts[i][0], options_main_d_oeuvre);
+            pie_charts[i][1] = change_options(pie_charts[i][1], options_consommable);
+        }
+        i = i + 1;
     });
 
     // Gestion de la visibilité des camemberts avec les checkboxes
     function togglePieCharts(solutionIndex, visible) {
-        const container = document.getElementById(solutions[solutionIndex].containerId);
+        let container = document.getElementById(solutions[solutionIndex].containerId);
         container.style.display = visible ? 'flex' : 'none';
     }
 
     // Initialisation des camemberts avec les états des checkboxes
     solutions.forEach((solution, index) => {
-        const checkbox = document.getElementById(solution.checkboxId);
+        let checkbox = document.getElementById(solution.checkboxId);
         togglePieCharts(index, checkbox.checked);
 
         // Attache l'événement de changement
@@ -540,19 +625,23 @@ export function displayPieCharts(chart_data) {
     });
 
     // Texte Cliquable "Voir plus / Voir moins"
-    const toggleText = document.getElementById('toggle-pie-charts');
-    const container = document.getElementById('pie-charts-container');
 
-    toggleText.addEventListener('click', function () {
-        if (container.classList.contains('visible')) {
-            container.classList.remove('visible'); // Réduit avec transition
-            toggleText.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
-        } else {
-            container.classList.add('visible'); // Étend avec transition
-            toggleText.textContent = '- Voir moins';
-        }
-    });
+    if (showMoreLessPieChart === null) {
+        showMoreLessPieChart = document.getElementById('toggle-pie-charts');
+        pieChartContainer = document.getElementById('pie-charts-container');
+        showMoreLessPieChart.addEventListener('click', function () {
+            if (pieChartContainer.classList.contains('visible')) {
+                pieChartContainer.classList.remove('visible'); // Réduit avec transition
+                showMoreLessPieChart.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
+            } else {
+                pieChartContainer.classList.add('visible'); // Étend avec transition
+                showMoreLessPieChart.textContent = '- Voir moins';
+            }
+        });
+    }
 
+
+    return pie_charts;
 
 }
 
