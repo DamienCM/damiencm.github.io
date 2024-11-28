@@ -32,6 +32,7 @@ export function calculateResults(inputs, extra_inputs, language) {
     // Calculs exhaustifs du consommable
     let total_pieds = pieds_par_ha * superficie;
     let total_attaches = total_pieds * attaches_par_pieds;
+    let total_attaches_par_outil = total_attaches/nombre_outils;
     let total_longueur_fil = 157e-3 * total_attaches;
     let nombre_total_bobines = total_attaches / bobines[type_de_bobine].Nombre_lien_bobine;
     let nombre_total_bobines_embarque = total_attaches / bobines[type_de_bobine].Nombre_lien_bobine_embarque;
@@ -39,12 +40,24 @@ export function calculateResults(inputs, extra_inputs, language) {
     let prix_par_bobine = bobines[type_de_bobine].Prix;
     let prix_par_bobine_embarque = bobines[type_de_bobine].Prix_embarque;
     let prix_par_bobine_main = bobines[type_de_bobine].Prix_main;
+    let prix_par_hectare_bobine = nombre_total_bobines/superficie;
+    let prix_par_hectare_bobine_embarquee = nombre_total_bobines_embarque/superficie;
+    let prix_par_hectare_bobine_main = nombre_total_bobines_main/superficie;
 
     let prix_total_bobines = prix_par_bobine * nombre_total_bobines;
+    let prix_du_lien = prix_par_bobine /bobines[type_de_bobine].Nombre_lien_bobine;
     let prix_total_bobines_embarque = prix_par_bobine_embarque * nombre_total_bobines_embarque;
+    let prix_du_lien_embarque = prix_par_bobine_embarque /bobines[type_de_bobine].Nombre_lien_bobine_embarque;
     let prix_total_bobines_main = prix_par_bobine_main * nombre_total_bobines_main;
-    let prix_consommable = prix_total_bobines + frais_revision * nombre_outils;
-    let prix_consommable_embarque = prix_total_bobines_embarque + frais_revision_embarque * nombre_outils;
+    let prix_du_lien_main = prix_par_bobine_main /bobines[type_de_bobine].Nombre_lien_bobine_main;
+    let prix_total_bobines_par_ha = prix_total_bobines/superficie;
+    let prix_total_bobines_embarque_par_ha = prix_total_bobines_embarque/superficie;
+    let prix_total_bobines_main_par_ha = prix_total_bobines_main/superficie;
+
+    let prix_revision_total = frais_revision * nombre_outils
+    let prix_revision_total_embarque = frais_revision_embarque * nombre_outils
+    let prix_consommable = prix_total_bobines + prix_revision_total;
+    let prix_consommable_embarque = prix_total_bobines_embarque + prix_revision_total_embarque;
     let prix_consommable_main = prix_total_bobines_main + frais_revision_main * nombre_outils;
 
     let facteur_embarquee = 567/505; // cf revue LaVigne mars 2015 11%
@@ -129,8 +142,11 @@ export function calculateResults(inputs, extra_inputs, language) {
     let prix_achat_outils_main = nombre_outils * prix_outil_main;
 
     let cout_total = prix_consommable + prix_main_d_oeuvre;
+    let cout_total_par_ha = cout_total/superficie;
     let cout_total_embarque = prix_consommable_embarque + prix_main_d_oeuvre_embarque;
+    let cout_total_embarque_par_ha = cout_total_embarque/superficie;
     let cout_total_main = prix_consommable_main + prix_main_d_oeuvre_main;
+    let cout_total_main_par_ha = cout_total_main/superficie;
 
     let results_lea = {         //Value                                     //Display                                       // Units             //Chiffres significatifs
         ____: ["", "_ Entrées", ""],
@@ -138,9 +154,9 @@ export function calculateResults(inputs, extra_inputs, language) {
         pieds_par_ha: [pieds_par_ha, "Pieds de vigne par hectare", "pieds/ha", 0],
         attaches_par_pieds: [attaches_par_pieds, "Attaches par pieds", "attaches/pied", 0],
         couts_horaire_salarie: [couts_horaire_salarie, "Cout horaire d'un salarie", "euros/heure", 0],
-        couts_seconde_salarie: [couts_seconde_salarie, "Cout seconde d'un salarie", "euros/seconde", 3],
+        // couts_seconde_salarie: [couts_seconde_salarie, "Cout seconde d'un salarie", "euros/seconde", 3],
         nombre_outils: [nombre_outils, "Nombre d'outils", "outils", 0],
-        type_de_bobine: [type_de_bobine, "Type de bobine", "type", 0],
+        // type_de_bobine: [type_de_bobine, "Type de bobine", "type", 0],
         temps_deplacement_entre_ceps: [temps_deplacement_entre_ceps, "Temps de deplacement entre les ceps", "seconde", 1],
         temps_cycle_outil: [temps_cycle_outil, "Temps de cycle de l'outil", "seconde", 1],
         temps_changement_bobine: [temps_changement_bobine, "Temps pour changer de bobine", "seconde", 0],
@@ -151,18 +167,23 @@ export function calculateResults(inputs, extra_inputs, language) {
         temps_mise_en_route: [temps_mise_en_route, "Temps de mise en route", "secondes", 0],
         prix_outil: [prix_outil, "Prix de l'outil", "euros", 0],
         frais_revision: [frais_revision, "Frais de revision", "euros", 0],
+        
         _: ["", "_Consommable", ""],
         // Calculs exhaustifs du consommable
+        prix_achat_outils: [prix_achat_outils, "Prix d'achat outils (investissement)", "euros", 2],
         total_pieds: [total_pieds, "Total de pieds sur la parcelle", "pieds", 0],
         total_attaches: [total_attaches, "Total d'attaches", "attaches", 0],
-        total_longueur_fil: [total_longueur_fil, "Longueur de fil total requise", "metres", 0],
+        total_attaches_par_outil: [total_attaches_par_outil, "Total d'attaches par outils", "attaches", 0],
+        prix_du_lien: [prix_du_lien, "Prix par lien", "euros", 5],
+        // total_longueur_fil: [total_longueur_fil, "Longueur de fil total requise", "metres", 0],
         nombre_total_bobines: [nombre_total_bobines, "Nombre total de bobines requises", "bobines", 0],
         prix_par_bobine: [prix_par_bobine, "Prix par bobine", "euros/bobine", 2],
         prix_total_bobines: [prix_total_bobines, "Prix total des bobines", "euros", 2],
-        prix_consommable: [prix_consommable, "Prix du total consommable (revision+bobines)", "euros", 2],
+        prix_revision_total: [prix_revision_total, "Prix total des revisions outils", "euros", 2],
+        // prix_consommable: [prix_consommable, "Prix du total consommable (revision+bobines)", "euros", 2],
+        
         // Main d'oeuvre
         __: ["", "_Main d'oeuvre", ""],
-
         temps_par_cep: [temps_par_cep, "Temps passe par cep", "secondes", 1],
         ceps_par_heure: [ceps_par_heure, "Ceps par heure", "ceps/heures", 0],
         temps_par_cep_corrige: [temps_par_cep_corrige, "Temps par cep corrige (incluant changement de bobine)", "secondes", 0],
@@ -172,11 +193,17 @@ export function calculateResults(inputs, extra_inputs, language) {
         bobines_par_jour: [bobines_par_jour, "Bobines ecoulees par jour", "bobines", 1],
         // nombre_de_jours_parcelle:[nombre_de_jours_parcelle,"nombre_de_jours_parcelle","jours"],
         prix_main_d_oeuvre: [prix_main_d_oeuvre, "Prix de la main d'oeuvre", "euros", 2],
+        cout_total_par_ha: [cout_total_par_ha, "Cout total par ha", "euros/ha", 1],
         nombre_de_jours_parcelle: [nombre_de_jours_parcelle, "Nombre de jours pour faire la parcelle", "jours", 0],
-        ___: ["", "_Total LEA30s", ""],
-        prix_achat_outils: [prix_achat_outils, "Prix d'achat outils (investissement)", "euros", 2],
-        prix_consommable_bis: [prix_consommable, "Prix du consommable (bobines+revisions)", "euros", 2],
         prix_main_d_oeuvre_bis: [prix_main_d_oeuvre, "Prix de la main d'oeuvre", "euros", 2],
+        
+        ___: ["", "_Total LEA30s", ""],
+        // prix_consommable_bis: [prix_consommable, "Prix du consommable (bobines+revisions)", "euros", 2],
+        prix_total_bobines_par_ha: [prix_total_bobines_par_ha, "Cout bobines a l'hectare", "euros", 2],
+        prix_total_bobines_bis: [prix_total_bobines, "Prix total des bobines", "euros", 2],
+        nombre_total_bobines_bis: [nombre_total_bobines, "Nombre total de bobines", "bobines", 0],
+        ceps_par_jour_bis: [ceps_par_jour, "Pieds par jours", "pieds/jours",0],
+        ceps_par_heure_corrige_bis: [ceps_par_heure_corrige, "Pieds par heure", "pieds/heure",1],
         nombre_de_jours_parcelle_bis: [nombre_de_jours_parcelle, "Nombre de jour pour faire la parcelle", "jours", 1],
         cout_total: [cout_total, "Cout total annuel (hors investissement outils)", "euros", 2]
         //

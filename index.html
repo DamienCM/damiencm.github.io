@@ -17,6 +17,7 @@
     <link rel="icon" sizes="192x192" href="icons/mage-agri.png">
     <!-- CSS et JS -->
     <link rel="stylesheet" href="calcul.css">
+    <link rel="stylesheet" href="contextual-modals.css">
     <script src="chart.js"></script>
 </head>
 
@@ -79,6 +80,23 @@
                 calcul
             </button>
         </form>
+
+        <!-- Modal Danger -->
+        <div class="modal fade modal-danger" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dangerModalLabel">Attention !</h5>
+                        <button id ="close-warning" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="dangerModalBody">
+                        Ceci est un modal de type danger. Veuillez faire attention !
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="bootstrap.bundle.min.js"></script>
 
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>

@@ -7,10 +7,20 @@ const SOLUTION_COLORS = color_theme.SOLUTION_COLORS;
 const LEA30_PIE_COLORS = color_theme.LEA30_PIE_COLORS;
 const MAIN_PIE_COLOR = color_theme.MAIN_PIE_COLOR;
 const EMBARQUE_PIE_COLORS = color_theme.EMBARQUE_PIE_COLORS;
+const WARNING_KEY_NBR_JRS = "temps_parcelle";
+const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
+
+const WARNING_MESSAGES_JRS = ["Attention !", "Temps pour la parcelle important : "];
+const WARNING_MESSAGES_ATTACHES = ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "];
+const modalElement = document.getElementById('dangerModal');
+let dangerModalBody = document.getElementById("dangerModalBody");
+let dangerModalLabel = document.getElementById("dangerModalLabel");
 let showMoreButtonRaw = null;
 let showLessButtonRaw = null;
 let showMoreLessPieChart = null;
 let pieChartContainer = null;
+
+
 
 
 function addData(chart, newData) {
@@ -700,4 +710,32 @@ export function toggleTooltip(element) {
         // Sur PC, le tooltip est géré par le survol (CSS `hover`)
         return;
     }
+}
+
+
+export function displayWarning(warning_type, display_data) {
+    //log
+    // console.log('Warning message display');
+    // Crée une instance de modal Bootstrap
+    let myModal = new bootstrap.Modal(modalElement);
+    switch (warning_type) {
+        case WARNING_KEY_NBR_JRS:
+            dangerModalLabel.textContent = WARNING_MESSAGES_JRS[0];
+            dangerModalBody.textContent = WARNING_MESSAGES_JRS[1] + display_data[0].toFixed(0) + " jours";
+            // Quand le modal se ferme, appeler récursivement pour le suivant
+            break;
+
+        case WARNING_KEY_NBR_ATTACHES:
+            dangerModalLabel.textContent = WARNING_MESSAGES_ATTACHES[0];
+            dangerModalBody.textContent = WARNING_MESSAGES_ATTACHES[1] + display_data[0].toFixed(0) + " attaches";
+            break;
+
+
+        default:
+            break;
+    }
+
+    // Affiche le modal
+    myModal.show();
+    return myModal;
 }

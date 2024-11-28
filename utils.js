@@ -1,5 +1,9 @@
+import { displayWarning } from "./display.js";
 import { dictionary } from "./lang/dictionnary.js";
 
+let stack = [];
+let modal = null;
+let button = null;
 
 export function getMinValueFromData(datasets) {
     let minValue = Infinity;
@@ -65,4 +69,29 @@ export function validateInputs(language) {
     }
 
     return allValid;
+}
+
+export function manageStack(fstack){
+    // recursive function
+    
+    setTimeout(() => {
+        stack = fstack;
+        console.log("manage stack called, stack length = ");
+        console.log(stack.length);
+        if (stack.length===1){
+            displayWarning(stack[0][0],stack[0][1]);
+            stack.shift();
+        }
+        if (stack.length>=2){
+            modal = displayWarning(fstack[0][0],fstack[0][1]);
+            button =  document.getElementById("close-warning");
+            stack.shift();
+            button.addEventListener("click",function(){
+                manageStack(stack);
+            });
+
+        }    
+    },200);
+    return stack;
+
 }

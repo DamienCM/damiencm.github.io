@@ -8,10 +8,19 @@ import { toggleDropdown } from "./display.js";
 import * as chart from "./chart.js";
 import * as calcul from "./calcul.js";
 
+const WARNING_THRESHOLD_NBR_JRS = 40;
+const WARNING_THRESHOLD_NBR_ATTACHES = 300000;
+const WARNING_KEY_NBR_JRS = "temps_parcelle";
+const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
+
+
 let language = 'fr';
 let bar_graph = null;
 let curve_chart = null;
 let pie_charts=null;
+let warningModal = null;
+let stackWarnings = [];
+
 
 function init_document(){
     // Masquer les tooltips si l’utilisateur clique ailleurs
@@ -68,6 +77,14 @@ function launchCalculation() {
         // Appel de la fonction
         pie_charts = display.displayPieCharts(chart_data, pie_charts);
         
+        if (results.nombre_de_jours_parcelle[0]>=WARNING_THRESHOLD_NBR_JRS){
+            stackWarnings.push([WARNING_KEY_NBR_JRS,[results.nombre_de_jours_parcelle[0]]]);
+        }
+
+        if (results.total_attaches_par_outil[0]>WARNING_THRESHOLD_NBR_ATTACHES){
+            stackWarnings.push([WARNING_KEY_NBR_ATTACHES,[results.total_attaches_par_outil[0]]]);
+        }
+        stackWarnings = utils.manageStack(stackWarnings);
         // saveResultsAsJson(inputs, results);
     }
     else {
