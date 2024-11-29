@@ -69,9 +69,10 @@ function launchCalculation() {
         let inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
         let extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
         let [results,chart_data] = calcul.calculateResults(inputs, extra_inputs,language);
+        let state_checkboxes = 
         display.displayResultsRaw(results,language);
         // console.log(bar_graph);
-        bar_graph =  display.displayResultsBarGraph(chart_data, bar_graph);
+        bar_graph =  display.displayResultsBarGraph(chart_data, bar_graph,state_checkboxes);
         curve_chart = display.displayResultsCurveGraph(chart_data,curve_chart);
         
         // Appel de la fonction

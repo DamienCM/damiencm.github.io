@@ -22,7 +22,15 @@
 </head>
 
 <body>
-
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <a href="https://mage-agri.com/" title="Accueil" class="logo">
+                <img src="icons/logo-mage-agri-noir.svg"
+                    alt="logo mage agri blanc">
+            </a>
+        </div>
+    </div>
+    <div class="col-xs-12" style="height:50px;"></div>
     <div class="container">
         <div class="d-flex justify-content-between mt-3">
             <h2 id="page-title">Calculateur</h2>
@@ -71,11 +79,7 @@
             </div>
 
             <div id="error-message" class="text-danger mb-3"></div>
-            <div id="chart-options" class="mb-3">
-                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 </label>
-                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée </label>
-                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle </label>
-            </div>
+
             <button type="button" id="calculate-button" class="btn btn-primary">Lancer le
                 calcul
             </button>
@@ -88,7 +92,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="dangerModalLabel">Attention !</h5>
-                        <button id ="close-warning" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button id="close-warning" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="dangerModalBody">
                         Ceci est un modal de type danger. Veuillez faire attention !
@@ -101,6 +106,12 @@
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>
             <div id="results-summary"></div>
+            <h4 id="page-title">Outils a comparer :</h4>
+            <div id="chart-options" class="mb-3">
+                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 </label>
+                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée </label>
+                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle </label>
+            </div>
             <div id="bar-chart-container">
                 <canvas id="bar-chart"></canvas>
             </div>

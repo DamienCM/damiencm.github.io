@@ -1,14 +1,14 @@
 // Palette de couleurs pour les solutions
 export const SOLUTION_COLORS = [
     {
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.8)', // LEA30s
-        backgroundColorLight: 'rgba(54, 162, 235, 0.2)' // LEA30s (light)
+        borderColor: '#B5D746',
+        backgroundColor: '#B5D746', // LEA30s
+        backgroundColorLight: 'rgba(217, 236, 138, 0.5)' // LEA30s (light)
     },
     {
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.8)', // Outil à bobine embarquée
-        backgroundColorLight: 'rgba(255, 99, 132, 0.2)' // Outil à bobine embarquée (light)
+        borderColor: '#F2921C',
+        backgroundColor: '#F2921C', // Outil à bobine embarquée
+        backgroundColorLight: 'rgba(252,213,158,0.5)' // Outil à bobine embarquée (light)
     },
     {
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -18,23 +18,25 @@ export const SOLUTION_COLORS = [
 ];
 
 export const LEA30_PIE_COLORS = [
-    'rgba(54, 162, 235, 0.8)',
-    'rgba(75, 192, 245, 0.8)',
-    'rgba(40, 140, 210, 0.8)',
-    'rgba(130, 202, 255, 0.8)',
-    'rgba(90, 150, 210, 0.8)',
-    'rgba(30, 120, 200, 0.8)',
-    'rgba(80, 170, 250, 0.8)'
+    '#97BF0D',
+    '#B5D746',
+    '#D9EC8A',
+    '#769309',
+    '#586E07',
+    '#350DBF',
+    '#6A46D7',
+    '#260993',
 ]
 
 export const EMBARQUE_PIE_COLORS = [
-    'rgba(255, 99, 132, 0.8)',
-    'rgba(255, 120, 150, 0.8)',
-    'rgba(235, 50, 85, 0.8)',
-    'rgba(255, 150, 170, 0.8)',
-    'rgba(210, 70, 130, 0.8)',
-    'rgba(200, 40, 80, 0.8)',
-    'rgba(255, 120, 100, 0.8)'
+    '#F2921C',
+    '#FAB259',
+    '#FCD59E',
+    '#C17317',
+    '#8A5612',
+    '#1C69F2',
+    '#5990FA',
+    '#144DC1'
 ]
 
 export const MAIN_PIE_COLOR = [

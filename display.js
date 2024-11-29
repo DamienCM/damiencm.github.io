@@ -177,7 +177,7 @@ export function displayResultsRaw(results, language) {
         showMoreButtonRaw = document.createElement('p');
         showMoreButtonRaw.classList.add('text-primary');
         showMoreButtonRaw.style.cursor = 'pointer';
-        showMoreButtonRaw.textContent = "+ Voir plus d'informations sur les résultats";
+        showMoreButtonRaw.textContent = "+ Voir plus de donnees chiffrees ";
         showMoreButtonRaw.style.display = 'inline';
     }
     if (showLessButtonRaw === null) {
@@ -219,7 +219,7 @@ export function displayResultsRaw(results, language) {
 }
 
 // Fonction pour afficher un graphique en barres empilées
-export function displayResultsBarGraph(chart_data, bar_graph) {
+export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) {
     const ctx = document.getElementById('bar-chart').getContext('2d');
     // console.log(chart_data["LEA30S"].cout_consommable);
     // console.log(chart_data["LEA30S"].cout_main_d_oeuvre);
@@ -294,6 +294,7 @@ export function displayResultsBarGraph(chart_data, bar_graph) {
         }
     };
 
+
     // Création du graphique
     if (bar_graph === null) {
         // console.log("Creating new graph");
@@ -311,14 +312,43 @@ export function displayResultsBarGraph(chart_data, bar_graph) {
     // Fonction pour gérer la visibilité des solutions
     function toggleSolution(index, visible) {
         // Met à jour le dataset correspondant uniquement
-        bar_graph.data.datasets[0].data[index] = visible
-            ? chart_data[Object.keys(chart_data)[index]].cout_consommable
-            : 0; // Met à jour uniquement la valeur "Consommable"
+        let checked = [
+            document.getElementById(solutions[0].checkboxId).checked,
+            document.getElementById(solutions[1].checkboxId).checked,
+            document.getElementById(solutions[2].checkboxId).checked
+        ];
+        let display_labels = [];
+        let dataset_consommable = [];
+        let dataset_main_oeuvre = [];
+        let bg_colors_consommable = [];
+        let bg_colors_main_oeuvre = [];
+        if(checked[0]){
+            display_labels.push("LEA30");
+            dataset_consommable.push(chart_data["LEA30S"].cout_consommable);
+            dataset_main_oeuvre.push(chart_data["LEA30S"].cout_main_d_oeuvre);
+            bg_colors_consommable.push(SOLUTION_COLORS[0].backgroundColor);
+            bg_colors_main_oeuvre.push(SOLUTION_COLORS[0].backgroundColorLight);
+        }
+        if(checked[1]){
+            display_labels.push("Outil à bobine embarquée");
+            dataset_consommable.push(chart_data["EMBARQUE"].cout_consommable);
+            dataset_main_oeuvre.push(chart_data["EMBARQUE"].cout_main_d_oeuvre);
+            bg_colors_consommable.push(SOLUTION_COLORS[1].backgroundColor);
+            bg_colors_main_oeuvre.push(SOLUTION_COLORS[1].backgroundColorLight);
 
-        bar_graph.data.datasets[1].data[index] = visible
-            ? chart_data[Object.keys(chart_data)[index]].cout_main_d_oeuvre
-            : 0; // Met à jour uniquement la valeur "Main d'œuvre"
-
+        }
+        if(checked[2]){
+            display_labels.push("Attache manuelle");
+            dataset_consommable.push(chart_data["MAIN"].cout_consommable);
+            dataset_main_oeuvre.push(chart_data["MAIN"].cout_main_d_oeuvre);
+            bg_colors_consommable.push(SOLUTION_COLORS[2].backgroundColor);
+            bg_colors_main_oeuvre.push(SOLUTION_COLORS[2].backgroundColorLight);
+        }
+        bar_graph.data.labels=display_labels;
+        bar_graph.data.datasets[0].data = dataset_consommable;
+        bar_graph.data.datasets[0].backgroundColor = bg_colors_consommable;
+        bar_graph.data.datasets[1].data = dataset_main_oeuvre;
+        bar_graph.data.datasets[1].backgroundColor = bg_colors_main_oeuvre;
         bar_graph.update(); // Met à jour le graphique
     }
 
