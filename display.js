@@ -7,11 +7,14 @@ const SOLUTION_COLORS = color_theme.SOLUTION_COLORS;
 const LEA30_PIE_COLORS = color_theme.LEA30_PIE_COLORS;
 const MAIN_PIE_COLOR = color_theme.MAIN_PIE_COLOR;
 const EMBARQUE_PIE_COLORS = color_theme.EMBARQUE_PIE_COLORS;
-const WARNING_KEY_NBR_JRS = "temps_parcelle";
-const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
+export const WARNING_KEY_NBR_JRS = "temps_parcelle";
+export const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
+export const WARNING_KEY_LANG_NOT_AVAILABLE = "language_not_available";
+
 
 const WARNING_MESSAGES_JRS = ["Attention !", "Temps pour la parcelle important : "];
 const WARNING_MESSAGES_ATTACHES = ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "];
+const WARNING_MESSAGES_LANG_NOT_AVAILABLE = ["Error !", "Translation not ready yet. La traducción aún no está lista. Traduzione non ancora pronta. Übersetzung derzeit nicht vorbereitet.  "];
 const modalElement = document.getElementById('dangerModal');
 let dangerModalBody = document.getElementById("dangerModalBody");
 let dangerModalLabel = document.getElementById("dangerModalLabel");
@@ -759,6 +762,13 @@ export function displayWarning(warning_type, display_data) {
             dangerModalLabel.textContent = WARNING_MESSAGES_ATTACHES[0];
             dangerModalBody.textContent = WARNING_MESSAGES_ATTACHES[1] + display_data[0].toFixed(0) + " attaches";
             break;
+        
+        case WARNING_KEY_LANG_NOT_AVAILABLE:
+            console.log("modal lang warn");
+            dangerModalLabel.textContent = WARNING_MESSAGES_LANG_NOT_AVAILABLE[0];
+            dangerModalBody.textContent = WARNING_MESSAGES_LANG_NOT_AVAILABLE[1];
+            break;
+
 
 
         default:

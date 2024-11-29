@@ -10,8 +10,9 @@ import * as calcul from "./calcul.js";
 
 const WARNING_THRESHOLD_NBR_JRS = 40;
 const WARNING_THRESHOLD_NBR_ATTACHES = 300000;
-const WARNING_KEY_NBR_JRS = "temps_parcelle";
-const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
+const WARNING_KEY_NBR_JRS = display.WARNING_KEY_NBR_JRS;
+const WARNING_KEY_NBR_ATTACHES = display.WARNING_KEY_NBR_ATTACHES;
+const WARNING_KEY_LANG_NOT_AVAILABLE = display.WARNING_KEY_LANG_NOT_AVAILABLE;
 
 
 let language = 'fr';
@@ -43,24 +44,31 @@ function init_document(){
 
 // Initialisation de la langue
 function changeLanguage() {
-    
     language = document.getElementById('selected-language').innerText
-    // console.log(language);
-    document.getElementById('page-title').innerText = dictionary[language].pageTitle;
-    document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
-    document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
+    if (utils.availableLanguage(language)){
+        // console.log(language);
+        document.getElementById('page-title').innerText = dictionary[language].pageTitle;
+        document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
+        document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
 
-    // const extraOptions = document.getElementById('extra-options');
-    // if (extraOptions.style.display === 'none') {
-    //     document.getElementById("show-more-options").textContent = dictionary[language].moreOptions;
-    // }
-    // else {
-    //     document.getElementById("show-more-options").textContent = dictionary[language].lessOptions;
+        // const extraOptions = document.getElementById('extra-options');
+        // if (extraOptions.style.display === 'none') {
+        //     document.getElementById("show-more-options").textContent = dictionary[language].moreOptions;
+        // }
+        // else {
+        //     document.getElementById("show-more-options").textContent = dictionary[language].lessOptions;
 
-    // }
+        // }
 
-    display.loadInputFields(language);
-    display.loadExtraOptions(language); 
+        display.loadInputFields(language);
+        display.loadExtraOptions(language); 
+    }
+    else {
+        console.log(WARNING_KEY_LANG_NOT_AVAILABLE);
+        stackWarnings.push([WARNING_KEY_LANG_NOT_AVAILABLE,[""]]);
+    }
+    stackWarnings = utils.manageStack(stackWarnings);
+    
 }
 
 // Lancer le calcul

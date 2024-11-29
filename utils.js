@@ -5,6 +5,16 @@ let stack = [];
 let modal = null;
 let button = null;
 
+export function availableLanguage(language){
+    switch (language) {
+        case "Francais":
+            return true;
+        default:
+            return false;
+    }
+}
+
+
 export function getMinValueFromData(datasets) {
     let minValue = Infinity;
     datasets.forEach(dataset => {
@@ -73,12 +83,13 @@ export function validateInputs(language) {
 
 export function manageStack(fstack){
     // recursive function
-    
     setTimeout(() => {
         stack = fstack;
         console.log("manage stack called, stack length = ");
         console.log(stack.length);
+        console.log(stack[0]);
         if (stack.length===1){
+            // console.log(stack[0][0]);
             displayWarning(stack[0][0],stack[0][1]);
             stack.shift();
         }
