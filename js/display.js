@@ -1,6 +1,7 @@
-import { dictionary } from "./lang/dictionnary.js";
+import { dictionary } from "../lang/dictionary.js";
 import * as color_theme from "./color-theme.js";
 import { getMinValueFromData } from "./utils.js";
+import * as chart from "./chart.js";
 
 
 const SOLUTION_COLORS = color_theme.SOLUTION_COLORS;
@@ -57,8 +58,6 @@ function change_options(chart, new_options) {
     chart.update();
     return chart;
 }
-
-
 
 export function loadInputFields(language) {
     console.log("Loading extra fields");
@@ -704,16 +703,10 @@ export function attachTooltipEvents() {
     });
 }
 
-
 export function toggleDropdown() {
     const dropdownMenu = document.querySelector('.dropdown-menu');
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
 }
-//
-
-// function toggleTooltip(element) {
-//     element.classList.toggle('tooltip-active');
-// }
 
 export function toggleTooltip(element) {
     // Vérifier si l'utilisateur est sur mobile
@@ -726,7 +719,6 @@ export function toggleTooltip(element) {
         return;
     }
 }
-
 
 export function displayWarning(warning_type, display_data) {
     //log

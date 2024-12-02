@@ -16,9 +16,9 @@
     <link rel="apple-touch-icon" href="icons/mage-agri.png">
     <link rel="icon" sizes="192x192" href="icons/mage-agri.png">
     <!-- CSS et JS -->
-    <link rel="stylesheet" href="calcul.css">
-    <link rel="stylesheet" href="contextual-modals.css">
-    <script src="chart.js"></script>
+    <link rel="stylesheet" href="./css/calcul.css">
+    <link rel="stylesheet" href="./css/contextual-modals.css">
+    <!-- <script src="./js/chart.js"></script> -->
 </head>
 
 <body>
@@ -33,7 +33,7 @@
     <div class="col-xs-12" style="height:50px;"></div>
     <div class="container">
         <div class="d-flex justify-content-between mt-3">
-            <h2 id="page-title">Calculateur</h2>
+            <h2 id="page-title">Calculateur H</h2>
             <div class="language-selector">
                 <button class="dropdown-toggle" onclick="toggleDropdown()">
                     <img src="icons/flags/fr.png" alt="French flag" class="flag-icon">
@@ -62,7 +62,7 @@
 
             <!-- Texte cliquable pour révéler plus d'options -->
             <p id="show-more-options" class="text-primary" style="cursor: pointer;">
-                + Afficher plus d'options
+                + Afficher plus d'options H
             </p>
 
             <div id="extra-options" class="extra-options-container">
@@ -81,7 +81,7 @@
             <div id="error-message" class="text-danger mb-3"></div>
 
             <button type="button" id="calculate-button" class="btn btn-primary">Lancer le
-                calcul
+                calcul h
             </button>
         </form>
 
@@ -91,26 +91,26 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="dangerModalLabel">Attention !</h5>
+                        <h5 class="modal-title" id="dangerModalLabel">Attention !h </h5>
                         <button id="close-warning" type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="dangerModalBody">
-                        <p>Ceci est un modal de type danger. Veuillez faire attention !</p>
+                        <p>Ceci est un modal de type danger. Veuillez faire attention !h </p>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="bootstrap.bundle.min.js"></script>
+        <script src="./js/bootstrap.bundle.min.js"></script>
 
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>
             <div id="results-summary"></div>
-            <h4 id="page-title">Outils a comparer :</h4>
+            <h4 id="page-title">Outils a comparer :h</h4>
             <div id="chart-options" class="mb-3">
-                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 </label>
-                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée </label>
-                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle </label>
+                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 H </label>
+                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée h </label>
+                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle h </label>
             </div>
             <div id="bar-chart-container">
                 <canvas id="bar-chart"></canvas>
@@ -133,7 +133,7 @@
                 </div>
             </div>
             <p id="toggle-pie-charts" class="text-primary" style="cursor: pointer;">+ Voir le detail des main d'oeuvre
-                et du consommable</p>
+                et du consommable h</p>
             <div id="curve-chart-container">
                 <canvas id="curve-chart"></canvas>
             </div>
@@ -146,11 +146,12 @@
     </div>
     </div>
 
-    <script type="module" src="utils.js" defer></script>
-    <script type="module" src="lang/dictionnary.js" defer></script>
-    <script type="module" src="chart.js" defer></script>
-    <script type="module" src="calcul.js" defer></script>
-    <script type="module" src="display.js" defer></script>
+    <script type="module" src="js/utils.js" defer></script>
+    <script type="module" src="lang/dictionary.js" defer></script>
+    <script type="module" src="js/chart.js" defer></script>
+    <script type="module" src="js/calcul.js" defer></script>
+    <script type="module" src="js/display.js" defer></script>
+    <script type="module" src="js/change_language.js" defer></script>
     <script type="module" src="main.js"></script>
 
 </body>

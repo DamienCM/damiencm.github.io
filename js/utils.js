@@ -1,5 +1,5 @@
 import { displayWarning } from "./display.js";
-import { dictionary } from "./lang/dictionnary.js";
+import { dictionary } from "../lang/dictionary.js";
 
 let stack = [];
 let modal = null;

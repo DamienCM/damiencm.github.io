@@ -1,5 +1,5 @@
 import { bobines } from "./database.js";
-import { dictionary } from "./lang/dictionnary.js";
+import { dictionary } from "../lang/dictionary.js";
 
 // Calcul des résultats (exemple simple)
 export function calculateResults(inputs, extra_inputs, language) {
