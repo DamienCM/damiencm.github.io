@@ -33,6 +33,7 @@ function init_document(){
         }
     });
     // Initialisation
+    language = document.getElementById('selected-language').innerText;
     changeLanguage();
     // Attache l'événement au clic
     document.getElementById('show-more-options').addEventListener('click', display.toggleExtraOptions);
@@ -44,8 +45,9 @@ function init_document(){
 
 // Initialisation de la langue
 function changeLanguage() {
-    language = document.getElementById('selected-language').innerText
-    if (utils.availableLanguage(language)){
+    let language_selected = document.getElementById('selected-language').innerText;
+    if (utils.availableLanguage(language_selected)){
+        language = language_selected;
         // console.log(language);
         document.getElementById('page-title').innerText = dictionary[language].pageTitle;
         document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
