@@ -440,7 +440,7 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
             },
             y: {
                 stacked: false,
-                min: getMinValueFromData(data.datasets) - 5000, // Ajuste la limite inférieure
+                min: getMinValueFromData(data.datasets) - 500, // Ajuste la limite inférieure
                 title: {
                     display: true,
                     text: 'Coût (€)'
@@ -516,30 +516,6 @@ export function displayPieCharts(chart_data, pie_charts) {
         MAIN: chart_data.MAIN.detail_consommable
     };
 
-    // OUTDATED ?
-    // let options = {
-    //     plugins: {
-    //         title: {
-    //             display: true,
-    //             text: 'Répartition des coûts',
-    //             font: {
-    //                 size: 18 // Taille de la police en pixels
-    //             }
-    //         },
-    //         tooltip: {
-    //             callbacks: {
-    //                 label: function (tooltipItem) {
-    //                     let label = tooltipItem.label || '';
-    //                     let value = tooltipItem.raw; // Accède à la valeur brute
-    //                     return `${label}: ${value} €`; // Ajoute l'unité ici
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     responsive: true,
-    //     maintainAspectRatio: false
-    // };
-
     // Fonction pour trier les données d'un PieChart
     function sortPieChartData(chartData) {
         // Regroupe les données et les étiquettes
@@ -550,8 +526,14 @@ export function displayPieCharts(chart_data, pie_charts) {
             color: chartData.datasets[0].backgroundColor[index]
         }));
 
+
         // Trie par ordre decroissant des valeurs
         combined.sort((a, b) => b.value - a.value);
+        let i = 0;
+        combined.forEach(element => {
+            i+=1;
+            element.color = chartData.datasets[0].backgroundColor[i-1]
+        });
 
         // Met à jour les données triées
         chartData.labels = combined.map(item => item.label);
