@@ -33,6 +33,7 @@ function init_document(){
     language = document.getElementById('selected-language').innerText;
     // Attache l'événement au clic
     document.getElementById('show-more-options').addEventListener('click', display.toggleExtraOptions);
+    document.getElementById('show-less-options').addEventListener('click', display.toggleExtraOptions);
     document.getElementById('calculate-button').addEventListener('click',launchCalculation);
     // Rendre la fonction globale
     window.toggleDropdown = toggleDropdown;
@@ -44,7 +45,7 @@ function init_document(){
 // Initialisation de la langue
 function checkLanguage() {
     let language_selected = document.getElementById('selected-language').innerText;
-    if (utils.availableLanguage(language_selected)){
+    if (change_language.availableLanguage(language_selected)){
         language = language_selected;
         change_language.change_language(language);
 
@@ -91,10 +92,8 @@ function selectLanguage(language, code) {
     // Met à jour le texte et l'icône du bouton principal
     document.getElementById('selected-language').innerText = language;
     document.querySelector('.dropdown-toggle img').src = `icons/flags/${code}.png`; // Met à jour l'icône du drapeau
-
     // Ferme le menu après la sélection
     toggleDropdown();
-
     // Appeler la fonction de changement de langue si nécessaire
     checkLanguage();
 }

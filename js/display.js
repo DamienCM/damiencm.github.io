@@ -11,8 +11,6 @@ const EMBARQUE_PIE_COLORS = color_theme.EMBARQUE_PIE_COLORS;
 export const WARNING_KEY_NBR_JRS = "temps_parcelle";
 export const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
 export const WARNING_KEY_LANG_NOT_AVAILABLE = "language_not_available";
-
-
 const WARNING_MESSAGES_JRS = ["Attention !", "Temps pour la parcelle important : "];
 const WARNING_MESSAGES_ATTACHES = ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "];
 const WARNING_MESSAGES_LANG_NOT_AVAILABLE = ["Error !", "Translation not ready yet. La traducción aún no está lista. Traduzione non ancora pronta. Übersetzung derzeit nicht vorbereitet.  "];
@@ -23,7 +21,7 @@ let showMoreButtonRaw = null;
 let showLessButtonRaw = null;
 let showMoreLessPieChart = null;
 let pieChartContainer = null;
-
+let language = null;
 
 
 
@@ -59,7 +57,11 @@ function change_options(chart, new_options) {
     return chart;
 }
 
-export function loadInputFields(language) {
+export function set_language(lang) {
+    language = lang;
+}
+
+export function loadInputFields() {
     console.log("Loading extra fields");
     const inputContainer = document.getElementById('input-fields');
     inputContainer.innerHTML = '';
@@ -114,7 +116,7 @@ export function loadInputFields(language) {
     attachTooltipEvents();
 }
 
-export function loadExtraOptions(language) {
+export function loadExtraOptions() {
     const inputContainer = document.getElementById('extra-options');
     inputContainer.innerHTML = '';
 
@@ -134,7 +136,7 @@ export function loadExtraOptions(language) {
     });
 }
 
-export function displayResultsRaw(results, language) {
+export function displayResultsRaw(results) {
     const resultsSection = document.getElementById('results-section');
     resultsSection.style.display = 'block'; // Rendre visible la section des résultats
 
@@ -145,15 +147,18 @@ export function displayResultsRaw(results, language) {
     const hiddenSections = []; // Stocke les sections à cacher
 
     for (const [key, value] of Object.entries(results)) {
-        if (value[1] && value[1].startsWith("_")) {
-            const sectionTitle = value[1].replace("_", "").trim(); // Retire les "_"
+        if ((value[1] && value[1].startsWith("_")) || (value[1] && value[1].startsWith("%"))) {
+            let sectionTitle = value[1].replace("_", "").trim(); // Retire les "_"
             currentSection = document.createElement('div');
             currentSection.classList.add('results-section');
 
             // Ajoute une classe pour identifier les sections non "Total"
-            if (sectionTitle !== "Total LEA30s") {
+            if (sectionTitle[0] !== "%") {
                 currentSection.classList.add('hidden-section'); // Classe pour transition
                 hiddenSections.push(currentSection); // Ajoute aux sections cachées
+            }
+            else {
+                sectionTitle = value[1].replace("%", "").trim();
             }
 
             const sectionHeader = document.createElement('h5');
@@ -163,7 +168,7 @@ export function displayResultsRaw(results, language) {
         } else if (currentSection) {
             const resultElement = document.createElement('p');
             if (isNaN(value[0])) {
-                resultElement.innerHTML = `<strong>${value[1]}:</strong> ${value[0]} ${value[2]}`;
+                resultElement.innerHTML = `<h3>${value[1]}:</strong> ${value[0]} ${value[2]}`;
             } else {
                 resultElement.innerHTML = `<strong>${value[1]}:</strong> ${Number(value[0]).toFixed(value[3])} ${value[2]}`;
             }
@@ -179,14 +184,14 @@ export function displayResultsRaw(results, language) {
         showMoreButtonRaw = document.createElement('p');
         showMoreButtonRaw.classList.add('text-primary');
         showMoreButtonRaw.style.cursor = 'pointer';
-        showMoreButtonRaw.textContent = "+ Voir plus de donnees chiffrees ";
+        showMoreButtonRaw.textContent = dictionary[language].showMoreResults;
         showMoreButtonRaw.style.display = 'inline';
     }
     if (showLessButtonRaw === null) {
         showLessButtonRaw = document.createElement('p');
         showLessButtonRaw.classList.add('text-primary');
         showLessButtonRaw.style.cursor = 'pointer';
-        showLessButtonRaw.textContent = "- Voir moins d'informations sur les résultats";
+        showLessButtonRaw.textContent = dictionary[language].showLessResults;
         showLessButtonRaw.style.display = 'none'; // Caché par défaut
     }
 
@@ -228,10 +233,10 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
     // console.log(chart_data["LEA30S"].cout_total);
     // console.log(SOLUTION_COLORS[0].backgroundColor);
     let data = {
-        labels: ['LEA30s', 'Outil à bobine embarquée', 'Attache manuelle'],
+        labels: [dictionary[language].LEA30_barchart_label, dictionary[language].embarquee_barchart_label, dictionary[language].manuelle_barchart_label],
         datasets: [
             {
-                label: 'Consommable',
+                label: dictionary[language].consommable_barchart,
                 data: [
                     chart_data["LEA30S"].cout_consommable,
                     chart_data["EMBARQUE"].cout_consommable,
@@ -244,7 +249,7 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
                 ]
             },
             {
-                label: "Main d'oeuvre",
+                label: dictionary[language].main_d_oeuvre_barchart,
                 data: [
                     chart_data["LEA30S"].cout_main_d_oeuvre,
                     chart_data["EMBARQUE"].cout_main_d_oeuvre,
@@ -263,7 +268,7 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
         plugins: {
             title: {
                 display: true,
-                text: "Coûts annuel par solution (consommables et main d'oeuvre)",
+                text: dictionary[language].cout_annuel_barchart,
                 font: {
                     size: 18 // Taille de la police en pixels
                 }
@@ -290,7 +295,7 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
                 stacked: true,
                 title: {
                     display: true,
-                    text: 'Coût (€)'
+                    text: dictionary[language].cout_euros_barchart_yaxis,
                 }
             }
         }
@@ -324,29 +329,30 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
         let dataset_main_oeuvre = [];
         let bg_colors_consommable = [];
         let bg_colors_main_oeuvre = [];
-        if(checked[0]){
-            display_labels.push("LEA30");
+
+        if (checked[0]) {
+            display_labels.push(dictionary[language].LEA30_barchart_label);
             dataset_consommable.push(chart_data["LEA30S"].cout_consommable);
             dataset_main_oeuvre.push(chart_data["LEA30S"].cout_main_d_oeuvre);
             bg_colors_consommable.push(SOLUTION_COLORS[0].backgroundColor);
             bg_colors_main_oeuvre.push(SOLUTION_COLORS[0].backgroundColorLight);
         }
-        if(checked[1]){
-            display_labels.push("Outil à bobine embarquée");
+        if (checked[1]) {
+            display_labels.push(dictionary[language].embarquee_barchart_label);
             dataset_consommable.push(chart_data["EMBARQUE"].cout_consommable);
             dataset_main_oeuvre.push(chart_data["EMBARQUE"].cout_main_d_oeuvre);
             bg_colors_consommable.push(SOLUTION_COLORS[1].backgroundColor);
             bg_colors_main_oeuvre.push(SOLUTION_COLORS[1].backgroundColorLight);
 
         }
-        if(checked[2]){
-            display_labels.push("Attache manuelle");
+        if (checked[2]) {
+            display_labels.push(dictionary[language].manuelle_barchart_label);
             dataset_consommable.push(chart_data["MAIN"].cout_consommable);
             dataset_main_oeuvre.push(chart_data["MAIN"].cout_main_d_oeuvre);
             bg_colors_consommable.push(SOLUTION_COLORS[2].backgroundColor);
             bg_colors_main_oeuvre.push(SOLUTION_COLORS[2].backgroundColorLight);
         }
-        bar_graph.data.labels=display_labels;
+        bar_graph.data.labels = display_labels;
         bar_graph.data.datasets[0].data = dataset_consommable;
         bar_graph.data.datasets[0].backgroundColor = bg_colors_consommable;
         bar_graph.data.datasets[1].data = dataset_main_oeuvre;
@@ -382,24 +388,34 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
 
     // Données fictives pour 3 solutions
     const data = {
-        labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5', 'Année 6', 'Année 7', 'Année 8', 'Année 9'],
+        labels: [
+            dictionary[language].annee_curve_chart + "1",
+            dictionary[language].annee_curve_chart + "2",
+            dictionary[language].annee_curve_chart + "3",
+            dictionary[language].annee_curve_chart + "4",
+            dictionary[language].annee_curve_chart + "5",
+            dictionary[language].annee_curve_chart + "6",
+            dictionary[language].annee_curve_chart + "7",
+            dictionary[language].annee_curve_chart + "8",
+            dictionary[language].annee_curve_chart + "9"
+        ],
         datasets: [
             {
-                label: 'LEA30s',
+                label: dictionary[language].label_lea30s_curve_chart,
                 data: chart_data["LEA30S"].cout_cummulatif, // Coût cumulatif
                 borderColor: SOLUTION_COLORS[0].borderColor,
                 backgroundColor: SOLUTION_COLORS[0].backgroundColorLight,
                 fill: false
             },
             {
-                label: 'Outil à bobine embarquée',
+                label: dictionary[language].label_embarquee_curve_chart,
                 data: chart_data["EMBARQUE"].cout_cummulatif,
                 borderColor: SOLUTION_COLORS[1].borderColor,
                 backgroundColor: SOLUTION_COLORS[1].backgroundColorLight,
                 fill: false
             },
             {
-                label: 'Attache manuelle',
+                label: dictionary[language].label_manuelle_curve_chart,
                 data: chart_data["MAIN"].cout_cummulatif,
                 borderColor: SOLUTION_COLORS[2].borderColor,
                 backgroundColor: SOLUTION_COLORS[2].backgroundColorLight,
@@ -412,7 +428,7 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
         plugins: {
             title: {
                 display: true,
-                text: 'Coûts par solution',
+                text: dictionary[language].cout_par_solution_curve_chart,
                 font: {
                     size: 18 // Taille de la police en pixels
                 }
@@ -422,7 +438,7 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
                     label: function (tooltipItem) {
                         const label = tooltipItem.label || '';
                         const value = tooltipItem.raw; // Accède à la valeur brute
-                        return `${label}: ${value} €`; // Ajoute l'unité ici
+                        return `${label}: ${value} ${dictionary[language].devise_curve_chart}`; // Ajoute l'unité ici
                     }
                 }
             }
@@ -434,7 +450,7 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
                 stacked: false,
                 title: {
                     display: true,
-                    text: 'Années'
+                    text: dictionary[language].annees_curve_chart
                 }
             },
             y: {
@@ -442,7 +458,7 @@ export function displayResultsCurveGraph(chart_data, curve_chart) {
                 min: getMinValueFromData(data.datasets) - 500, // Ajuste la limite inférieure
                 title: {
                     display: true,
-                    text: 'Coût (€)'
+                    text: dictionary[language].cout_euros_curve_chart_yaxis,
                 }
             }
         }
@@ -530,8 +546,8 @@ export function displayPieCharts(chart_data, pie_charts) {
         combined.sort((a, b) => b.value - a.value);
         let i = 0;
         combined.forEach(element => {
-            i+=1;
-            element.color = chartData.datasets[0].backgroundColor[i-1]
+            i += 1;
+            element.color = chartData.datasets[0].backgroundColor[i - 1]
         });
 
         // Met à jour les données triées
@@ -579,7 +595,7 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: `Consommable`, font: { size: 18 } },
+                title: { display: true, text: dictionary[language].consommable_pie_chart, font: { size: 18 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
@@ -597,13 +613,13 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
+                title: { display: true, text: dictionary[language].main_d_oeuvre_pie_chart, font: { size: 18 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
                             let label = tooltipItem.label || '';
                             let value = tooltipItem.raw; // Accède à la valeur brute
-                            return `${label}: ${value} h`; // Ajoute l'unité ici
+                            return `${label}: ${value} ${dictionary[language].hours_short_pie_chart}`; // Ajoute l'unité ici
                         }
                     }
                 }
@@ -660,10 +676,10 @@ export function displayPieCharts(chart_data, pie_charts) {
         showMoreLessPieChart.addEventListener('click', function () {
             if (pieChartContainer.classList.contains('visible')) {
                 pieChartContainer.classList.remove('visible'); // Réduit avec transition
-                showMoreLessPieChart.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
+                showMoreLessPieChart.textContent = dictionary[language].voir_plus_main_oeuvre_consommable;
             } else {
                 pieChartContainer.classList.add('visible'); // Étend avec transition
-                showMoreLessPieChart.textContent = '- Voir moins';
+                showMoreLessPieChart.textContent = dictionary[language].voir_moins_main_oeuvre_consommable;
             }
         });
     }
@@ -676,14 +692,22 @@ export function displayPieCharts(chart_data, pie_charts) {
 export function toggleExtraOptions() {
     const extraOptions = document.getElementById('extra-options');
     const showMoreText = document.getElementById('show-more-options');
+    const showMoreTextContainer = document.getElementById('show-more-options-container');
+    const showLessTextContainer = document.getElementById('show-less-options-container');
 
+    const showLessText = document.getElementById('show-less-options');
     // Vérifie si la section est visible
     if (extraOptions.classList.contains('visible')) {
         extraOptions.classList.remove('visible'); // Masque avec transition
-        showMoreText.innerText = '+ Afficher plus d\'options'; // Texte "Afficher plus"
-    } else {
+        showMoreTextContainer.classList.add('visible');
+        showLessTextContainer.classList.remove('visible');
+
+   } else {
         extraOptions.classList.add('visible'); // Affiche avec transition
-        showMoreText.innerText = '- Afficher moins d\'options'; // Texte "Afficher moins"
+        // showMoreText.innerText = dictionary[language].showLessOptions; // Texte "Afficher moins"
+        // showLessText.add('visible');
+        showMoreTextContainer.classList.remove('visible');
+        showLessTextContainer.classList.add('visible');
     }
 }
 
@@ -736,7 +760,7 @@ export function displayWarning(warning_type, display_data) {
             dangerModalLabel.textContent = WARNING_MESSAGES_ATTACHES[0];
             dangerModalBody.textContent = WARNING_MESSAGES_ATTACHES[1] + display_data[0].toFixed(0) + " attaches";
             break;
-        
+
         case WARNING_KEY_LANG_NOT_AVAILABLE:
             console.log("modal lang warn");
             dangerModalLabel.textContent = WARNING_MESSAGES_LANG_NOT_AVAILABLE[0];

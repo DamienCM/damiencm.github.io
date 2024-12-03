@@ -25,8 +25,7 @@
     <div class="container">
         <div class="d-flex justify-content-center">
             <a href="https://mage-agri.com/" title="Accueil" class="logo">
-                <img src="icons/logo-mage-agri-noir.svg"
-                    alt="logo mage agri blanc">
+                <img src="icons/logo-mage-agri-noir.svg" alt="logo mage agri blanc">
             </a>
         </div>
     </div>
@@ -42,15 +41,17 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li onclick="selectLanguage('Francais', 'fr')"><img src="icons/flags/fr.png" alt="French flag"
-                            class="flag-icon"> Francais</li>
+                            class="flag-icon">Francais</li>
                     <li onclick="selectLanguage('English', 'uk')"><img src="icons/flags/uk.png" alt="English flag"
-                            class="flag-icon"> <s>English</s></li>
-                    <li onclick="selectLanguage('Spanish', 'es')"><img src="icons/flags/es.png" alt="Spanish flag"
-                            class="flag-icon"> <s>Spanish</s></li>
-                    <li onclick="selectLanguage('Italian', 'it')"><img src="icons/flags/it.png" alt="Italian flag"
-                            class="flag-icon"> <s>Italian</s></li>
-                    <li onclick="selectLanguage('German', 'de')"><img src="icons/flags/de.png" alt="German flag"
-                            class="flag-icon"> <s>German</s></li>
+                            class="flag-icon">English</li>
+                    <li onclick="selectLanguage('Español', 'es')"><img src="icons/flags/es.png" alt="Spanish flag"
+                            class="flag-icon">Español</li>
+                    <li onclick="selectLanguage('Italiano', 'it')"><img src="icons/flags/it.png" alt="Italian flag"
+                            class="flag-icon">Italiano</li>
+                    <li onclick="selectLanguage('Deutsch', 'de')"><img src="icons/flags/de.png" alt="German flag"
+                            class="flag-icon">Deutsch</li>
+                    <li onclick="selectLanguage('Português', 'pt')"><img src="icons/flags/portugal.png"
+                            alt="German flag" class="flag-icon">Português</li>
                 </ul>
             </div>
         </div>
@@ -61,10 +62,22 @@
             </div>
 
             <!-- Texte cliquable pour révéler plus d'options -->
-            <p id="show-more-options" class="text-primary" style="cursor: pointer;">
-                + Afficher plus d'options H
-            </p>
-
+            <div id="toggle-options-wrapper" class="my-4">
+                <div class="toggle-options-container">
+                    <div id="show-more-options-container" class="voir-plus-moins-text-container visible">
+                        <p id="show-more-options" class="text-primary" style="cursor: pointer;">
+                            Text cliquable plus d'options
+                        </p>
+                    </div>
+            
+                    <div id="show-less-options-container" class="voir-plus-moins-text-container">
+                        <p id="show-less-options" class="text-primary" style="cursor: pointer;">
+                            Text cliquable moins d'options
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
             <div id="extra-options" class="extra-options-container">
                 <!-- Vos options supplémentaires ici -->
             </div>
@@ -106,11 +119,13 @@
         <div id="results-section" style="display:none;">
             <h4 id="results-title"></h4>
             <div id="results-summary"></div>
-            <h4 id="page-title">Outils a comparer :h</h4>
+            <h4 id="tools-compare">Outils a comparer :h</h4>
             <div id="chart-options" class="mb-3">
-                <label><input type="checkbox" id="lea30-checkbox" checked> LEA30 H </label>
-                <label><input type="checkbox" id="bobine-embarquee-checkbox"> Outil à bobine embarquée h </label>
-                <label><input type="checkbox" id="manuelle-checkbox"> Attache manuelle h </label>
+                <input type="checkbox" id="lea30-checkbox" checked> <label id="lea30-checkbox-text"> LEA30 H</label>
+                <input type="checkbox" id="bobine-embarquee-checkbox"> <label id="bobine-embarquee-checkbox-text"> Outil
+                    à bobine embarquée h </label>
+                <input type="checkbox" id="manuelle-checkbox"> <label id="manuelle-checkbox-text"> Attache manuelle h
+                </label>
             </div>
             <div id="bar-chart-container">
                 <canvas id="bar-chart"></canvas>

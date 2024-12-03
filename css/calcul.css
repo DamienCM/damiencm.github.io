@@ -177,6 +177,36 @@
     opacity: 1; /* Restaure la visibilité */
     padding: 10px; /* Ajoute de l'espace visuel lors de l'expansion */
 }
+.toggle-options-container {
+    position: relative; /* Superpose les éléments */
+    text-align: center; /* Centre le texte horizontalement */
+    width: 100%; /* Étend à toute la largeur */
+}
+
+.voir-plus-moins-text-container {
+    position: absolute; /* Superpose les textes */
+    top: 0; /* Aligne verticalement */
+    left: 0; /* Aligne horizontalement */
+    width: 100%; /* Utilise toute la largeur disponible */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.voir-plus-moins-text-container:not(.visible) {
+    opacity: 0; /* Masque visuellement */
+    pointer-events: none; /* Désactive les interactions */
+    visibility: hidden; /* Cache complètement l'élément */
+}
+
+.voir-plus-moins-text-container.visible {
+    opacity: 1; /* Rend visible */
+    pointer-events: auto; /* Active les interactions */
+    visibility: visible; /* Montre l'élément */
+}
+.toggle-options-container {
+    height: 40px; /* Fixe une hauteur appropriée */
+}
+
+
 .hidden-section {
     max-height: 0; /* Cache complètement la section */
     overflow: hidden; /* Empêche le débordement */

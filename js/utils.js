@@ -5,14 +5,6 @@ let stack = [];
 let modal = null;
 let button = null;
 
-export function availableLanguage(language){
-    switch (language) {
-        case "Francais":
-            return true;
-        default:
-            return false;
-    }
-}
 
 
 export function getMinValueFromData(datasets) {
