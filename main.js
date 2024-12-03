@@ -7,10 +7,11 @@ import * as change_language from "./js/change_language.js"
 
 const WARNING_THRESHOLD_NBR_JRS = 40;
 const WARNING_THRESHOLD_NBR_ATTACHES = 300000;
-const WARNING_KEY_NBR_JRS = display.WARNING_KEY_NBR_JRS;
-const WARNING_KEY_NBR_ATTACHES = display.WARNING_KEY_NBR_ATTACHES;
-const WARNING_KEY_LANG_NOT_AVAILABLE = display.WARNING_KEY_LANG_NOT_AVAILABLE;
-
+const WARNING_KEY_NBR_JRS = display.ERROR_KEY_NBR_JRS;
+const WARNING_KEY_NBR_ATTACHES = display.ERROR_KEY_NBR_ATTACHES;
+const ERROR_KEY_LANG_NOT_AVAILABLE = display.ERROR_KEY_LANG_NOT_AVAILABLE;
+const WARNING_KEY_LANG_NOT_VERIFIED = display.WARNING_KEY_LANG_NOT_VERIFIED;
+const STACK_KEYS = utils.STACK_KEYS;
 
 let language = 'fr';
 let bar_graph = null;
@@ -55,11 +56,13 @@ function checkLanguage() {
 
     }
     else {
-        console.log(WARNING_KEY_LANG_NOT_AVAILABLE);
-        stackWarnings.push([WARNING_KEY_LANG_NOT_AVAILABLE,[""]]);
+        stackWarnings.push([STACK_KEYS.error,ERROR_KEY_LANG_NOT_AVAILABLE,[""]]);
     }
-    stackWarnings = utils.manageStack(stackWarnings);
+    if(!change_language.verifiedLanguage(language_selected)){
+        stackWarnings.push([STACK_KEYS.warning,WARNING_KEY_LANG_NOT_VERIFIED,[""]]);
+    }
     
+    stackWarnings = utils.manageStack(stackWarnings);
 }
 
 // Lancer le calcul
@@ -78,11 +81,11 @@ function launchCalculation() {
         pie_charts = display.displayPieCharts(chart_data, pie_charts);
         
         if (results.nombre_de_jours_parcelle[0]>=WARNING_THRESHOLD_NBR_JRS){
-            stackWarnings.push([WARNING_KEY_NBR_JRS,[results.nombre_de_jours_parcelle[0]]]);
+            stackWarnings.push([STACK_KEYS.error,WARNING_KEY_NBR_JRS,[results.nombre_de_jours_parcelle[0]]]);
         }
 
         if (results.total_attaches_par_outil[0]>WARNING_THRESHOLD_NBR_ATTACHES){
-            stackWarnings.push([WARNING_KEY_NBR_ATTACHES,[results.total_attaches_par_outil[0]]]);
+            stackWarnings.push([STACK_KEYS.error,WARNING_KEY_NBR_ATTACHES,[results.total_attaches_par_outil[0]]]);
         }
         stackWarnings = utils.manageStack(stackWarnings);
         // saveResultsAsJson(inputs, results);

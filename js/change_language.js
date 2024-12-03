@@ -5,9 +5,20 @@ import * as calcul from "./calcul.js";
 
 
 const available_langs =  ["Francais", "English", "Español","Italiano", "Português","Deutsch"]
+const verified_langs =  ["Francais"]
 
 export function availableLanguage(language){
     if (available_langs.includes(language)){
+        return true;
+    }
+    else{
+        return false;
+    }
+
+}
+
+export function verifiedLanguage(language){
+    if (verified_langs.includes(language)){
         return true;
     }
     else{

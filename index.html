@@ -28,11 +28,28 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="dangerModalLabel">Attention !h </h5>
-                    <button id="close-warning" type="button" class="btn-close" data-bs-dismiss="modal"
+                    <button id="close-error" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="dangerModalBody">
                     <p>Ceci est un modal de type danger. Veuillez faire attention !h </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal warning -->
+    <div class="modal fade modal-warning" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">warning !h </h5>
+                    <button id="close-warning-info" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="warningModalBody">
+                    <p>Ceci est un modal de type warning. Veuillez faire attention !h </p>
                 </div>
             </div>
         </div>
@@ -121,7 +138,7 @@
                 <!-- Colonne principale pour les résultats -->
                 <div class="col-12 col-md-8">
                     <!-- Résumé des résultats -->
-                    <div id="results-summary" class="p-4 border rounded bg-light"style="margin-bottom: 0px;">
+                    <div id="results-summary" class="p-4 border rounded bg-light" style="margin-bottom: 0px;">
                         <!-- Résultats principaux affichés par défaut -->
                         <div id="main-values-results" class="results-section-container visible"></div>
                         <!-- Résultats supplémentaires cachés par défaut -->
@@ -129,7 +146,7 @@
 
                         <!-- Texte cliquable pour révéler plus de résultats -->
                     </div>
-                    <div id="toggle-results-wrapper" class="my-0"style="margin-top: 0px;">
+                    <div id="toggle-results-wrapper" class="my-0" style="margin-top: 0px;">
                         <div class="toggle-options-container">
                             <div id="show-more-results-container" class="voir-plus-moins-text-container visible">
                                 <p id="show-more-results" class="text-primary" style="cursor: pointer;">
@@ -144,7 +161,7 @@
                         </div>
                     </div>
 
-                    
+
                     <!-- Section des outils à comparer -->
                     <div class="container py-4 border rounded bg-light mb-5" style="margin-top: 50px;">
                         <div class="row justify-content-center">
@@ -205,17 +222,20 @@
                     <!-- PIE CHART CONTAINER -->
                     <div id="pie-charts-container" class="p-0 d-flex flex-wrap gap-0 justify-content-between mb-5">
                         <!-- Solution LEA30 -->
-                        <div id="lea30-pie-container" class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
+                        <div id="lea30-pie-container"
+                            class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
                             <div class="p-0 col-6"><canvas id="pie-chart-lea30-main"></canvas></div>
                             <div class="p-0 col-6"><canvas id="pie-chart-lea30-consommable"></canvas></div>
                         </div>
                         <!-- Solution Bobine -->
-                        <div id="bobine-pie-container" class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
+                        <div id="bobine-pie-container"
+                            class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
                             <div class="p-0 col-6"><canvas id="pie-chart-bobine-main"></canvas></div>
                             <div class="p-0 col-6"><canvas id="pie-chart-bobine-consommable"></canvas></div>
                         </div>
                         <!-- Solution Manuelle -->
-                        <div id="manuelle-pie-container" class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
+                        <div id="manuelle-pie-container"
+                            class="p-0 d-flex flex-wrap w-100 justify-content-between visible">
                             <div class="p-0 col-6"><canvas id="pie-chart-manuelle-main"></canvas></div>
                             <div class="p-0 col-6"><canvas id="pie-chart-manuelle-consommable"></canvas></div>
                         </div>

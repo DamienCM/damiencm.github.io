@@ -8,15 +8,22 @@ const SOLUTION_COLORS = color_theme.SOLUTION_COLORS;
 const LEA30_PIE_COLORS = color_theme.LEA30_PIE_COLORS;
 const MAIN_PIE_COLOR = color_theme.MAIN_PIE_COLOR;
 const EMBARQUE_PIE_COLORS = color_theme.EMBARQUE_PIE_COLORS;
-export const WARNING_KEY_NBR_JRS = "temps_parcelle";
-export const WARNING_KEY_NBR_ATTACHES = "nbre_attaches";
-export const WARNING_KEY_LANG_NOT_AVAILABLE = "language_not_available";
-const WARNING_MESSAGES_JRS = ["Attention !", "Temps pour la parcelle important : "];
-const WARNING_MESSAGES_ATTACHES = ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "];
-const WARNING_MESSAGES_LANG_NOT_AVAILABLE = ["Error !", "Translation not ready yet. La traducción aún no está lista. Traduzione non ancora pronta. Übersetzung derzeit nicht vorbereitet.  "];
-const modalElement = document.getElementById('dangerModal');
+export const ERROR_KEY_NBR_JRS = "temps_parcelle";
+export const ERROR_KEY_NBR_ATTACHES = "nbre_attaches";
+export const ERROR_KEY_LANG_NOT_AVAILABLE = "language_not_available";
+export const WARNING_KEY_LANG_NOT_VERIFIED = "language_not_verified";
+const ERROR_MESSAGES_JRS = ["Attention !", "Temps pour la parcelle important : "];
+const WARNING_MESSAGES_TRADUCTION = ["Warning !", "Traduction not verified yet !"];
+const ERROR_MESSAGES_ATTACHES = ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "];
+const ERROR_MESSAGES_LANG_NOT_AVAILABLE = ["Error !", "Translation not ready yet. La traducción aún no está lista. Traduzione non ancora pronta. Übersetzung derzeit nicht vorbereitet.  "];
+const dangerModalElement = document.getElementById('dangerModal');
 let dangerModalBody = document.getElementById("dangerModalBody");
 let dangerModalLabel = document.getElementById("dangerModalLabel");
+const warningModalElement = document.getElementById('warningModal');
+let warningModalBody = document.getElementById("warningModalBody");
+let warningModalLabel = document.getElementById("warningModalLabel");
+
+
 let showMoreButtonRaw = null;
 let showLessButtonRaw = null;
 let showMoreLessPieChart = null;
@@ -612,13 +619,13 @@ export function displayPieCharts(chart_data, pie_charts) {
         console.log("toggling individual pie-chart");
         console.log(solutions[solutionIndex].containerId);
         let container = document.getElementById(solutions[solutionIndex].containerId);
-        if (container.classList.contains('visible')){
+        if (container.classList.contains('visible')) {
             container.classList.remove('visible');
         }
-        else{
+        else {
             container.classList.add('visible');
         }
-        if (visible){
+        if (visible) {
             container.classList.add('visible');
         }
     }
@@ -719,11 +726,11 @@ export function attachTooltipEvents() {
 export function toggleAllPieCharts() {
     const textTogglePlusContainer = document.getElementById("show-more-pie-chart-container");
     const textToggleMoinsContainer = document.getElementById("show-less-pie-chart-container");
-    if (textTogglePlusContainer.classList.contains('visible')){
+    if (textTogglePlusContainer.classList.contains('visible')) {
         textTogglePlusContainer.classList.remove('visible');
         textToggleMoinsContainer.classList.add('visible');
     }
-    else{
+    else {
         textTogglePlusContainer.classList.add('visible');
         textToggleMoinsContainer.classList.remove('visible');
     }
@@ -755,31 +762,54 @@ export function toggleTooltip(element) {
     }
 }
 
-export function displayWarning(warning_type, display_data) {
+export function displayError(key, display_data) {
     //log
-    // console.log('Warning message display');
+    console.log('Error message display');
     // Crée une instance de modal Bootstrap
-    let myModal = new bootstrap.Modal(modalElement);
-    switch (warning_type) {
-        case WARNING_KEY_NBR_JRS:
-            dangerModalLabel.textContent = WARNING_MESSAGES_JRS[0];
-            dangerModalBody.textContent = WARNING_MESSAGES_JRS[1] + display_data[0].toFixed(0) + " jours";
+    let myModal = new bootstrap.Modal(dangerModalElement);
+    console.log(myModal);
+    switch (key) {
+        case ERROR_KEY_NBR_JRS:
+            console.log("error nbre jours ");
+            dangerModalLabel.textContent = ERROR_MESSAGES_JRS[0];
+            dangerModalBody.textContent = ERROR_MESSAGES_JRS[1] + display_data[0].toFixed(0) + " jours";
             // Quand le modal se ferme, appeler récursivement pour le suivant
             break;
 
-        case WARNING_KEY_NBR_ATTACHES:
-            dangerModalLabel.textContent = WARNING_MESSAGES_ATTACHES[0];
-            dangerModalBody.textContent = WARNING_MESSAGES_ATTACHES[1] + display_data[0].toFixed(0) + " attaches";
+        case ERROR_KEY_NBR_ATTACHES:
+            console.log("error nbre attaches");
+
+            dangerModalLabel.textContent = ERROR_MESSAGES_ATTACHES[0];
+            dangerModalBody.textContent = ERROR_MESSAGES_ATTACHES[1] + display_data[0].toFixed(0) + " attaches";
             break;
 
-        case WARNING_KEY_LANG_NOT_AVAILABLE:
-            console.log("modal lang warn");
-            dangerModalLabel.textContent = WARNING_MESSAGES_LANG_NOT_AVAILABLE[0];
-            dangerModalBody.textContent = WARNING_MESSAGES_LANG_NOT_AVAILABLE[1];
+        case ERROR_KEY_LANG_NOT_AVAILABLE:
+            console.log("error lang not available");
+            dangerModalLabel.textContent = ERROR_MESSAGES_LANG_NOT_AVAILABLE[0];
+            dangerModalBody.textContent = ERROR_MESSAGES_LANG_NOT_AVAILABLE[1];
             break;
 
+        default:
+            break;
+    }
 
+    // Affiche le modal
+    myModal.show();
+    return myModal;
+}
 
+export function displayWarning(key, display_data) {
+    //log
+    console.log('Warning message display');
+    // Crée une instance de modal Bootstrap
+    let myModal = new bootstrap.Modal(warningModalElement);
+    console.log(myModal);
+    switch (key) {
+        case WARNING_KEY_LANG_NOT_VERIFIED:
+            console.log("Warning : Lang not verified");
+            warningModalLabel.textContent = WARNING_MESSAGES_TRADUCTION[0];
+            warningModalBody.textContent = WARNING_MESSAGES_TRADUCTION[1];
+            break;
         default:
             break;
     }
