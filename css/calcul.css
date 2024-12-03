@@ -164,6 +164,45 @@
     opacity: 1;
     padding: 20px; /* Ajoute de l'espace visuel */
 }
+#lea30-pie-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#lea30-pie-container.visible {
+    max-height: 5000px; /* Une valeur très grande pour tester */
+    opacity: 1;
+    padding: 20px; /* Ajoute de l'espace visuel */
+}
+#bobine-pie-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#bobine-pie-container.visible {
+    max-height: 5000px; /* Une valeur très grande pour tester */
+    opacity: 1;
+    padding: 20px; /* Ajoute de l'espace visuel */
+}
+#manuelle-pie-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#manuelle-pie-container.visible {
+    max-height: 5000px; /* Une valeur très grande pour tester */
+    opacity: 1;
+    padding: 20px; /* Ajoute de l'espace visuel */
+}
 .extra-options-container {
     max-height: 0; /* Masque complètement la section */
     overflow: hidden; /* Empêche le débordement */
@@ -177,6 +216,77 @@
     opacity: 1; /* Restaure la visibilité */
     padding: 10px; /* Ajoute de l'espace visuel lors de l'expansion */
 }
+.toggle-options-container {
+    position: relative; /* Superpose les éléments */
+    text-align: center; /* Centre le texte horizontalement */
+    width: 100%; /* Étend à toute la largeur */
+}
+
+
+
+.voir-plus-moins-text-container {
+    position: absolute;
+    width: 100%; /* Utilise toute la largeur disponible */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.voir-plus-moins-text-container:not(.visible) {
+    opacity: 0; /* Masque visuellement */
+    pointer-events: none; /* Désactive les interactions */
+    visibility: hidden; /* Cache complètement l'élément */
+}
+
+.voir-plus-moins-text-container.visible {
+    opacity: 1; /* Rend visible */
+    pointer-events: auto; /* Active les interactions */
+    visibility: visible; /* Montre l'élément */
+}
+.toggle-options-container {
+    height: 10px; /* Fixe une hauteur appropriée */
+}
+
+
+.btn-custom-width {
+    width: 60%; /* Définit la largeur à 60% de la page */
+    max-width: 500px; /* Optionnel : limite la largeur maximale */
+    min-width: 200px; /* Optionnel : assure une largeur minimale pour les petits écrans */
+}
+
+.voir-plus-moins-text-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.voir-plus-moins-text-container.visible {
+    max-height: 5000px; /* Ajustez selon la taille maximale */
+    opacity: 1;
+}
+
+
+.results-section-container {
+    max-height: 0; /* Masque complètement la section */
+    overflow: hidden; /* Empêche le débordement */
+    opacity: 0; /* Rend la section invisible */
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.results-section-container.visible {
+    max-height: 5000px; /* Ajustez en fonction de votre contenu */
+    opacity: 1; /* Restaure la visibilité */
+}
+
+#results-summary {
+    display: flex; /* Active Flexbox */
+    flex-direction: column; /* Empile les éléments verticalement */
+    align-items: center; /* Centre horizontalement */
+    justify-content: center; /* Centre verticalement */
+    margin-bottom: 0px;
+}
+
+
+
 .hidden-section {
     max-height: 0; /* Cache complètement la section */
     overflow: hidden; /* Empêche le débordement */
@@ -223,6 +333,8 @@
     height: 50vh; /* 50% de la hauteur de l'écran */
     width: 100%;  /* 100% de la largeur */
 }
+
+
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */

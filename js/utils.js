@@ -1,18 +1,10 @@
 import { displayWarning } from "./display.js";
-import { dictionary } from "./lang/dictionnary.js";
+import { dictionary } from "../lang/dictionary.js";
 
 let stack = [];
 let modal = null;
 let button = null;
 
-export function availableLanguage(language){
-    switch (language) {
-        case "Francais":
-            return true;
-        default:
-            return false;
-    }
-}
 
 
 export function getMinValueFromData(datasets) {

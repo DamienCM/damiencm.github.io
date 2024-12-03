@@ -1,12 +1,9 @@
-
-import * as utils from "./utils.js";
-import * as display from "./display.js";
-import * as database from "./database.js";
-import * as colortheme from "./color-theme.js";
-import { dictionary } from "./lang/dictionnary.js";
-import { toggleDropdown } from "./display.js";
-import * as chart from "./chart.js";
-import * as calcul from "./calcul.js";
+import * as utils from "./js/utils.js";
+import * as display from "./js/display.js";
+import { dictionary } from "./lang/dictionary.js";
+import { toggleDropdown } from "./js/display.js";
+import * as calcul from "./js/calcul.js";
+import * as change_language from "./js/change_language.js"
 
 const WARNING_THRESHOLD_NBR_JRS = 40;
 const WARNING_THRESHOLD_NBR_ATTACHES = 300000;
@@ -34,36 +31,28 @@ function init_document(){
     });
     // Initialisation
     language = document.getElementById('selected-language').innerText;
-    changeLanguage();
     // Attache l'événement au clic
     document.getElementById('show-more-options').addEventListener('click', display.toggleExtraOptions);
+    document.getElementById('show-less-options').addEventListener('click', display.toggleExtraOptions);
+    document.getElementById('show-more-results').addEventListener('click', display.toggleExtraResults);
+    document.getElementById('show-less-results').addEventListener('click', display.toggleExtraResults);
+    document.getElementById('show-more-pie-chart').addEventListener('click',display.toggleAllPieCharts);
+    document.getElementById('show-less-pie-chart').addEventListener('click',display.toggleAllPieCharts);
     document.getElementById('calculate-button').addEventListener('click',launchCalculation);
     // Rendre la fonction globale
     window.toggleDropdown = toggleDropdown;
     window.selectLanguage = selectLanguage;
+    // change lang to charge page
+    change_language.change_language(language);
 }
 
 // Initialisation de la langue
-function changeLanguage() {
+function checkLanguage() {
     let language_selected = document.getElementById('selected-language').innerText;
-    if (utils.availableLanguage(language_selected)){
+    if (change_language.availableLanguage(language_selected)){
         language = language_selected;
-        // console.log(language);
-        document.getElementById('page-title').innerText = dictionary[language].pageTitle;
-        document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
-        document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
+        change_language.change_language(language);
 
-        // const extraOptions = document.getElementById('extra-options');
-        // if (extraOptions.style.display === 'none') {
-        //     document.getElementById("show-more-options").textContent = dictionary[language].moreOptions;
-        // }
-        // else {
-        //     document.getElementById("show-more-options").textContent = dictionary[language].lessOptions;
-
-        // }
-
-        display.loadInputFields(language);
-        display.loadExtraOptions(language); 
     }
     else {
         console.log(WARNING_KEY_LANG_NOT_AVAILABLE);
@@ -107,12 +96,10 @@ function selectLanguage(language, code) {
     // Met à jour le texte et l'icône du bouton principal
     document.getElementById('selected-language').innerText = language;
     document.querySelector('.dropdown-toggle img').src = `icons/flags/${code}.png`; // Met à jour l'icône du drapeau
-
     // Ferme le menu après la sélection
     toggleDropdown();
-
     // Appeler la fonction de changement de langue si nécessaire
-    changeLanguage();
+    checkLanguage();
 }
 
 init_document();
