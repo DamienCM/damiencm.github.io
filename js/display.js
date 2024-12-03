@@ -231,7 +231,7 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
                 display: true,
                 text: dictionary[language].cout_annuel_barchart,
                 font: {
-                    size: 18 // Taille de la police en pixels
+                    size: 12 // Taille de la police en pixels
                 }
             },
             tooltip: {
@@ -551,7 +551,7 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: `Consommable`, font: { size: 18 } },
+                title: { display: true, text: `Consommable`, font: { size: 12 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
@@ -569,7 +569,7 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
+                title: { display: true, text: `Main d'oeuvre`, font: { size: 12 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {

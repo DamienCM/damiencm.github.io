@@ -282,6 +282,7 @@
     flex-direction: column; /* Empile les éléments verticalement */
     align-items: center; /* Centre horizontalement */
     justify-content: center; /* Centre verticalement */
+    margin-bottom: 0px;
 }
 
 
