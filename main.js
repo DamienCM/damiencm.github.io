@@ -34,6 +34,10 @@ function init_document(){
     // Attache l'événement au clic
     document.getElementById('show-more-options').addEventListener('click', display.toggleExtraOptions);
     document.getElementById('show-less-options').addEventListener('click', display.toggleExtraOptions);
+    document.getElementById('show-more-results').addEventListener('click', display.toggleExtraResults);
+    document.getElementById('show-less-results').addEventListener('click', display.toggleExtraResults);
+    document.getElementById('show-more-pie-chart').addEventListener('click',display.toggleAllPieCharts);
+    document.getElementById('show-less-pie-chart').addEventListener('click',display.toggleAllPieCharts);
     document.getElementById('calculate-button').addEventListener('click',launchCalculation);
     // Rendre la fonction globale
     window.toggleDropdown = toggleDropdown;

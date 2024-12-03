@@ -140,93 +140,54 @@ export function displayResultsRaw(results) {
     const resultsSection = document.getElementById('results-section');
     resultsSection.style.display = 'block'; // Rendre visible la section des résultats
 
-    const resultsSummary = document.getElementById('results-summary');
-    resultsSummary.innerHTML = ''; // Réinitialise le contenu
+    const mainValuesContainer = document.getElementById('main-values-results');
+    const extraResultsContainer = document.getElementById('extra-results');
+
+    // Réinitialiser les contenus
+    mainValuesContainer.innerHTML = '';
+    extraResultsContainer.innerHTML = '';
 
     let currentSection = null; // Pointeur pour la section en cours
-    const hiddenSections = []; // Stocke les sections à cacher
 
     for (const [key, value] of Object.entries(results)) {
-        if ((value[1] && value[1].startsWith("_")) || (value[1] && value[1].startsWith("%"))) {
-            let sectionTitle = value[1].replace("_", "").trim(); // Retire les "_"
+        if (value[1] && (value[1].startsWith("_") || value[1].startsWith("%"))) {
+            const sectionTitle = value[1].replace("_", "").replace("%", "").trim(); // Retire les marqueurs
+
+            // Créer une nouvelle section
             currentSection = document.createElement('div');
-            currentSection.classList.add('results-section');
-
-            // Ajoute une classe pour identifier les sections non "Total"
-            if (sectionTitle[0] !== "%") {
-                currentSection.classList.add('hidden-section'); // Classe pour transition
-                hiddenSections.push(currentSection); // Ajoute aux sections cachées
-            }
-            else {
-                sectionTitle = value[1].replace("%", "").trim();
-            }
-
             const sectionHeader = document.createElement('h5');
             sectionHeader.innerHTML = `<u>${sectionTitle || "Section"}</u>`;
             currentSection.appendChild(sectionHeader);
-            resultsSummary.appendChild(currentSection);
+
+            // Définir la destination en fonction du marqueur
+            if (value[1].startsWith("_")) {
+                // currentSection.classList.add('results-section-container'); // Section supplémentaire
+                extraResultsContainer.appendChild(currentSection);
+            } else if (value[1].startsWith("%")) {
+                // currentSection.classList.add('results-section-container', 'visible'); // Section principale
+                mainValuesContainer.appendChild(currentSection);
+            }
         } else if (currentSection) {
+            // Ajouter les résultats à la section actuelle
             const resultElement = document.createElement('p');
             if (isNaN(value[0])) {
-                resultElement.innerHTML = `<h3>${value[1]}:</strong> ${value[0]} ${value[2]}`;
+                resultElement.innerHTML = `<strong>${value[1]}:</strong> ${value[0]} ${value[2]}`;
             } else {
                 resultElement.innerHTML = `<strong>${value[1]}:</strong> ${Number(value[0]).toFixed(value[3])} ${value[2]}`;
             }
             currentSection.appendChild(resultElement);
         }
     }
-
-    // Ajouter les boutons "+voir plus" et "voir moins"
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.classList.add('results-buttons');
-
-    if (showMoreButtonRaw === null) {
-        showMoreButtonRaw = document.createElement('p');
-        showMoreButtonRaw.classList.add('text-primary');
-        showMoreButtonRaw.style.cursor = 'pointer';
-        showMoreButtonRaw.textContent = dictionary[language].showMoreResults;
-        showMoreButtonRaw.style.display = 'inline';
-    }
-    if (showLessButtonRaw === null) {
-        showLessButtonRaw = document.createElement('p');
-        showLessButtonRaw.classList.add('text-primary');
-        showLessButtonRaw.style.cursor = 'pointer';
-        showLessButtonRaw.textContent = dictionary[language].showLessResults;
-        showLessButtonRaw.style.display = 'none'; // Caché par défaut
-    }
-
-    // Gestion des clics sur les boutons
-    showMoreButtonRaw.onclick = () => {
-        hiddenSections.forEach(section => section.classList.add('visible')); // Ajoute la classe 'visible'
-        showMoreButtonRaw.style.display = 'none'; // Cache le bouton "voir plus"
-        showLessButtonRaw.style.display = 'inline'; // Affiche le bouton "voir moins"
-    };
-
-    showLessButtonRaw.onclick = () => {
-        hiddenSections.forEach(section => section.classList.remove('visible')); // Retire la classe 'visible'
-        showLessButtonRaw.style.display = 'none'; // Cache le bouton "voir moins"
-        showMoreButtonRaw.style.display = 'inline'; // Réaffiche le bouton "voir plus"
-    };
-
-    // Ajoutez les boutons après le titre "Résultats"
-    buttonsContainer.appendChild(showMoreButtonRaw);
-    buttonsContainer.appendChild(showLessButtonRaw);
-
-    const resultsTitle = document.getElementById('results-title');
-    resultsTitle.insertAdjacentElement('afterend', buttonsContainer); // Insère les boutons après le titre "Résultats"
-
-    // Initialisation des sections cachées
-    if (showMoreButtonRaw.style.display === 'inline') { //menu contracte
-        // console.log("masquer les sections")
-        hiddenSections.forEach(section => section.classList.remove('visible')); // Masque les sections
-    }
-    else {
-        hiddenSections.forEach(section => section.classList.add('visible')); // Masque les sections
-    }
 }
 
 // Fonction pour afficher un graphique en barres empilées
 export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) {
+    // Initialisation des solutions avec l'état des checkboxes
+    const solutions = [
+        { checkboxId: 'lea30-checkbox', index: 0 },
+        { checkboxId: 'bobine-embarquee-checkbox', index: 1 },
+        { checkboxId: 'manuelle-checkbox', index: 2 }
+    ];
     const ctx = document.getElementById('bar-chart').getContext('2d');
     // console.log(chart_data["LEA30S"].cout_consommable);
     // console.log(chart_data["LEA30S"].cout_main_d_oeuvre);
@@ -360,12 +321,7 @@ export function displayResultsBarGraph(chart_data, bar_graph, state_checkboxes) 
         bar_graph.update(); // Met à jour le graphique
     }
 
-    // Initialisation des solutions avec l'état des checkboxes
-    const solutions = [
-        { checkboxId: 'lea30-checkbox', index: 0 },
-        { checkboxId: 'bobine-embarquee-checkbox', index: 1 },
-        { checkboxId: 'manuelle-checkbox', index: 2 }
-    ];
+
 
     solutions.forEach(solution => {
         const checkbox = document.getElementById(solution.checkboxId);
@@ -595,7 +551,7 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: dictionary[language].consommable_pie_chart, font: { size: 18 } },
+                title: { display: true, text: `Consommable`, font: { size: 18 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
@@ -613,13 +569,13 @@ export function displayPieCharts(chart_data, pie_charts) {
                 legend: {
                     display: false
                 },
-                title: { display: true, text: dictionary[language].main_d_oeuvre_pie_chart, font: { size: 18 } },
+                title: { display: true, text: `Main d'oeuvre`, font: { size: 18 } },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
                             let label = tooltipItem.label || '';
                             let value = tooltipItem.raw; // Accède à la valeur brute
-                            return `${label}: ${value} ${dictionary[language].hours_short_pie_chart}`; // Ajoute l'unité ici
+                            return `${label}: ${value} h`; // Ajoute l'unité ici
                         }
                     }
                 }
@@ -653,8 +609,18 @@ export function displayPieCharts(chart_data, pie_charts) {
 
     // Gestion de la visibilité des camemberts avec les checkboxes
     function togglePieCharts(solutionIndex, visible) {
+        console.log("toggling individual pie-chart");
+        console.log(solutions[solutionIndex].containerId);
         let container = document.getElementById(solutions[solutionIndex].containerId);
-        container.style.display = visible ? 'flex' : 'none';
+        if (container.classList.contains('visible')){
+            container.classList.remove('visible');
+        }
+        else{
+            container.classList.add('visible');
+        }
+        if (visible){
+            container.classList.add('visible');
+        }
     }
 
     // Initialisation des camemberts avec les états des checkboxes
@@ -670,19 +636,19 @@ export function displayPieCharts(chart_data, pie_charts) {
 
     // Texte Cliquable "Voir plus / Voir moins"
 
-    if (showMoreLessPieChart === null) {
-        showMoreLessPieChart = document.getElementById('toggle-pie-charts');
-        pieChartContainer = document.getElementById('pie-charts-container');
-        showMoreLessPieChart.addEventListener('click', function () {
-            if (pieChartContainer.classList.contains('visible')) {
-                pieChartContainer.classList.remove('visible'); // Réduit avec transition
-                showMoreLessPieChart.textContent = dictionary[language].voir_plus_main_oeuvre_consommable;
-            } else {
-                pieChartContainer.classList.add('visible'); // Étend avec transition
-                showMoreLessPieChart.textContent = dictionary[language].voir_moins_main_oeuvre_consommable;
-            }
-        });
-    }
+    // if (showMoreLessPieChart === null) {
+    //     showMoreLessPieChart = document.getElementById('toggle-pie-charts');
+    //     pieChartContainer = document.getElementById('pie-charts-container');
+    //     showMoreLessPieChart.addEventListener('click', function () {
+    //         if (pieChartContainer.classList.contains('visible')) {
+    //             pieChartContainer.classList.remove('visible'); // Réduit avec transition
+    //             showMoreLessPieChart.textContent = "+ Voir le detail des main d'oeuvre et du consommable";
+    //         } else {
+    //             pieChartContainer.classList.add('visible'); // Étend avec transition
+    //             showMoreLessPieChart.textContent = '- Voir moins';
+    //         }
+    //     });
+    // }
 
 
     return pie_charts;
@@ -692,17 +658,17 @@ export function displayPieCharts(chart_data, pie_charts) {
 export function toggleExtraOptions() {
     const extraOptions = document.getElementById('extra-options');
     const showMoreText = document.getElementById('show-more-options');
+    const showLessText = document.getElementById('show-less-options');
     const showMoreTextContainer = document.getElementById('show-more-options-container');
     const showLessTextContainer = document.getElementById('show-less-options-container');
 
-    const showLessText = document.getElementById('show-less-options');
     // Vérifie si la section est visible
     if (extraOptions.classList.contains('visible')) {
         extraOptions.classList.remove('visible'); // Masque avec transition
         showMoreTextContainer.classList.add('visible');
         showLessTextContainer.classList.remove('visible');
 
-   } else {
+    } else {
         extraOptions.classList.add('visible'); // Affiche avec transition
         // showMoreText.innerText = dictionary[language].showLessOptions; // Texte "Afficher moins"
         // showLessText.add('visible');
@@ -710,6 +676,29 @@ export function toggleExtraOptions() {
         showLessTextContainer.classList.add('visible');
     }
 }
+
+export function toggleExtraResults() {
+    console.log("toggle-extra results");
+
+    const extraResultsContainer = document.getElementById('extra-results');
+    // const mainResultsContainer = document.getElementById('main-values-results');
+    const showMoreButtonContainer = document.getElementById('show-more-results-container');
+    const showLessButtonContainer = document.getElementById('show-less-results-container');
+
+    // Basculer la visibilité des résultats supplémentaires
+    if (extraResultsContainer.classList.contains('visible')) {
+        // mainResultsContainer.classList.remove('visible'); // Masque les résultats supplémentaires
+        showMoreButtonContainer.classList.add('visible'); // Affiche "Voir plus"
+        extraResultsContainer.classList.remove('visible'); // Masque les résultats supplémentaires
+        showLessButtonContainer.classList.remove('visible'); // Cache "Voir moins"
+    } else {
+        // mainResultsContainer.classList.add('visible'); // Affiche les résultats supplémentaires
+        showMoreButtonContainer.classList.remove('visible'); // Cache "Voir plus"
+        extraResultsContainer.classList.add('visible'); // Affiche les résultats supplémentaires
+        showLessButtonContainer.classList.add('visible'); // Affiche "Voir moins"
+    }
+}
+
 
 export function attachTooltipEvents() {
     const helpIcons = document.querySelectorAll('.help-icon');
@@ -725,6 +714,28 @@ export function attachTooltipEvents() {
     document.addEventListener('click', function (event) {
         helpIcons.forEach(icon => icon.classList.remove('tooltip-active'));
     });
+}
+
+export function toggleAllPieCharts() {
+    const textTogglePlusContainer = document.getElementById("show-more-pie-chart-container");
+    const textToggleMoinsContainer = document.getElementById("show-less-pie-chart-container");
+    if (textTogglePlusContainer.classList.contains('visible')){
+        textTogglePlusContainer.classList.remove('visible');
+        textToggleMoinsContainer.classList.add('visible');
+    }
+    else{
+        textTogglePlusContainer.classList.add('visible');
+        textToggleMoinsContainer.classList.remove('visible');
+    }
+    console.log("toggleAllPieCharts");
+    const pieChartContainer = document.getElementById("pie-charts-container");
+    if (pieChartContainer.classList.contains('visible')) {
+        pieChartContainer.classList.remove('visible');
+    }
+    else {
+        pieChartContainer.classList.add("visible");
+
+    }
 }
 
 export function toggleDropdown() {

@@ -19,6 +19,25 @@
     <link rel="stylesheet" href="./css/calcul.css">
     <link rel="stylesheet" href="./css/contextual-modals.css">
     <!-- <script src="./js/chart.js"></script> -->
+
+
+    <!-- Modal Danger -->
+    <div class="modal fade modal-danger" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dangerModalLabel">Attention !h </h5>
+                    <button id="close-warning" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dangerModalBody">
+                    <p>Ceci est un modal de type danger. Veuillez faire attention !h </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </head>
 
 <body>
@@ -55,109 +74,160 @@
                 </ul>
             </div>
         </div>
-
-        <form id="calculator-form" class="my-4">
-            <div id="input-fields" class="row">
-                <!-- Les champs de saisie par défaut seront générés ici par JavaScript -->
-            </div>
-
-            <!-- Texte cliquable pour révéler plus d'options -->
-            <div id="toggle-options-wrapper" class="my-4">
-                <div class="toggle-options-container">
-                    <div id="show-more-options-container" class="voir-plus-moins-text-container visible">
-                        <p id="show-more-options" class="text-primary" style="cursor: pointer;">
-                            Text cliquable plus d'options
-                        </p>
-                    </div>
-            
-                    <div id="show-less-options-container" class="voir-plus-moins-text-container">
-                        <p id="show-less-options" class="text-primary" style="cursor: pointer;">
-                            Text cliquable moins d'options
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="extra-options" class="extra-options-container">
-                <!-- Vos options supplémentaires ici -->
-            </div>
-
-
-
-            <!-- Section cachée pour les options supplémentaires -->
-            <div id="extra-options" style="display: none;">
-                <div id="extra-options" class="mb-3">
+        <div id="form-section" class="p-5 border rounded  my-5">
+            <form id="calculator-form" class="my-4">
+                <div id="input-fields" class="row">
                     <!-- Les champs de saisie par défaut seront générés ici par JavaScript -->
                 </div>
-            </div>
-
-            <div id="error-message" class="text-danger mb-3"></div>
-
-            <button type="button" id="calculate-button" class="btn btn-primary">Lancer le
-                calcul h
-            </button>
-        </form>
-
-        <!-- Modal Danger -->
-        <div class="modal fade modal-danger" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="dangerModalLabel">Attention !h </h5>
-                        <button id="close-warning" type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                <!-- Texte cliquable pour révéler plus d'options -->
+                <div id="toggle-options-wrapper" class="my-4">
+                    <div class="toggle-options-container">
+                        <div id="show-more-options-container" class="voir-plus-moins-text-container visible">
+                            <p id="show-more-options" class="text-primary" style="cursor: pointer;">
+                                Text cliquable plus d'options
+                            </p>
+                        </div>
+                        <div id="show-less-options-container" class="voir-plus-moins-text-container">
+                            <p id="show-less-options" class="text-primary" style="cursor: pointer;">
+                                Text cliquable moins d'options
+                            </p>
+                        </div>
                     </div>
-                    <div class="modal-body" id="dangerModalBody">
-                        <p>Ceci est un modal de type danger. Veuillez faire attention !h </p>
+                </div>
+
+                <div id="extra-options" class="extra-options-container">
+                    <!-- Vos options supplémentaires ici -->
+                </div>
+
+                <div id="error-message" class="text-danger mb-3"></div>
+
+                <div id="toggle-options-wrapper" class="container my-4">
+                    <div class="row justify-content-center">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button type="button" id="calculate-button" class="btn btn-primary btn-custom-width">
+                                Lancer le calcul
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            `
+            <script src="./js/bootstrap.bundle.min.js"></script>
+        </div>
+
+
+        <div id="results-section" class="p-5 border rounded  my-5" style="display: none;">
+            <div class="row justify-content-center">
+                <!-- Colonne principale pour les résultats -->
+                <div class="col-12 col-md-8">
+                    <!-- Résumé des résultats -->
+                    <div id="results-summary" class="p-3 border rounded bg-light mb-4">
+                        <!-- Résultats principaux affichés par défaut -->
+                        <div id="main-values-results" class="results-section-container visible"></div>
+                        <!-- Résultats supplémentaires cachés par défaut -->
+                        <div id="extra-results" class="results-section-container"></div>
+
+                        <!-- Texte cliquable pour révéler plus de résultats -->
+                    </div>
+                    <div id="toggle-results-wrapper" class="my-4">
+                        <div class="toggle-options-container">
+                            <div id="show-more-results-container" class="voir-plus-moins-text-container visible">
+                                <p id="show-more-results" class="text-primary" style="cursor: pointer;">
+                                    Text cliquable plus d'options
+                                </p>
+                            </div>
+                            <div id="show-less-results-container" class="voir-plus-moins-text-container">
+                                <p id="show-less-results" class="text-primary" style="cursor: pointer;">
+                                    Text cliquable moins d'options
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section des outils à comparer -->
+
+                    <div class="container py-4 border rounded bg-light mb-5">
+                        <div class="row justify-content-center">
+                            <!-- Titre -->
+                            <div class="col-12 text-center">
+                                <h5 id="tools-compare" class="fw-bold mb-4">Outils à comparer :</h5>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <!-- Options de comparaison -->
+                            <div id="chart-options" class="col-12 col-mb-8 d-flex justify-content-around">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="lea30-checkbox" checked>
+                                    <label class="form-check-label" for="lea30-checkbox"
+                                        id="lea30-checkbox-text">LEA30</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="bobine-embarquee-checkbox">
+                                    <label class="form-check-label" for="bobine-embarquee-checkbox"
+                                        id="bobine-embarquee-checkbox-text">
+                                        Outil à bobine embarquée
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="manuelle-checkbox">
+                                    <label class="form-check-label" for="manuelle-checkbox" id="manuelle-checkbox-text">
+                                        Attache manuelle
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div id="bar-chart-container" class="mb-5">
+                        <canvas id="bar-chart" class="w-100"></canvas>
+                    </div>
+
+                    <!-- Pie Charts Section -->
+
+                    <!-- Texte cliquable pour révéler plus de résultats -->
+                    <div id="toggle-pie-chart-wrapper" class="mb-5">
+                        <div class="toggle-options-container">
+                            <div id="show-more-pie-chart-container" class="voir-plus-moins-text-container visible">
+                                <p id="show-more-pie-chart" class="text-primary" style="cursor: pointer;">
+                                    Text cliquable plus piechart
+                                </p>
+                            </div>
+                            <div id="show-less-pie-chart-container" class="voir-plus-moins-text-container">
+                                <p id="show-less-pie-chart" class="text-primary" style="cursor: pointer;">
+                                    Text cliquable moins piechart
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- PIE CHART CONTAINER -->
+                    <div id="pie-charts-container" class="d-flex flex-wrap gap-3 justify-content-between mb-5">
+                        <!-- Solution LEA30 -->
+                        <div id="lea30-pie-container" class="d-flex flex-wrap w-100 justify-content-between visible">
+                            <div class="col-6"><canvas id="pie-chart-lea30-main"></canvas></div>
+                            <div class="col-6"><canvas id="pie-chart-lea30-consommable"></canvas></div>
+                        </div>
+                        <!-- Solution Bobine -->
+                        <div id="bobine-pie-container" class="d-flex flex-wrap w-100 justify-content-between visible">
+                            <div class="col-6"><canvas id="pie-chart-bobine-main"></canvas></div>
+                            <div class="col-6"><canvas id="pie-chart-bobine-consommable"></canvas></div>
+                        </div>
+                        <!-- Solution Manuelle -->
+                        <div id="manuelle-pie-container" class="d-flex flex-wrap w-100 justify-content-between visible">
+                            <div class="col-6"><canvas id="pie-chart-manuelle-main"></canvas></div>
+                            <div class="col-6"><canvas id="pie-chart-manuelle-consommable"></canvas></div>
+                        </div>
+                    </div>
+
+                    <!-- Curve Chart -->
+                    <div id="curve-chart-container" class="mb-5">
+                        <canvas id="curve-chart" class="w-100"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="./js/bootstrap.bundle.min.js"></script>
-
-        <div id="results-section" style="display:none;">
-            <h4 id="results-title"></h4>
-            <div id="results-summary"></div>
-            <h4 id="tools-compare">Outils a comparer :h</h4>
-            <div id="chart-options" class="mb-3">
-                <input type="checkbox" id="lea30-checkbox" checked> <label id="lea30-checkbox-text"> LEA30 H</label>
-                <input type="checkbox" id="bobine-embarquee-checkbox"> <label id="bobine-embarquee-checkbox-text"> Outil
-                    à bobine embarquée h </label>
-                <input type="checkbox" id="manuelle-checkbox"> <label id="manuelle-checkbox-text"> Attache manuelle h
-                </label>
-            </div>
-            <div id="bar-chart-container">
-                <canvas id="bar-chart"></canvas>
-            </div>
-            <div id="pie-charts-container" style="flex-wrap: wrap; gap: 30px;">
-                <!-- Solution LEA30 -->
-                <div id="lea30-pie-container" style="display: flex; justify-content: space-between; width: 100%;">
-                    <div style="width: 45%;"><canvas id="pie-chart-lea30-main"></canvas></div>
-                    <div style="width: 45%;"><canvas id="pie-chart-lea30-consommable"></canvas></div>
-                </div>
-                <!-- Solution Bobine -->
-                <div id="bobine-pie-container" style="display: flex; justify-content: space-between; width: 100%;">
-                    <div style="width: 45%;"><canvas id="pie-chart-bobine-main"></canvas></div>
-                    <div style="width: 45%;"><canvas id="pie-chart-bobine-consommable"></canvas></div>
-                </div>
-                <!-- Solution Manuelle -->
-                <div id="manuelle-pie-container" style="display: flex; justify-content: space-between; width: 100%;">
-                    <div style="width: 45%;"><canvas id="pie-chart-manuelle-main"></canvas></div>
-                    <div style="width: 45%;"><canvas id="pie-chart-manuelle-consommable"></canvas></div>
-                </div>
-            </div>
-            <p id="toggle-pie-charts" class="text-primary" style="cursor: pointer;">+ Voir le detail des main d'oeuvre
-                et du consommable h</p>
-            <div id="curve-chart-container">
-                <canvas id="curve-chart"></canvas>
-            </div>
-        </div>
-
-        <!-- <div class="mt-3">
-            <button class="btn btn-secondary" onclick="printResults()">Imprimer</button>
-            <button class="btn btn-secondary" onclick="resetForm()">Relancer un calcul</button>
-        </div> -->
     </div>
     </div>
 

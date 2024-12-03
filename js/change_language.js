@@ -21,16 +21,20 @@ export function change_language(language){
     display.set_language(language);
     calcul.set_language(language);
     document.getElementById('page-title').innerText = dictionary[language].pageTitle;
-    document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
+    // document.getElementById('results-title').innerText = dictionary[language].resultsTitle;
     document.getElementById("calculate-button").innerText = dictionary[language].launchCalculation;
     document.getElementById("tools-compare").innerText = dictionary[language].toCompareTools;
     document.getElementById("lea30-checkbox-text").innerHTML = dictionary[language].LEA30Checkbox;
     document.getElementById("bobine-embarquee-checkbox-text").innerText = dictionary[language].embarqueeCheckbox;
     document.getElementById("manuelle-checkbox-text").innerText = dictionary[language].manuelleCheckbox;
-    document.getElementById("toggle-pie-charts").innerText = dictionary[language].voir_plus_main_oeuvre_consommable;
+    // document.getElementById("toggle-pie-charts").innerText = dictionary[language].voir_plus_main_oeuvre_consommable;
 
     document.getElementById("show-more-options").innerText = dictionary[language].showMoreOptions; // Texte "Afficher plus"
     document.getElementById("show-less-options").innerText = dictionary[language].showLessOptions; // Texte "Afficher plus"
+    document.getElementById("show-more-results").innerText = dictionary[language].showMoreResults; // Texte "Afficher plus"
+    document.getElementById("show-less-results").innerText = dictionary[language].showLessResults; // Texte "Afficher plus"
+    document.getElementById("show-more-pie-chart").innerText = dictionary[language].voir_plus_main_oeuvre_consommable; // Texte "Afficher plus"
+    document.getElementById("show-less-pie-chart").innerText = dictionary[language].voir_moins_main_oeuvre_consommable; // Texte "Afficher plus"
 
 
 
