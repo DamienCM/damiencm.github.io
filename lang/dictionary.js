@@ -62,7 +62,7 @@ export const dictionary = {
             "Temps de déplacement en seconde pour que l'opérateur marche d'un ceps à un autre à une allure de travail",
             "Temps en secondes pour que le LEA30 fasse une attache (0.6s pour 11 tours, 0.4s pour 5 tours)",
             "Temps total en secondes qu'il faut à l'opérateur pour changer de bobine (enlever le gilet, ouvrir le capot et changer la bobine, remettre le harnais...) : 30s pour un operateur experimenté, 120s pour un débutant",
-             "Temps en seconde qu'il faut pour plier la baguette de la vigne et la positionner dans la position souhaitée avant de l'attacher. Si plusieurs baguette indiqué (Guyot double arcure) indiquer le temps total passé à plier",
+            "Temps en seconde qu'il faut pour plier la baguette de la vigne et la positionner dans la position souhaitée avant de l'attacher. Si plusieurs baguette indiqué (Guyot double arcure) indiquer le temps total passé à plier",
             "Temps qu'il faut à l'opérateur pour déplacer son outil jusqu'au prochain emplacement d'attache",
             "Temps total travaillé en une journée", "Temps de pause cumulé sur la journée ",
             "Temps de mise en route de l'opérateur en minutes pour : sortir l'outil, mettre le harnais, se rendre au premier cep",
@@ -79,34 +79,34 @@ export const dictionary = {
         showLessOptions: "- Voir moins d'options",
         showMoreResults: "+ Voir plus de résultats",
         showLessResults: "+ Voir moins de résultats",
-        toCompareTools:"Outils à comparer :",
-        LEA30Checkbox:" LEA30s ",
-        embarqueeCheckbox:" Outil à bobine embarquée ",
-        manuelleCheckbox:" Attache manuelle ",
-        
+        toCompareTools: "Outils à comparer :",
+        LEA30Checkbox: " LEA30s ",
+        embarqueeCheckbox: " Outil à bobine embarquée ",
+        manuelleCheckbox: " Attache manuelle ",
+
         // --- Calculs texts ---
         //units 
-        metres:"mètres",
-        euros:"euros",
-        pieds_par_ha:"pieds/ha",
-        hectare:"ha",
-        seconde:"seconde",
-        ceps_par_heure:"pieds/heure",
-        ceps_par_jour:"pieds/jours",
-        euros_par_ha : "euros/ha",
-        cout_horaire:"euros/heure",
-        bobines:"bobines",
-        pieds:"pieds",
-        jours:"jours",
-        attaches:"attaches",
-        attaches_par_jour:"attaches/jour",
-        attaches_par_pieds:"attaches/pied",
-        outils:"outils",
+        metres: "mètres",
+        euros: "euros",
+        pieds_par_ha: "pieds/ha",
+        hectare: "ha",
+        seconde: "seconde",
+        ceps_par_heure: "pieds/heure",
+        ceps_par_jour: "pieds/jours",
+        euros_par_ha: "euros/ha",
+        cout_horaire: "euros/heure",
+        bobines: "bobines",
+        pieds: "pieds",
+        jours: "jours",
+        attaches: "attaches",
+        attaches_par_jour: "attaches/jour",
+        attaches_par_pieds: "attaches/pied",
+        outils: "outils",
         //headers
-        entrees:"Entrées",
-        consommable:"Consommable",
-        main_d_oeuvre:"Main d'oeuvre",
-        total_results:"Total",
+        entrees: "Entrées",
+        consommable: "Consommable",
+        main_d_oeuvre: "Main d'oeuvre",
+        total_results: "Total",
 
         //labels
         superficie: "Superficie",
@@ -153,37 +153,40 @@ export const dictionary = {
         nombre_de_jours_parcelle_bis: "Nombre de jour pour faire la parcelle",
         cout_total: "Cout total annuel (hors investissement outils)",
         //chart_data
-        prix_total_bobines_chart_data : "Prix total bobines",
-        frais_revision_chart_data:"Frais de révisions",
-        temps_pose_baguette_chart_data:"Pose baguette",
-        temps_cycle_outil_chart_data:"Cycle outil",
-        temps_entre_liens_chart_data:"Entre liens",
-        temps_deplacement_entre_ceps_chart_data:"Deplacement",
-        temps_pause_journalier_chart_data:"Pause operateur",
-        temps_mise_en_route_chart_data:"Mise en route",
-        temps_changement_bobine_chart_data:"Changement bobine",
-        consommable_pie_chart:"Consommable",
-        main_d_oeuvre_pie_chart:"Main d'oeuvre",
-        hours_short_pie_chart:"h",
-        LEA30_barchart_label:"LEA30s",
-        embarquee_barchart_label:"Outil à bobine embarquée",
-        manuelle_barchart_label:"Attache manuelle",
+        prix_total_bobines_chart_data: "Prix total bobines",
+        frais_revision_chart_data: "Frais de révisions",
+        temps_pose_baguette_chart_data: "Pose baguette",
+        temps_cycle_outil_chart_data: "Cycle outil",
+        temps_entre_liens_chart_data: "Entre liens",
+        temps_deplacement_entre_ceps_chart_data: "Deplacement",
+        temps_pause_journalier_chart_data: "Pause operateur",
+        temps_mise_en_route_chart_data: "Mise en route",
+        temps_changement_bobine_chart_data: "Changement bobine",
+        consommable_pie_chart: "Consommable",
+        main_d_oeuvre_pie_chart: "Main d'oeuvre",
+        hours_short_pie_chart: "h",
+        LEA30_barchart_label: "LEA30s",
+        embarquee_barchart_label: "Outil à bobine embarquée",
+        manuelle_barchart_label: "Attache manuelle",
         consommable_barchart: "Consommable",
-        main_d_oeuvre_barchart : "Main d'oeuvre",
-        cout_annuel_barchart:"Coûts annuel par solution (consommables et main d'oeuvre)",
-        cout_euros_barchart_yaxis:'Coût (€)',
-        
-        voir_plus_main_oeuvre_consommable:"+ Voir le détail de la main d'oeuvre et du consommable",
-        voir_moins_main_oeuvre_consommable:"- Cacher le détail de la main d'oeuvre et du consommable",
-        annee_curve_chart:"Année ",
-        annees_curve_chart:"Années",
-        label_lea30s_curve_chart:"LEA30s",
-        label_embarquee_curve_chart:'Outil à bobine embarquée',
-        label_manuelle_curve_chart:'Attache manuelle',
-        cout_par_solution_curve_chart:"Cout par solution",
-        devise_curve_chart:"€",
-        cout_euros_curve_chart_yaxis :'Coût (€)'
+        main_d_oeuvre_barchart: "Main d'oeuvre",
+        cout_annuel_barchart: "Coûts annuel par solution (consommables et main d'oeuvre)",
+        cout_euros_barchart_yaxis: 'Coût (€)',
 
+        voir_plus_main_oeuvre_consommable: "+ Voir le détail de la main d'oeuvre et du consommable",
+        voir_moins_main_oeuvre_consommable: "- Cacher le détail de la main d'oeuvre et du consommable",
+        annee_curve_chart: "Année ",
+        annees_curve_chart: "Années",
+        label_lea30s_curve_chart: "LEA30s",
+        label_embarquee_curve_chart: 'Outil à bobine embarquée',
+        label_manuelle_curve_chart: 'Attache manuelle',
+        cout_par_solution_curve_chart: "Cout par solution",
+        devise_curve_chart: "€",
+        cout_euros_curve_chart_yaxis: 'Coût (€)',
+        ERROR_MESSAGES_JRS: ["Attention !", "Temps pour la parcelle important : "],
+        WARNING_MESSAGES_TRADUCTION: ["Attention !", "La traduction n'a pas été vérifiée. Il se peut qu'il y ait des incohérences dans les textes affichés !"],
+        ERROR_MESSAGES_ATTACHES: ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Erreur !", "Pas de traduction disponible pour le moment."],
     },
 
     English: {
@@ -268,7 +271,7 @@ export const dictionary = {
         LEA30Checkbox: " LEA30s ",
         embarqueeCheckbox: " Tool with onboard spool ",
         manuelleCheckbox: " Manual tying ",
-    
+
         // --- Calculation texts ---
         // units
         metres: "meters",
@@ -292,7 +295,7 @@ export const dictionary = {
         consommable: "Consumables",
         main_d_oeuvre: "Labor",
         total_results: "Total",
-    
+
         // labels
         superficie: "Surface area",
         pieds_par_ha_text: "Vines per hectare",
@@ -357,7 +360,7 @@ export const dictionary = {
         main_d_oeuvre_barchart: "Labor",
         cout_annuel_barchart: "Annual costs by solution (consumables and labor)",
         cout_euros_barchart_yaxis: "Cost (€)",
-    
+
         voir_plus_main_oeuvre_consommable: "+ Show labor and consumable details",
         voir_moins_main_oeuvre_consommable: "- Hide labor and consumable details",
         annee_curve_chart: "Year ",
@@ -368,8 +371,13 @@ export const dictionary = {
         cout_par_solution_curve_chart: "Cost by solution",
         devise_curve_chart: "€",
         cout_euros_curve_chart_yaxis: "Cost (€)",
+        ERROR_MESSAGES_JRS: ["Warning!", "High time required for the parcel: "],
+        WARNING_MESSAGES_TRADUCTION: ["Warning!", "The translation has not been verified. There may be inconsistencies in the displayed texts!"],
+        ERROR_MESSAGES_ATTACHES: ["Warning!", "Revision required during the season. Total number of ties required per tool: "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Error!", "No translation available at the moment."],
+
     },
-    
+
     Español: {
         pageTitle: "Calculadora LEA30s",
         launchCalculation: "Iniciar cálculo",
@@ -452,7 +460,7 @@ export const dictionary = {
         LEA30Checkbox: " LEA30s ",
         embarqueeCheckbox: " Herramienta con bobina incorporada ",
         manuelleCheckbox: " Atadura manual ",
-    
+
         // --- Textos de cálculo ---
         // unidades
         metres: "metros",
@@ -476,7 +484,7 @@ export const dictionary = {
         consommable: "Consumibles",
         main_d_oeuvre: "Mano de obra",
         total_results: "Total",
-    
+
         // etiquetas
         superficie: "Superficie",
         pieds_par_ha_text: "Viñas por hectárea",
@@ -541,7 +549,7 @@ export const dictionary = {
         main_d_oeuvre_barchart: "Mano de obra",
         cout_annuel_barchart: "Costos anuales por solución (consumibles y mano de obra)",
         cout_euros_barchart_yaxis: "Costo (€)",
-    
+
         voir_plus_main_oeuvre_consommable: "+ Mostrar detalles de mano de obra y consumibles",
         voir_moins_main_oeuvre_consommable: "- Ocultar detalles de mano de obra y consumibles",
         annee_curve_chart: "Año ",
@@ -552,6 +560,11 @@ export const dictionary = {
         cout_par_solution_curve_chart: "Costo por solución",
         devise_curve_chart: "€",
         cout_euros_curve_chart_yaxis: "Costo (€)",
+        ERROR_MESSAGES_JRS: ["¡Atención!", "Tiempo importante requerido para la parcela: "],
+        WARNING_MESSAGES_TRADUCTION: ["¡Atención!", "La traducción no ha sido verificada. ¡Podrían existir incoherencias en los textos mostrados!"],
+        ERROR_MESSAGES_ATTACHES: ["¡Atención!", "Se requiere revisión durante la temporada. Número total de ataduras necesarias por herramienta: "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["¡Error!", "No hay traducción disponible por el momento."],
+
     },
 
     Italiano: {
@@ -636,7 +649,7 @@ export const dictionary = {
         LEA30Checkbox: " LEA30s ",
         embarqueeCheckbox: " Attrezzo con bobina integrata ",
         manuelleCheckbox: " Legatura manuale ",
-    
+
         // --- Testi di calcolo ---
         // unità
         metres: "metri",
@@ -660,7 +673,7 @@ export const dictionary = {
         consommable: "Consumabili",
         main_d_oeuvre: "Manodopera",
         total_results: "Totale",
-    
+
         // etichette
         superficie: "Superficie",
         pieds_par_ha_text: "Viti per ettaro",
@@ -725,7 +738,7 @@ export const dictionary = {
         main_d_oeuvre_barchart: "Manodopera",
         cout_annuel_barchart: "Costi annuali per soluzione (consumabili e manodopera)",
         cout_euros_barchart_yaxis: "Costo (€)",
-    
+
         voir_plus_main_oeuvre_consommable: "+ Mostra dettagli di manodopera e consumabili",
         voir_moins_main_oeuvre_consommable: "- Nascondi dettagli di manodopera e consumabili",
         annee_curve_chart: "Anno ",
@@ -736,6 +749,11 @@ export const dictionary = {
         cout_par_solution_curve_chart: "Costo per soluzione",
         devise_curve_chart: "€",
         cout_euros_curve_chart_yaxis: "Costo (€)",
+        ERROR_MESSAGES_JRS: ["Attenzione!", "Tempo significativo richiesto per il lotto: "],
+        WARNING_MESSAGES_TRADUCTION: ["Attenzione!", "La traduzione non è stata verificata. Potrebbero esserci incoerenze nei testi visualizzati!"],
+        ERROR_MESSAGES_ATTACHES: ["Attenzione!", "Revisione necessaria durante la stagione. Numero totale di legature richieste per strumento: "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Errore!", "Nessuna traduzione disponibile al momento."],
+
     },
 
     Português: {
@@ -820,7 +838,7 @@ export const dictionary = {
         LEA30Checkbox: " LEA30s ",
         embarqueeCheckbox: " Ferramenta com bobina integrada ",
         manuelleCheckbox: " Amarração manual ",
-    
+
         // --- Textos do cálculo ---
         // unidades
         metres: "metros",
@@ -844,7 +862,7 @@ export const dictionary = {
         consommable: "Consumíveis",
         main_d_oeuvre: "Mão de obra",
         total_results: "Total",
-    
+
         // etiquetas
         superficie: "Área",
         pieds_par_ha_text: "Videiras por hectare",
@@ -909,7 +927,7 @@ export const dictionary = {
         main_d_oeuvre_barchart: "Mão de obra",
         cout_annuel_barchart: "Custos anuais por solução (consumíveis e mão de obra)",
         cout_euros_barchart_yaxis: "Custo (€)",
-    
+
         voir_plus_main_oeuvre_consommable: "+ Mostrar detalhes de mão de obra e consumíveis",
         voir_moins_main_oeuvre_consommable: "- Ocultar detalhes de mão de obra e consumíveis",
         annee_curve_chart: "Ano ",
@@ -920,6 +938,11 @@ export const dictionary = {
         cout_par_solution_curve_chart: "Custo por solução",
         devise_curve_chart: "€",
         cout_euros_curve_chart_yaxis: "Custo (€)",
+        ERROR_MESSAGES_JRS: ["Atenção!", "Tempo significativo necessário para o lote: "],
+        WARNING_MESSAGES_TRADUCTION: ["Atenção!", "A tradução não foi verificada. Podem haver inconsistências nos textos exibidos!"],
+        ERROR_MESSAGES_ATTACHES: ["Atenção!", "Revisão necessária durante a temporada. Número total de amarras necessárias por ferramenta: "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Erro!", "Nenhuma tradução disponível no momento."],
+
     },
 
     Deutsch: {
@@ -1004,7 +1027,7 @@ export const dictionary = {
         LEA30Checkbox: " LEA30s ",
         embarqueeCheckbox: " Werkzeug mit integrierter Spule ",
         manuelleCheckbox: " Manuelles Binden ",
-    
+
         // --- Berechnungstexte ---
         // Einheiten
         metres: "Meter",
@@ -1028,7 +1051,7 @@ export const dictionary = {
         consommable: "Verbrauchsmaterialien",
         main_d_oeuvre: "Arbeitskraft",
         total_results: "Gesamt",
-    
+
         // Labels
         superficie: "Fläche",
         pieds_par_ha_text: "Rebstöcke pro Hektar",
@@ -1093,7 +1116,7 @@ export const dictionary = {
         main_d_oeuvre_barchart: "Arbeitskraft",
         cout_annuel_barchart: "Jährliche Kosten pro Lösung (Verbrauchsmaterialien und Arbeitskraft)",
         cout_euros_barchart_yaxis: "Kosten (€)",
-    
+
         voir_plus_main_oeuvre_consommable: "+ Details zu Arbeitskraft und Verbrauchsmaterialien anzeigen",
         voir_moins_main_oeuvre_consommable: "- Details zu Arbeitskraft und Verbrauchsmaterialien ausblenden",
         annee_curve_chart: "Jahr ",
@@ -1104,10 +1127,15 @@ export const dictionary = {
         cout_par_solution_curve_chart: "Kosten pro Lösung",
         devise_curve_chart: "€",
         cout_euros_curve_chart_yaxis: "Kosten (€)",
+        ERROR_MESSAGES_JRS: ["Achtung!", "Erhebliche Zeit für das Grundstück erforderlich: "],
+        WARNING_MESSAGES_TRADUCTION: ["Achtung!", "Die Übersetzung wurde nicht überprüft. Es können Unstimmigkeiten in den angezeigten Texten auftreten!"],
+        ERROR_MESSAGES_ATTACHES: ["Achtung!", "Revision während der Saison erforderlich. Gesamtanzahl der erforderlichen Bindungen pro Werkzeug: "],
+        ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Fehler!", "Keine Übersetzung derzeit verfügbar."],
+
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 }

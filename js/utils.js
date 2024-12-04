@@ -1,9 +1,14 @@
-import { displayWarning } from "./display.js";
+import { displayError, displayWarning } from "./display.js";
 import { dictionary } from "../lang/dictionary.js";
 
 let stack = [];
 let modal = null;
 let button = null;
+
+export const STACK_KEYS = {
+    warning:0,
+    error:1,
+};
 
 
 
@@ -74,6 +79,11 @@ export function validateInputs(language) {
 }
 
 export function manageStack(fstack){
+    // fstacks = [
+    //  msg_type (1,2,3) from STACK KEY,
+    // 
+    //  ]
+
     // recursive function
     setTimeout(() => {
         stack = fstack;
@@ -81,17 +91,40 @@ export function manageStack(fstack){
         console.log(stack.length);
         console.log(stack[0]);
         if (stack.length===1){
-            // console.log(stack[0][0]);
-            displayWarning(stack[0][0],stack[0][1]);
+            switch (stack[0][0]){
+                case STACK_KEYS.error:
+                    displayError(stack[0][1],stack[0][2]);
+                    break;
+                case STACK_KEYS.warning:
+                    displayWarning(stack[0][1],stack[0][2]);
+                    break;
+                default:
+                    break;
+            }
             stack.shift();
         }
         if (stack.length>=2){
-            modal = displayWarning(fstack[0][0],fstack[0][1]);
-            button =  document.getElementById("close-warning");
-            stack.shift();
-            button.addEventListener("click",function(){
-                manageStack(stack);
-            });
+            switch (stack[0][0]) {
+                case STACK_KEYS.error:
+                    modal = displayError(fstack[0][1],fstack[0][2]);
+                    button =  document.getElementById("close-error");
+                    stack.shift();
+                    button.addEventListener("click",function(){
+                        manageStack(stack);
+                    });
+                    break;
+                case STACK_KEYS.warning:
+                    modal = displayWarning(fstack[0][0],fstack[0][1]);
+                    button =  document.getElementById("close-warning");
+                    stack.shift();
+                    button.addEventListener("click",function(){
+                        manageStack(stack);
+                    });
+                    break;
+                default:
+                    break;
+            }
+
 
         }    
     },200);
