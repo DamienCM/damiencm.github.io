@@ -11,6 +11,7 @@ const WARNING_KEY_NBR_JRS = display.ERROR_KEY_NBR_JRS;
 const WARNING_KEY_NBR_ATTACHES = display.ERROR_KEY_NBR_ATTACHES;
 const ERROR_KEY_LANG_NOT_AVAILABLE = display.ERROR_KEY_LANG_NOT_AVAILABLE;
 const WARNING_KEY_LANG_NOT_VERIFIED = display.WARNING_KEY_LANG_NOT_VERIFIED;
+const WARNING_KEY_PHOTOD = display.WARNING_KEY_PHOTOD;
 const STACK_KEYS = utils.STACK_KEYS;
 
 let language = 'fr';
@@ -70,7 +71,7 @@ function launchCalculation() {
     if (utils.validateInputs(language)) {
         let inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
         let extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
-        let [results,chart_data] = calcul.calculateResults(inputs, extra_inputs,language);
+        let [results,chart_data, undisplayed_data] = calcul.calculateResults(inputs, extra_inputs,language);
         let state_checkboxes = 
         display.displayResultsRaw(results,language);
         // console.log(bar_graph);
@@ -86,6 +87,12 @@ function launchCalculation() {
 
         if (results.total_attaches_par_outil[0]>WARNING_THRESHOLD_NBR_ATTACHES){
             stackWarnings.push([STACK_KEYS.error,WARNING_KEY_NBR_ATTACHES,[results.total_attaches_par_outil[0]]]);
+        }
+        if (undisplayed_data.type_de_bobine==="B"){ // pvc
+            stackWarnings.push([STACK_KEYS.error,display.WARNING_KEY_PVC,""])
+        }
+        if (undisplayed_data.type_de_bobine==="C"){ // photo
+            stackWarnings.push([STACK_KEYS.warning,WARNING_KEY_PHOTOD,""])
         }
         stackWarnings = utils.manageStack(stackWarnings);
         // saveResultsAsJson(inputs, results);

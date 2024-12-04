@@ -12,6 +12,8 @@ export const ERROR_KEY_NBR_JRS = "temps_parcelle";
 export const ERROR_KEY_NBR_ATTACHES = "nbre_attaches";
 export const ERROR_KEY_LANG_NOT_AVAILABLE = "language_not_available";
 export const WARNING_KEY_LANG_NOT_VERIFIED = "language_not_verified";
+export const WARNING_KEY_PHOTOD = "photo";
+export const WARNING_KEY_PVC = "pvc";
 const dangerModalElement = document.getElementById('dangerModal');
 let dangerModalBody = document.getElementById("dangerModalBody");
 let dangerModalLabel = document.getElementById("dangerModalLabel");
@@ -784,7 +786,11 @@ export function displayError(key, display_data) {
             dangerModalLabel.textContent = dictionary[language].ERROR_MESSAGES_LANG_NOT_AVAILABLE[0];
             dangerModalBody.textContent = dictionary[language].ERROR_MESSAGES_LANG_NOT_AVAILABLE[1];
             break;
+        case WARNING_KEY_PVC:
+            dangerModalLabel.textContent = dictionary[language].ERROR_MSG_PVC[0];
+            dangerModalBody.textContent = dictionary[language].ERROR_MSG_PVC[1];
 
+            break;
         default:
             break;
     }
@@ -806,6 +812,11 @@ export function displayWarning(key, display_data) {
             warningModalLabel.textContent = dictionary[language].WARNING_MESSAGES_TRADUCTION[0];
             warningModalBody.textContent = dictionary[language].WARNING_MESSAGES_TRADUCTION[1];
             break;
+        case WARNING_KEY_PHOTOD:
+            warningModalLabel.textContent = dictionary[language].WARNING_MSG_PHOTO[0];
+            warningModalBody.textContent = dictionary[language].WARNING_MSG_PHOTO[1];         
+            break;
+
         default:
             break;
     }

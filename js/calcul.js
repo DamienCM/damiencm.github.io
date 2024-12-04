@@ -310,8 +310,11 @@ export function calculateResults(inputs, extra_inputs, language) {
         }
     }
 
+    let undisplayed_data = {
+        type_de_bobine: type_de_bobine,
+    }
 
 
-    return [results_lea, chart_data]
+    return [results_lea, chart_data, undisplayed_data]
 
 }
