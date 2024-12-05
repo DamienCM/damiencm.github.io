@@ -68,23 +68,48 @@ export function set_language(lang) {
 
 
 export function success_email() {
-    // alert("Succes email");
     const popup = document.getElementById("notificationPopup");
     const popupContent = document.getElementById("popupContent");
     const popupIcon = document.getElementById("popupIcon");
-    
+    const loadingRing = document.getElementById("loadingRing");
+
+    // Supprimer ou masquer l'anneau de chargement
+    if (loadingRing) {
+        loadingRing.style.display = "none"; // Masquer l'anneau
+    }
+
     // Configure le popup pour un succès
     popupContent.style.backgroundColor = "#d4edda"; // Light green background
-    popupIcon.className = "bi bi-check-circle-fill fs-1"; // Success icon
+    popupIcon.className = "bi bi-check-circle-fill fs-1"; // Icône de succès
     popupIcon.style.color = "green";
     popupIcon.textContent = "✓"; // Icône de succès
-    // Afficher le popup
-    popup.style.display = "block";
-    
+
     // Masquer le popup après 3 secondes
     setTimeout(() => {
         popup.style.display = "none";
+
+        // Réinitialiser l'anneau pour les prochaines utilisations
+        if (loadingRing) {
+            loadingRing.style.display = "block";
+        }
     }, 3000);
+}
+
+
+export function loading_email() {
+    // Fonction pour afficher l'état de chargement
+    const popup = document.getElementById("notificationPopup");
+    const popupContent = document.getElementById("popupContent");
+    const popupIcon = document.getElementById("popupIcon");
+
+    // Configure le popup pour le chargement
+    popupContent.style.backgroundColor = "#e5f1ff"; // Light blue background
+    popupIcon.className = "bi bi-hourglass-split fs-1"; // Icône de chargement (utiliser Bootstrap Icons)
+    popupIcon.style.color = "#6c757d"; // Couleur grise
+    popupIcon.textContent = "⌛"; // Texte de chargement ou icône
+
+    // Afficher le popup
+    popup.style.display = "block";
 }
 
 export function error_email() {
@@ -92,7 +117,14 @@ export function error_email() {
     const popup = document.getElementById("notificationPopup");
     const popupContent = document.getElementById("popupContent");
     const popupIcon = document.getElementById("popupIcon");
-  
+    const loadingRing = document.getElementById("loadingRing");
+
+    // Supprimer ou masquer l'anneau de chargement
+    if (loadingRing) {
+        loadingRing.style.display = "none"; // Masquer l'anneau
+    }
+
+
     // Configure le popup pour une erreur
     popupContent.style.backgroundColor = "#f8d7da"; // Light red background
     popupIcon.className = "bi bi-x-circle-fill fs-1"; // Error icon
@@ -100,12 +132,16 @@ export function error_email() {
     popupIcon.textContent = "✗"; // Icône d'erreur
     // Afficher le popup
     popup.style.display = "block";
-  
+
     // Masquer le popup après 3 secondes
     setTimeout(() => {
-      popup.style.display = "none";
+        popup.style.display = "none";
+        // Réinitialiser l'anneau pour les prochaines utilisations
+        if (loadingRing) {
+            loadingRing.style.display = "block";
+        }
     }, 3000);
-  }
+}
 
 
 export function loadInputFields() {
@@ -856,7 +892,7 @@ export function displayWarning(key, display_data) {
             break;
         case WARNING_KEY_PHOTOD:
             warningModalLabel.textContent = dictionary[language].WARNING_MSG_PHOTO[0];
-            warningModalBody.textContent = dictionary[language].WARNING_MSG_PHOTO[1];         
+            warningModalBody.textContent = dictionary[language].WARNING_MSG_PHOTO[1];
             break;
 
         default:

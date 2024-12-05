@@ -17,6 +17,8 @@ export function send_inputs(inputs, extra_inputs) {
     })
         .then(response => {
             if (!response.ok) {
+                console.log("reponse serveur :");
+                console.log(response);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
@@ -31,10 +33,19 @@ export function send_inputs(inputs, extra_inputs) {
         });
 }
 
-let email = ""
 
-export function send_email_address(){
-    fetch("/submit_email", {
+export function send_email_address(email) {
+    const timeout = 10000; // Timeout en millisecondes (5 secondes)
+
+    display.loading_email();
+
+    // Créer une promesse qui rejette après le délai défini
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout : le serveur ne répond pas.")), timeout)
+    );
+
+    // Requête fetch
+    const fetchPromise = fetch(`${BACKEND_URL_BASE}/submit_email`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -50,9 +61,12 @@ export function send_email_address(){
         .then((data) => {
             console.log("Réponse du serveur :", data);
             display.success_email();
-        })
+        });
+
+    // Utiliser Promise.race pour limiter la durée d'attente de la requête
+    Promise.race([fetchPromise, timeoutPromise])
         .catch((error) => {
             console.error("Erreur :", error);
-            display.error_email();
+            display.error_email(); // Affiche une erreur si le timeout est atteint ou une autre erreur survient
         });
 }

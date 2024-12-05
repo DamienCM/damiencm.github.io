@@ -11941,7 +11941,7 @@ a.text-dark:hover {
     /* 100% de la largeur */
 }
 #notificationPopup {
-    animation: fadeInOut 3s ease-in-out forwards;
+    animation: fadeInOut 5s ease-in-out forwards;
     z-index: 1055; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
   }
   
@@ -11963,7 +11963,14 @@ a.text-dark:hover {
       transform: translate(-50%, -50%) scale(0.5);
     }
   }
-  
+  @keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 
 
