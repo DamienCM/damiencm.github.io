@@ -11940,7 +11940,30 @@ a.text-dark:hover {
     width: 100%;
     /* 100% de la largeur */
 }
-
+#notificationPopup {
+    animation: fadeInOut 3s ease-in-out forwards;
+    z-index: 1055; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    20% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+  }
+  
 
 
 

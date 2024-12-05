@@ -71,15 +71,18 @@
                     <form id="emailForm">
                         <div class="mb-3">
                             <label id="emailInputText" for="emailInput" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="emailInput" placeholder="votre-adresse@gmail.com"
-                                required>
-                            <div id="form-text-email" class="form-text">We'll never share your email with anyone else.</div>
+                            <input type="email" class="form-control" id="emailInput"
+                                placeholder="votre-adresse@gmail.com" required>
+                            <div id="form-text-email" class="form-text">We'll never share your email with anyone else.
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="close-email-modal-button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="submit-email-modal-button" type="submit" form="emailForm" class="btn btn-primary">Submit</button>
+                    <button id="close-email-modal-button" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button id="submit-email-modal-button" type="submit" form="emailForm"
+                        class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>
@@ -275,11 +278,13 @@
                         <canvas id="curve-chart" class="w-100"></canvas>
                     </div>
                     <!-- Button to trigger modal -->
-                     <div class="d-flex justify-content-center">
-                         <button id="button-trigger-modal-email-text" type="button" class="btn btn-primary btn-custom-width" data-bs-toggle="modal" data-bs-target="#emailModal">
-                             Open Email Modal
-                         </button>
-                     </div>
+                    <div class="d-flex justify-content-center">
+                        <button id="button-trigger-modal-email-text" type="button"
+                            class="btn btn-primary btn-custom-width" data-bs-toggle="modal"
+                            data-bs-target="#emailModal">
+                            Open Email Modal
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -294,6 +299,15 @@
     <script type="module" src="js/change_language.js" defer></script>
     <script type="module" src="js/backend.js" defer></script>
     <script type="module" src="main.js"></script>
+
+
+    <div id="notificationPopup"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1055;">
+        <div id="popupContent"
+            style="width: 100px; height: 100px; border-radius: 50%; background-color: lightgray; display: flex; justify-content: center; align-items: center;">
+            <i id="popupIcon" style="font-size: 50px; color: green;">✓</i>
+        </div>
+    </div>
 
 </body>
 

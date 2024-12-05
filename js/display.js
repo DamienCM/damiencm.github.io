@@ -66,14 +66,46 @@ export function set_language(lang) {
     language = lang;
 }
 
-export function error_email(){
-    alert("Une erreur s'est produite.");
+
+export function success_email() {
+    // alert("Succes email");
+    const popup = document.getElementById("notificationPopup");
+    const popupContent = document.getElementById("popupContent");
+    const popupIcon = document.getElementById("popupIcon");
+    
+    // Configure le popup pour un succès
+    popupContent.style.backgroundColor = "#d4edda"; // Light green background
+    popupIcon.className = "bi bi-check-circle-fill fs-1"; // Success icon
+    popupIcon.style.color = "green";
+    popupIcon.textContent = "✓"; // Icône de succès
+    // Afficher le popup
+    popup.style.display = "block";
+    
+    // Masquer le popup après 3 secondes
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
 }
 
-export function success_email(){
-    alert("Email envoyé avec succès !");
-}
-
+export function error_email() {
+    // alert("Une erreur s'est produite.");
+    const popup = document.getElementById("notificationPopup");
+    const popupContent = document.getElementById("popupContent");
+    const popupIcon = document.getElementById("popupIcon");
+  
+    // Configure le popup pour une erreur
+    popupContent.style.backgroundColor = "#f8d7da"; // Light red background
+    popupIcon.className = "bi bi-x-circle-fill fs-1"; // Error icon
+    popupIcon.style.color = "red";
+    popupIcon.textContent = "✗"; // Icône d'erreur
+    // Afficher le popup
+    popup.style.display = "block";
+  
+    // Masquer le popup après 3 secondes
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 3000);
+  }
 
 
 export function loadInputFields() {
