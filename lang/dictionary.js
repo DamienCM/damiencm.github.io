@@ -188,7 +188,14 @@ export const dictionary = {
         ERROR_MESSAGES_ATTACHES: ["Attention !", "Revision requise au cours de la saison. Nombre total d'attaches requise par outil : "],
         ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Erreur !", "Pas de traduction disponible pour le moment."],
         WARNING_MSG_PHOTO: ["Attention !", "Pas de comparaison avec les autres outils disponible pour ce type de bobine (pas d'équivalent trouvé chez les concurents)."],
-        ERROR_MSG_PVC: ["Erreur", "Le calculateur n'est pas encore disponible pour les bobines PVC"]
+        ERROR_MSG_PVC: ["Erreur", "Le calculateur n'est pas encore disponible pour les bobines PVC"],
+        button_trigger_modal_email_text: "Recevoir un devis par mail",
+        emailModalLabel: "Recevoir un devis par mail",
+        emailInput: "Entrer votre adresse mail",
+        form_text_email: "Votre adressse mail ne sera partagée avec aucun tierce",
+        close_email_modal_button: "Fermer",
+        submit_email_modal_button: "Valider",
+        emailInputText: "Nous vous contacterons prochainement :",
     },
 
     English: {
@@ -381,6 +388,13 @@ export const dictionary = {
         ERROR_MSG_PVC: ["Error", "The calculator is not yet available for PVC spools."],
 
 
+        button_trigger_modal_email_text: "Receive a quote by email",
+        emailModalLabel: "Receive a quote by email",
+        emailInput: "Enter your email address",
+        form_text_email: "Your email address will not be shared with any third party",
+        close_email_modal_button: "Close",
+        submit_email_modal_button: "Submit",
+        emailInputText: "We will contact you shortly:",
     },
 
     Español: {
@@ -570,9 +584,16 @@ export const dictionary = {
         ERROR_MESSAGES_ATTACHES: ["¡Atención!", "Se requiere revisión durante la temporada. Número total de ataduras necesarias por herramienta: "],
         ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["¡Error!", "No hay traducción disponible por el momento."],
 
-        WARNING_MSG_PHOTO : ["¡Atención!", "No hay comparación disponible con otras herramientas para este tipo de bobina (no se encontró equivalente entre los competidores)."],
-        ERROR_MSG_PVC : ["¡Error!", "El calculador aún no está disponible para bobinas de PVC."],
-        },
+        WARNING_MSG_PHOTO: ["¡Atención!", "No hay comparación disponible con otras herramientas para este tipo de bobina (no se encontró equivalente entre los competidores)."],
+        ERROR_MSG_PVC: ["¡Error!", "El calculador aún no está disponible para bobinas de PVC."],
+        button_trigger_modal_email_text: "Recibir una cotización por correo electrónico",
+        emailModalLabel: "Recibir una cotización por correo electrónico",
+        emailInput: "Ingrese su dirección de correo electrónico",
+        form_text_email: "Su dirección de correo electrónico no será compartida con terceros",
+        close_email_modal_button: "Cerrar",
+        submit_email_modal_button: "Enviar",
+        emailInputText: "Nos pondremos en contacto con usted en breve:",
+    },
 
     Italiano: {
         pageTitle: "Calcolatore LEA30s",
@@ -761,9 +782,16 @@ export const dictionary = {
         ERROR_MESSAGES_ATTACHES: ["Attenzione!", "Revisione necessaria durante la stagione. Numero totale di legature richieste per strumento: "],
         ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Errore!", "Nessuna traduzione disponibile al momento."],
 
-        WARNING_MSG_PHOTO : ["Attenzione!", "Non è disponibile un confronto con altri strumenti per questo tipo di bobina (nessun equivalente trovato tra i concorrenti)."],
-        ERROR_MSG_PVC : ["Errore", "Il calcolatore non è ancora disponibile per bobine in PVC."],
-        },
+        WARNING_MSG_PHOTO: ["Attenzione!", "Non è disponibile un confronto con altri strumenti per questo tipo di bobina (nessun equivalente trovato tra i concorrenti)."],
+        ERROR_MSG_PVC: ["Errore", "Il calcolatore non è ancora disponibile per bobine in PVC."],
+        button_trigger_modal_email_text: "Ricevi un preventivo via email",
+        emailModalLabel: "Ricevi un preventivo via email",
+        emailInput: "Inserisci il tuo indirizzo email",
+        form_text_email: "Il tuo indirizzo email non sarà condiviso con terze parti",
+        close_email_modal_button: "Chiudi",
+        submit_email_modal_button: "Conferma",
+        emailInputText: "Ti contatteremo a breve:",
+    },
 
     Português: {
         pageTitle: "Calculadora LEA30s",
@@ -952,9 +980,16 @@ export const dictionary = {
         ERROR_MESSAGES_ATTACHES: ["Atenção!", "Revisão necessária durante a temporada. Número total de amarras necessárias por ferramenta: "],
         ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Erro!", "Nenhuma tradução disponível no momento."],
 
-        WARNING_MSG_PHOTO : ["Atenção!", "Nenhuma comparação com outras ferramentas está disponível para este tipo de bobina (nenhum equivalente encontrado entre os concorrentes)."],
-        ERROR_MSG_PVC : ["Erro", "O calculador ainda não está disponível para bobinas de PVC."],
-        },
+        WARNING_MSG_PHOTO: ["Atenção!", "Nenhuma comparação com outras ferramentas está disponível para este tipo de bobina (nenhum equivalente encontrado entre os concorrentes)."],
+        ERROR_MSG_PVC: ["Erro", "O calculador ainda não está disponível para bobinas de PVC."],
+        button_trigger_modal_email_text: "Receber uma cotação por e-mail",
+        emailModalLabel: "Receber uma cotação por e-mail",
+        emailInput: "Digite seu endereço de e-mail",
+        form_text_email: "Seu endereço de e-mail não será compartilhado com terceiros",
+        close_email_modal_button: "Fechar",
+        submit_email_modal_button: "Enviar",
+        emailInputText: "Entraremos em contato em breve:",
+    },
 
     Deutsch: {
         pageTitle: "LEA30s Rechner",
@@ -1143,8 +1178,15 @@ export const dictionary = {
         ERROR_MESSAGES_ATTACHES: ["Achtung!", "Revision während der Saison erforderlich. Gesamtanzahl der erforderlichen Bindungen pro Werkzeug: "],
         ERROR_MESSAGES_LANG_NOT_AVAILABLE: ["Fehler!", "Keine Übersetzung derzeit verfügbar."],
 
-        WARNING_MSG_PHOTO : ["Achtung!", "Kein Vergleich mit anderen Werkzeugen verfügbar für diesen Spulentyp (kein Äquivalent bei Wettbewerbern gefunden)."],
-        ERROR_MSG_PVC : ["Fehler", "Der Rechner ist noch nicht für PVC-Spulen verfügbar."],
-        }
+        WARNING_MSG_PHOTO: ["Achtung!", "Kein Vergleich mit anderen Werkzeugen verfügbar für diesen Spulentyp (kein Äquivalent bei Wettbewerbern gefunden)."],
+        ERROR_MSG_PVC: ["Fehler", "Der Rechner ist noch nicht für PVC-Spulen verfügbar."],
+        button_trigger_modal_email_text: "Angebot per E-Mail erhalten",
+        emailModalLabel: "Angebot per E-Mail erhalten",
+        emailInput: "Geben Sie Ihre E-Mail-Adresse ein",
+        form_text_email: "Ihre E-Mail-Adresse wird nicht an Dritte weitergegeben",
+        close_email_modal_button: "Schließen",
+        submit_email_modal_button: "Bestätigen",
+        emailInputText: "Wir werden Sie in Kürze kontaktieren:",
+    }
 
 }

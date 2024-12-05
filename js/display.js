@@ -66,6 +66,16 @@ export function set_language(lang) {
     language = lang;
 }
 
+export function error_email(){
+    alert("Une erreur s'est produite.");
+}
+
+export function success_email(){
+    alert("Email envoyé avec succès !");
+}
+
+
+
 export function loadInputFields() {
     console.log("Loading extra fields");
     const inputContainer = document.getElementById('input-fields');

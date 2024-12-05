@@ -47,6 +47,16 @@ export function change_language(language){
     document.getElementById("show-more-pie-chart").innerText = dictionary[language].voir_plus_main_oeuvre_consommable; // Texte "Afficher plus"
     document.getElementById("show-less-pie-chart").innerText = dictionary[language].voir_moins_main_oeuvre_consommable; // Texte "Afficher plus"
 
+    document.getElementById("button-trigger-modal-email-text").innerText=dictionary[language].button_trigger_modal_email_text;
+    document.getElementById("emailModalLabel").innerText=dictionary[language].emailModalLabel;
+    document.getElementById("emailInput").innerText=dictionary[language].emailInput;
+    document.getElementById("form-text-email").innerText=dictionary[language].form_text_email;
+    document.getElementById("close-email-modal-button").innerText=dictionary[language].close_email_modal_button;
+    document.getElementById("submit-email-modal-button").innerText=dictionary[language].submit_email_modal_button;
+    document.getElementById("emailInputText").innerText=dictionary[language].emailInputText;
+    
+
+
 
 
     display.loadInputFields(language);
