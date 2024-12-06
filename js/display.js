@@ -71,7 +71,6 @@ export function success_email() {
     const popup = document.getElementById("notificationPopup");
     const popupContent = document.getElementById("popupContent");
     const popupIcon = document.getElementById("popupIcon");
-    const loadingRing = document.getElementById("loadingRing");
 
     // Supprimer ou masquer l'anneau de chargement
     if (loadingRing) {
@@ -87,20 +86,15 @@ export function success_email() {
     // Masquer le popup après 3 secondes
     setTimeout(() => {
         popup.style.display = "none";
-
-        // Réinitialiser l'anneau pour les prochaines utilisations
-        if (loadingRing) {
-            loadingRing.style.display = "block";
-        }
     }, 3000);
 }
 
 
-export function loading_email() {
+export function loading_email(status) {
     // Fonction pour afficher l'état de chargement
-    const popup = document.getElementById("notificationPopup");
-    const popupContent = document.getElementById("popupContent");
-    const popupIcon = document.getElementById("popupIcon");
+    const popup = document.getElementById("awaiting-notificationPopup");
+    const popupContent = document.getElementById("awaiting-popupContent");
+    const popupIcon = document.getElementById("awaiting-popupIcon");
 
     // Configure le popup pour le chargement
     popupContent.style.backgroundColor = "#e5f1ff"; // Light blue background
@@ -109,7 +103,12 @@ export function loading_email() {
     popupIcon.textContent = "⌛"; // Texte de chargement ou icône
 
     // Afficher le popup
-    popup.style.display = "block";
+    if (status){
+        popup.style.display = "block";
+    }
+    else{
+        popup.style.display = "none";
+    }
 }
 
 export function error_email() {
@@ -117,13 +116,6 @@ export function error_email() {
     const popup = document.getElementById("notificationPopup");
     const popupContent = document.getElementById("popupContent");
     const popupIcon = document.getElementById("popupIcon");
-    const loadingRing = document.getElementById("loadingRing");
-
-    // Supprimer ou masquer l'anneau de chargement
-    if (loadingRing) {
-        loadingRing.style.display = "none"; // Masquer l'anneau
-    }
-
 
     // Configure le popup pour une erreur
     popupContent.style.backgroundColor = "#f8d7da"; // Light red background
@@ -136,10 +128,6 @@ export function error_email() {
     // Masquer le popup après 3 secondes
     setTimeout(() => {
         popup.style.display = "none";
-        // Réinitialiser l'anneau pour les prochaines utilisations
-        if (loadingRing) {
-            loadingRing.style.display = "block";
-        }
     }, 3000);
 }
 

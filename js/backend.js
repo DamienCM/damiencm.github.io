@@ -35,9 +35,9 @@ export function send_inputs(inputs, extra_inputs) {
 
 
 export function send_email_address(email) {
-    const timeout = 10000; // Timeout en millisecondes (5 secondes)
+    const timeout = 100000; // Timeout en millisecondes (5 secondes)
 
-    display.loading_email();
+    display.loading_email(true);
 
     // Créer une promesse qui rejette après le délai défini
     const timeoutPromise = new Promise((_, reject) =>
@@ -60,13 +60,16 @@ export function send_email_address(email) {
         })
         .then((data) => {
             console.log("Réponse du serveur :", data);
+            // display.loading_email(false);
             display.success_email();
+
         });
 
     // Utiliser Promise.race pour limiter la durée d'attente de la requête
     Promise.race([fetchPromise, timeoutPromise])
-        .catch((error) => {
+        .catch((error) => {            
             console.error("Erreur :", error);
+            display.loading_email(false);
             display.error_email(); // Affiche une erreur si le timeout est atteint ou une autre erreur survient
         });
 }

@@ -11941,26 +11941,43 @@ a.text-dark:hover {
     /* 100% de la largeur */
 }
 #notificationPopup {
-    animation: fadeInOut 5s ease-in-out forwards;
+    animation: fadeOut 3s ease-out forwards;
     z-index: 1055; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
   }
   
-  @keyframes fadeInOut {
+  @keyframes fadeOut {
     0% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
-    20% {
+    60% {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
     80% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
+      
     100% {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.5);
+      transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+#awaiting-notificationPopup {
+    animation: fadeIn 1s ease-in forwards;
+    z-index: 1060; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
   }
   @keyframes spin {
@@ -11971,6 +11988,7 @@ a.text-dark:hover {
         transform: rotate(360deg);
     }
 }
+
 
 
 
