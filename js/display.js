@@ -72,16 +72,33 @@ export function success_email() {
     const popupContent = document.getElementById("popupContent");
     const popupIcon = document.getElementById("popupIcon");
 
-    // Supprimer ou masquer l'anneau de chargement
-    if (loadingRing) {
-        loadingRing.style.display = "none"; // Masquer l'anneau
-    }
-
     // Configure le popup pour un succès
     popupContent.style.backgroundColor = "#d4edda"; // Light green background
     popupIcon.className = "bi bi-check-circle-fill fs-1"; // Icône de succès
     popupIcon.style.color = "green";
     popupIcon.textContent = "✓"; // Icône de succès
+
+    popup.style.display = "block";
+
+    // Masquer le popup après 3 secondes
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
+}
+
+export function error_email() {
+    // alert("Une erreur s'est produite.");
+    const popup = document.getElementById("notificationPopup");
+    const popupContent = document.getElementById("popupContent");
+    const popupIcon = document.getElementById("popupIcon");
+
+    // Configure le popup pour une erreur
+    popupContent.style.backgroundColor = "#f8d7da"; // Light red background
+    popupIcon.className = "bi bi-x-circle-fill fs-1"; // Error icon
+    popupIcon.style.color = "red";
+    popupIcon.textContent = "✗"; // Icône d'erreur
+    // Afficher le popup
+    popup.style.display = "block";
 
     // Masquer le popup après 3 secondes
     setTimeout(() => {
@@ -109,26 +126,6 @@ export function loading_email(status) {
     else{
         popup.style.display = "none";
     }
-}
-
-export function error_email() {
-    // alert("Une erreur s'est produite.");
-    const popup = document.getElementById("notificationPopup");
-    const popupContent = document.getElementById("popupContent");
-    const popupIcon = document.getElementById("popupIcon");
-
-    // Configure le popup pour une erreur
-    popupContent.style.backgroundColor = "#f8d7da"; // Light red background
-    popupIcon.className = "bi bi-x-circle-fill fs-1"; // Error icon
-    popupIcon.style.color = "red";
-    popupIcon.textContent = "✗"; // Icône d'erreur
-    // Afficher le popup
-    popup.style.display = "block";
-
-    // Masquer le popup après 3 secondes
-    setTimeout(() => {
-        popup.style.display = "none";
-    }, 3000);
 }
 
 
