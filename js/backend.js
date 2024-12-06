@@ -60,7 +60,7 @@ export function send_email_address(email) {
         })
         .then((data) => {
             console.log("Réponse du serveur :", data);
-            // display.loading_email(false);
+            display.loading_email(false);
             display.success_email();
 
         });
