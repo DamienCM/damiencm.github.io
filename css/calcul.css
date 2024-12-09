@@ -5,7 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-    --main-color:#97BF0D;
+    --main-color: #97BF0D;
     --blue: #97BF0D;
     --indigo: #6610f2;
     --purple: #6f42c1;
@@ -11940,50 +11940,58 @@ a.text-dark:hover {
     width: 100%;
     /* 100% de la largeur */
 }
+
 #notificationPopup {
     animation: fadeOut 3s ease-out forwards;
-    z-index: 1055; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
-  }
-  
-  @keyframes fadeOut {
+    z-index: 1055;
+    /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
+}
+
+@keyframes fadeOut {
     0% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
+
     60% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
+
     80% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
-      
+
     100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
     }
 }
 
 #awaiting-notificationPopup {
     animation: fadeIn 1s ease-in forwards;
-    z-index: 1060; /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
-  }
-  
-  @keyframes fadeIn {
+    z-index: 1060;
+    /* Assurez-vous que le popup apparaît au-dessus des autres éléments */
+}
+
+@keyframes fadeIn {
     0% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
     }
+
     100% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
-  }
-  @keyframes spin {
+}
+
+@keyframes spin {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

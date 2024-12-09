@@ -154,3 +154,11 @@ export function handle_email_form_submission(e) {
         alert("Veuillez entrer une adresse email valide.");
     }
 }
+
+export function pageScroll() {
+    const target = document.getElementById("results-section").offsetTop-10; // Position verticale de la section
+    window.scrollTo({
+      top: target,
+      behavior: "smooth",
+    });
+}

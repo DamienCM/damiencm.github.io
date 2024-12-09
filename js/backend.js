@@ -50,7 +50,11 @@ export function send_email_address(email) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+            inputs: inputs,
+            extra_inputs: extra_inputs,
+            email:email
+        }),
     })
         .then((response) => {
             if (!response.ok) {

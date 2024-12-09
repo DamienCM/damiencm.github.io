@@ -106,6 +106,7 @@ function launchCalculation() {
         // backend.send_inputs(inputs, extra_inputs);
         console.log(inputs);
         backend.send_inputs(inputs, extra_inputs);
+        utils.pageScroll();
     }
     else {
 
