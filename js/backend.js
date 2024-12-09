@@ -34,7 +34,7 @@ export function send_inputs(inputs, extra_inputs) {
 }
 
 
-export function send_email_address(email) {
+export function send_email_address(email, inputs, extra_inputs) {
     const timeout = 100000; // Timeout en millisecondes (5 secondes)
 
     display.loading_email(true);
@@ -44,6 +44,10 @@ export function send_email_address(email) {
         setTimeout(() => reject(new Error("Timeout : le serveur ne répond pas.")), timeout)
     );
 
+    console.log("inputs=");
+    console.log(inputs);
+    console.log("extra_inputs=");
+    console.log(extra_inputs);
     // Requête fetch
     const fetchPromise = fetch(`${BACKEND_URL_BASE}/submit_email`, {
         method: "POST",

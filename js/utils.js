@@ -133,7 +133,7 @@ export function manageStack(fstack) {
 
 }
 
-export function handle_email_form_submission(e) {
+export function handle_email_form_submission(e,inputs,extra_inputs) {
     // Récupérer l'adresse email depuis l'input
     const email = document.getElementById("emailInput").value;
 
@@ -148,7 +148,7 @@ export function handle_email_form_submission(e) {
 
         // Envoyer l'email à un serveur ou traiter localement
         // Exemple : envoyer une requête POST
-        backend.send_email_address(email);
+        backend.send_email_address(email,inputs,extra_inputs);
 
     } else {
         alert("Veuillez entrer une adresse email valide.");

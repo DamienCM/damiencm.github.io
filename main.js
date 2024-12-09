@@ -20,6 +20,8 @@ let bar_graph = null;
 let curve_chart = null;
 let pie_charts = null;
 let warningModal = null;
+let inputs = null;
+let extra_inputs = null;
 let stackWarnings = [];
 
 
@@ -44,7 +46,7 @@ function init_document() {
     document.getElementById('calculate-button').addEventListener('click', launchCalculation);
     document.getElementById("emailForm").addEventListener("submit", function (e) {
         e.preventDefault(); // Empêche le comportement par défaut du formulaire
-        utils.handle_email_form_submission(); // Appeler la fonction définie dans utils.js
+        utils.handle_email_form_submission(e,inputs, extra_inputs); // Appeler la fonction définie dans utils.js
     });   // Rendre la fonction globale
     window.toggleDropdown = toggleDropdown;
     window.selectLanguage = selectLanguage;
@@ -73,9 +75,9 @@ function checkLanguage() {
 // Lancer le calcul
 function launchCalculation() {
     if (utils.validateInputs(language)) {
-        let inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
+        inputs = dictionary[language].inputFields.map((_, index) => parseFloat(document.getElementById(`input-${index}`).value));
         inputs[inputs.length - 1] = document.getElementById(`input-5`).value;
-        let extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
+        extra_inputs = dictionary[language].extraOptions.map((_, index) => parseFloat(document.getElementById(`input-extra-${index}`).value));
         let [results, chart_data, undisplayed_data] = calcul.calculateResults(inputs, extra_inputs, language);
         let state_checkboxes =
             display.displayResultsRaw(results, language);
