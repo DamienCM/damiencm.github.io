@@ -50,7 +50,7 @@ export function change_language(language){
     document.getElementById("button-trigger-modal-email-text").innerText=dictionary[language].button_trigger_modal_email_text;
     document.getElementById("emailModalLabel").innerText=dictionary[language].emailModalLabel;
     document.getElementById("emailInput").innerText=dictionary[language].emailInput;
-    document.getElementById("form-text-email").innerText=dictionary[language].form_text_email;
+    document.getElementById("form-text-email").innerHTML=dictionary[language].form_text_email;
     document.getElementById("close-email-modal-button").innerText=dictionary[language].close_email_modal_button;
     document.getElementById("submit-email-modal-button").innerText=dictionary[language].submit_email_modal_button;
     document.getElementById("emailInputText").innerText=dictionary[language].emailInputText;
